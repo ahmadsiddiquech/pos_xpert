@@ -1,5 +1,5 @@
 <div class="content-wrapper">
-    <h3>Unit<a href="unit/create"><button type="button" class="btn btn-lg btn-primary pull-right"><i class="fa fa-plus"></i>&nbsp;&nbsp;&nbsp;<b>Add Unit</b></button></a></h3>
+    <h3>Customer<a href="customer/create"><button type="button" class="btn btn-lg btn-primary pull-right"><i class="fa fa-plus"></i>&nbsp;&nbsp;&nbsp;<b>Add Customer</b></button></a></h3>
     <div class="container-fluid">
         <!-- START DATATABLE 1 -->
         <div class="row">
@@ -10,8 +10,9 @@
                         <thead class="bg-th">
                         <tr class="bg-col">
                         <th class="sr">S.No</th>
-                        <th>Unit Name</th>
-                        <th>Creation Date</th>
+                        <th>Customer Name</th>
+                        <th>Phone</th>
+                        <th>Address</th>
                         <th class="" style="width:300px;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Actions</th>
                         </tr>
                         </thead>
@@ -22,15 +23,16 @@
                                 foreach ($news->result() as
                                         $new) {
                                     $i++;
-                                    $set_publish_url = ADMIN_BASE_URL . 'unit/set_publish/' . $new->id;
-                                    $set_unpublish_url = ADMIN_BASE_URL . 'unit/set_unpublish/' . $new->id ;
-                                    $edit_url = ADMIN_BASE_URL . 'unit/create/' . $new->id ;
-                                    $delete_url = ADMIN_BASE_URL . 'unit/delete/' . $new->id;
+                                    $set_publish_url = ADMIN_BASE_URL . 'customer/set_publish/' . $new->id;
+                                    $set_unpublish_url = ADMIN_BASE_URL . 'customer/set_unpublish/' . $new->id ;
+                                    $edit_url = ADMIN_BASE_URL . 'customer/create/' . $new->id ;
+                                    $delete_url = ADMIN_BASE_URL . 'customer/delete/' . $new->id;
                                     ?>
                                     <tr id="Row_<?=$new->id?>" class="odd gradeX " >
                                     <td width='2%'><?php echo $i;?></td>
                                     <td><?php echo wordwrap($new->name , 50 , "<br>\n")  ?></td>
-                                    <td><?php echo wordwrap($new->date , 50 , "<br>\n")  ?></td>
+                                    <td><?php echo $new->address   ?></td>
+                                    <td><?php echo $new->phone   ?></td>
                                     <td class="table_action">
                                     <a class="btn yellow c-btn view_details" rel="<?=$new->id?>"><i class="fa fa-list"  title="See Detail"></i></a>
                                     <?php
@@ -49,9 +51,9 @@
                                     echo anchor("javascript:;",$icon, array('class' => 'action_publish' . $publish_class . $iconbgclass,
                                     'title' => $publis_title,'rel' => $new->id,'id' => $new->id, 'status' => $new->status));
 
-                                    echo anchor($edit_url, '<i class="fa fa-edit"></i>', array('class' => 'action_edit btn blue c-btn','title' => 'Edit unit'));
+                                    echo anchor($edit_url, '<i class="fa fa-edit"></i>', array('class' => 'action_edit btn blue c-btn','title' => 'Edit customer'));
 
-                                    echo anchor('"javascript:;"', '<i class="fa fa-times"></i>', array('class' => 'delete_record btn red c-btn', 'rel' => $new->id, 'title' => 'Delete unit'));
+                                    echo anchor('"javascript:;"', '<i class="fa fa-times"></i>', array('class' => 'delete_record btn red c-btn', 'rel' => $new->id, 'title' => 'Delete customer'));
                                     ?>
                                     </td>
                                 </tr>
@@ -75,7 +77,7 @@ $(document).ready(function(){
         var id = $(this).attr('rel');
           $.ajax({
             type: 'POST',
-            url: "<?php ADMIN_BASE_URL?>unit/detail",
+            url: "<?php ADMIN_BASE_URL?>customer/detail",
             data: {'id': id},
             async: false,
             success: function(test_body) {
@@ -92,8 +94,8 @@ $(document).ready(function(){
         var id = $(this).attr('rel');
         e.preventDefault();
         swal({
-            title : "Are you sure to delete the selected unit?",
-            text : "You will not be able to recover this unit!",
+            title : "Are you sure to delete the selected customer?",
+            text : "You will not be able to recover this customer!",
             type : "warning",
             showCancelButton : true,
             confirmButtonColor : "#DD6B55",
@@ -103,14 +105,14 @@ $(document).ready(function(){
         function () {
            $.ajax({
                 type: 'POST',
-                url: "<?php echo ADMIN_BASE_URL?>unit/delete",
+                url: "<?php echo ADMIN_BASE_URL?>customer/delete",
                 data: {'id': id},
                 async: false,
                 success: function() {
                 location.reload();
                 }
             });
-            swal("Deleted!", "unit has been deleted.", "success");
+            swal("Deleted!", "customer has been deleted.", "success");
         });
 
     });       
@@ -122,7 +124,7 @@ $(document).ready(function(){
         var status = $(this).attr('status');
          $.ajax({
             type: 'POST',
-            url: "<?= ADMIN_BASE_URL ?>unit/change_status",
+            url: "<?= ADMIN_BASE_URL ?>customer/change_status",
             data: {'id': id, 'status': status},
             async: false,
             success: function(result) {
@@ -137,7 +139,7 @@ $(document).ready(function(){
                     $('#'+id).removeClass('green');
                     $('#'+id).find('i.fa-long-arrow-up').removeClass('fa-long-arrow-up').addClass('fa-long-arrow-down');
                 }
-                $("#listing").load('<?php ADMIN_BASE_URL?>unit/manage');
+                $("#listing").load('<?php ADMIN_BASE_URL?>customer/manage');
                 toastr.success('Status Changed Successfully');
             }
         });

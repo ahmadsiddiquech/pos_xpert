@@ -1,5 +1,5 @@
 <div class="content-wrapper">
-    <h3>Category<a href="category/create"><button type="button" class="btn btn-lg btn-primary pull-right"><i class="fa fa-plus"></i>&nbsp;&nbsp;&nbsp;<b>Add Category</b></button></a></h3>
+    <h3>Sub Category<a href="sub_category/create"><button type="button" class="btn btn-lg btn-primary pull-right"><i class="fa fa-plus"></i>&nbsp;&nbsp;&nbsp;<b>Add Sub Category</b></button></a></h3>
 
     <div class="container-fluid">
 
@@ -14,6 +14,7 @@
                         <tr class="bg-col">
                         <th class="sr">S.No</th>
                         <th>Category Name</th>
+                        <th>Parent Category</th>
                         <th class="" style="width:400px;">Description</th>
                         <th class="" style="width:300px;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Actions</th>
                         </tr>
@@ -25,14 +26,15 @@
                                     foreach ($news->result() as
                                             $new) {
                                         $i++;
-                                        $set_publish_url = ADMIN_BASE_URL . 'category/set_publish/' . $new->id;
-                                        $set_unpublish_url = ADMIN_BASE_URL . 'category/set_unpublish/' . $new->id ;
-                                        $edit_url = ADMIN_BASE_URL . 'category/create/' . $new->id ;
-                                        $delete_url = ADMIN_BASE_URL . 'category/delete/' . $new->id;
+                                        $set_publish_url = ADMIN_BASE_URL . 'sub_category/set_publish/' . $new->id;
+                                        $set_unpublish_url = ADMIN_BASE_URL . 'sub_category/set_unpublish/' . $new->id ;
+                                        $edit_url = ADMIN_BASE_URL . 'sub_category/create/' . $new->id ;
+                                        $delete_url = ADMIN_BASE_URL . 'sub_category/delete/' . $new->id;
                                         ?>
                                     <tr id="Row_<?=$new->id?>" class="odd gradeX " >
                                         <td width='2%'><?php echo $i;?></td>
                                         <td><?php echo wordwrap($new->name , 50 , "<br>\n")  ?></td>
+                                         <td><?php echo $new->p_c_name ?></td>
                                         <td><?php echo $new->description ?></td>
                                         <td class="table_action">
 
@@ -55,9 +57,9 @@
 
                                         'title' => $publis_title,'rel' => $new->id,'id' => $new->id, 'status' => $new->status));
 
-                                        echo anchor($edit_url, '<i class="fa fa-edit"></i>', array('class' => 'action_edit btn blue c-btn','title' => 'Edit category'));
+                                        echo anchor($edit_url, '<i class="fa fa-edit"></i>', array('class' => 'action_edit btn blue c-btn','title' => 'Edit Sub Category'));
 
-                                        echo anchor('"javascript:;"', '<i class="fa fa-times"></i>', array('class' => 'delete_record btn red c-btn', 'rel' => $new->id, 'title' => 'Delete category'));
+                                        echo anchor('"javascript:;"', '<i class="fa fa-times"></i>', array('class' => 'delete_record btn red c-btn', 'rel' => $new->id, 'title' => 'Delete Sub Category'));
                                         ?>
                                         </td>
                                     </tr>
@@ -82,7 +84,7 @@ event.preventDefault();
 var id = $(this).attr('rel');
   $.ajax({
             type: 'POST',
-            url: "<?php ADMIN_BASE_URL?>category/detail",
+            url: "<?php ADMIN_BASE_URL?>sub_category/detail",
             data: {'id': id},
             async: false,
             success: function(test_body) {
@@ -97,8 +99,8 @@ $(document).off('click', '.delete_record').on('click', '.delete_record', functio
     var id = $(this).attr('rel');
     e.preventDefault();
   swal({
-    title : "Are you sure to delete the selected category?",
-    text : "You will not be able to recover this category!",
+    title : "Are you sure to delete the selected sub_category?",
+    text : "You will not be able to recover this sub_category!",
     type : "warning",
     showCancelButton : true,
     confirmButtonColor : "#DD6B55",
@@ -108,14 +110,14 @@ $(document).off('click', '.delete_record').on('click', '.delete_record', functio
     function () {
            $.ajax({
                 type: 'POST',
-                url: "<?php echo ADMIN_BASE_URL?>category/delete",
+                url: "<?php echo ADMIN_BASE_URL?>sub_category/delete",
                 data: {'id': id},
                 async: false,
                 success: function() {
                 location.reload();
                 }
             });
-    swal("Deleted!", "category has been deleted.", "success");
+    swal("Deleted!", "sub_category has been deleted.", "success");
   });
 });
 
@@ -125,7 +127,7 @@ $(document).off("click",".action_publish").on("click",".action_publish", functio
     var status = $(this).attr('status');
      $.ajax({
         type: 'POST',
-        url: "<?= ADMIN_BASE_URL ?>category/change_status",
+        url: "<?= ADMIN_BASE_URL ?>sub_category/change_status",
         data: {'id': id, 'status': status},
         async: false,
         success: function(result) {
@@ -139,7 +141,7 @@ $(document).off("click",".action_publish").on("click",".action_publish", functio
                 $('#'+id).removeClass('green');
                 $('#'+id).find('i.fa-long-arrow-up').removeClass('fa-long-arrow-up').addClass('fa-long-arrow-down');
             }
-            $("#listing").load('<?php ADMIN_BASE_URL?>category/manage');
+            $("#listing").load('<?php ADMIN_BASE_URL?>sub_category/manage');
             toastr.success('Status Changed Successfully');
         }
     });

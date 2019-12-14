@@ -1,22 +1,23 @@
 <?php
 
-if ( ! defined('BASEPATH')) exit('No direct script access allowed');
-class Category extends MX_Controller
+if ( ! defined('BASEPATH')){
+    exit('No direct script access allowed');
+}
+
+class sub_category extends MX_Controller
 {
 
-function __construct() {
-parent::__construct();
-Modules::run('site_security/is_login');
-//Modules::run('site_security/has_permission');
-
-}
+    function __construct() {
+        parent::__construct();
+        Modules::run('site_security/is_login');
+    }
 
     function index() {
         $this->manage();
     }
 
     function manage() {
-        $data['news'] = $this->_get();
+        $data['news'] = $this->_get('sub_category.id desc');
         $data['view_file'] = 'news';
         $this->load->module('template');
         $this->template->admin($data);
@@ -31,6 +32,9 @@ Modules::run('site_security/is_login');
         } else {
             $data['news'] = $this->_get_data_from_post();
         }
+        $category = Modules::run('category/_get_by_arr_id_category',$org_id)->result_array();
+       
+        $data['category'] = $category;
         $data['update_id'] = $update_id;
         $data['view_file'] = 'newsform';
         $this->load->module('template');
@@ -38,43 +42,52 @@ Modules::run('site_security/is_login');
     }
 
     function _get_data_from_db($update_id) {
-        $where['category.id'] = $update_id;
+        $where['id'] = $update_id;
         $query = $this->_get_by_arr_id($where);
         foreach ($query->result() as
                 $row) {
             $data['id'] = $row->id;
             $data['name'] = $row->name;
             $data['description'] = $row->description;
+            $data['p_c_id'] = $row->p_c_id;
+            $data['p_c_name'] = $row->p_c_name;
             $data['status'] = $row->status;
             $data['org_id'] = $row->org_id;
         }
-        if(isset($data) && !empty($data)){
+        if(isset($data))
             return $data;
-        }
     }
-    
+
     function _get_data_from_post() {
+        $category = $this->input->post('category');
+        if(isset($category) && !empty($category)){
+            $catData = explode(",",$category);
+            $data['p_c_id'] = $catData[0];
+            $data['p_c_name'] = $catData[1];
+        }
         $data['name'] = $this->input->post('name');
         $data['description'] = $this->input->post('description');
+
         $user_data = $this->session->userdata('user_data');
         $data['org_id'] = $user_data['user_id'];
         return $data;
+
     }
 
     function submit() {
-        $update_id = $this->uri->segment(4);
-        $data = $this->_get_data_from_post();
-        $user_data = $this->session->userdata('user_data');
-        if ($update_id != 0) {
-            $id = $this->_update($update_id,$user_data['user_id'], $data);
-        }
-        else
-        {
-            $id = $this->_insert($data);
-        }
-        $this->session->set_flashdata('message', 'category'.' '.DATA_SAVED);			
-        $this->session->set_flashdata('status', 'success');
-        redirect(ADMIN_BASE_URL . 'category');
+            $update_id = $this->uri->segment(4);
+            $data = $this->_get_data_from_post();
+            $user_data = $this->session->userdata('user_data');
+            if ($update_id != 0) {
+                $id = $this->_update($update_id,$user_data['user_id'], $data);
+            }
+            else {
+                $test_id = $this->_insert($data);
+            }
+            $this->session->set_flashdata('message', 'sub_category'.' '.DATA_SAVED);
+            $this->session->set_flashdata('status', 'success');
+            
+            redirect(ADMIN_BASE_URL . 'sub_category');
     }
 
     function delete() {
@@ -89,7 +102,7 @@ Modules::run('site_security/is_login');
         $where['id'] = $update_id;
         $this->_set_publish($where);
         $this->session->set_flashdata('message', 'Post published successfully.');
-        redirect(ADMIN_BASE_URL . 'category/manage/' . '');
+        redirect(ADMIN_BASE_URL . 'sub_category/manage/' . '');
     }
 
     function set_unpublish() {
@@ -97,7 +110,7 @@ Modules::run('site_security/is_login');
         $where['id'] = $update_id;
         $this->_set_unpublish($where);
         $this->session->set_flashdata('message', 'Post un-published successfully.');
-        redirect(ADMIN_BASE_URL . 'category/manage/' . '');
+        redirect(ADMIN_BASE_URL . 'sub_category/manage/' . '');
     }
 
     function change_status() {
@@ -112,7 +125,6 @@ Modules::run('site_security/is_login');
         echo $status;
     }
 
-    /////////////// for detail ////////////
     function detail() {
         $update_id = $this->input->post('id');
         $data['user'] = $this->_get_data_from_db($update_id);
@@ -120,47 +132,48 @@ Modules::run('site_security/is_login');
     }
 
     function _set_publish($arr_col) {
-        $this->load->model('mdl_category');
-        $this->mdl_category->_set_publish($arr_col);
+        $this->load->model('mdl_sub_category');
+        $this->mdl_sub_category->_set_publish($arr_col);
     }
 
     function _set_unpublish($arr_col) {
-        $this->load->model('mdl_category');
-        $this->mdl_category->_set_unpublish($arr_col);
+        $this->load->model('mdl_sub_category');
+        $this->mdl_sub_category->_set_unpublish($arr_col);
     }
 
-    function _get() {
-        $this->load->model('mdl_category');
-        return $this->mdl_category->_get();
+    function _get($order_by) {
+        $this->load->model('mdl_sub_category');
+        $query = $this->mdl_sub_category->_get($order_by);
+        return $query;
     }
 
-    function _get_by_arr_id($arr_col) {
-        $this->load->model('mdl_category');
-        return $this->mdl_category->_get_by_arr_id($arr_col);
+    function _get_by_arr_id($where) {
+        $this->load->model('mdl_sub_category');
+        return $this->mdl_sub_category->_get_by_arr_id($where);
     }
 
-    function _insert($data) {
-        $this->load->model('mdl_category');
-        return $this->mdl_category->_insert($data);
+    function _insert($data){
+        $this->load->model('mdl_sub_category');
+        return $this->mdl_sub_category->_insert($data);
     }
 
     function _update($arr_col, $org_id, $data) {
-        $this->load->model('mdl_category');
-        $this->mdl_category->_update($arr_col, $org_id, $data);
+        $this->load->model('mdl_sub_category');
+        $this->mdl_sub_category->_update($arr_col, $org_id, $data);
     }
 
     function _update_id($id, $data) {
-        $this->load->model('mdl_category');
-        $this->mdl_category->_update_id($id, $data);
+        $this->load->model('mdl_sub_category');
+        $this->mdl_sub_category->_update_id($id, $data);
     }
 
     function _delete($arr_col, $org_id) {       
-        $this->load->model('mdl_category');
-        $this->mdl_category->_delete($arr_col, $org_id);
+        $this->load->model('mdl_sub_category');
+        $this->mdl_sub_category->_delete($arr_col, $org_id);
     }
 
-    function _get_by_arr_id_category($org_id){
-        $this->load->model('mdl_category');
-        return $this->mdl_category->_get_by_arr_id_category($org_id);
+    function _get_by_arr_id_sub_category($org_id){
+        $this->load->model('mdl_sub_category');
+        return $this->mdl_sub_category->_get_by_arr_id_sub_category($org_id);
     }
 }

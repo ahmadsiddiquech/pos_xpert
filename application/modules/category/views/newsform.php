@@ -79,25 +79,6 @@
                         </div>
                       </div>
                       </div>
-                      <div class="row">
-                        <div class="col-sm-5">
-                            <div class="form-group">
-                              <?php
-                                  $data = array(
-                                  'name' => 'carry_out',
-                                  'id' => 'carry_out',
-                                  'class' => 'form-control',
-                                  'type' => 'text',
-                                  'value' => $news['carry_out'],
-                                  'tabindex' => '3',
-                                  );
-                                  $attribute = array('class' => 'control-label col-md-4');
-                                  ?>
-                              <?php echo form_label('Carry Out', 'carry_out', $attribute); ?>
-                            <div class="col-md-8"> <?php echo form_input($data); ?></div>
-                          </div>
-                        </div>
-                      </div>
                 </div>
                 </div>
 

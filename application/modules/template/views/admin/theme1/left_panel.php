@@ -44,14 +44,44 @@
                 </a>
           </li>
          <?php } if($role_id != 1){ ?>
-          <li class="<?php if($curr_url == 'unit'){echo 'active';}    ?>">
-                <a href="<?php $controller='unit'; 
+          <li class="<?php if($curr_url == 'customer'){echo 'active';}    ?>">
+                <a href="<?php $controller='customer'; 
                    echo ADMIN_BASE_URL . $controller ?>">
                    <em class="fa fa-th-large"></em>
-                   <span>Unit</span>
+                   <span>Customer</span>
                 </a>
           </li>
-          <li class="<?php if($curr_url == 'category'){echo 'active';}    ?>">
+          <li class="<?php if($curr_url == 'supplier'){echo 'active';}    ?>">
+                <a href="<?php $controller='supplier'; 
+                   echo ADMIN_BASE_URL . $controller ?>">
+                   <em class="fa fa-th-large"></em>
+                   <span>Supplier</span>
+                </a>
+          </li>
+          <li>
+            <a href="#fee" data-toggle="collapse">
+                <em class="fa fa-files-o"></em>
+                <span>Categroy</span>
+                <i class="fa fa-caret-down"></i>
+            </a>
+            <ul id="fee" class="nav sidebar-subnav collapse" style="padding-left: 30px">
+                <li class="<?php if($curr_url == 'category'){echo 'active';}    ?>">
+                  <a href="<?php $controller='category';
+                    echo ADMIN_BASE_URL . $controller ?>">
+                    <em class="fa fa-file"></em>
+                    <span>Parent Category</span>
+                  </a>
+                </li>
+                <li class="<?php if($curr_url == 'sub_category'){echo 'active';}    ?>">
+                  <a href="<?php $controller='sub_category';
+                    echo ADMIN_BASE_URL . $controller ?>">
+                    <em class="fa fa-file-o"></em>
+                    <span>Sub Category</span>
+                  </a>
+                </li>
+            </ul>
+          </li>
+          <!-- <li class="<?php if($curr_url == 'category'){echo 'active';}    ?>">
                 <a href="<?php $controller='category'; 
                    echo ADMIN_BASE_URL . $controller ?>">
                    <em class="fa fa-delicious"></em>
@@ -103,7 +133,7 @@
                    <span>Expense</span>
                 </a>
           </li>
-          
+           -->
 
           <!-- <li class="<?php if($curr_url == 'subjects'){echo 'active';}    ?>">
                 <a href="<?php $controller='subjects'; 

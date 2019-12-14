@@ -3,7 +3,7 @@
 if ( ! defined('BASEPATH')) 
     exit('No direct script access allowed');
 
-class Unit extends MX_Controller
+class Supplier extends MX_Controller
 {
 
     function __construct() {
@@ -37,13 +37,16 @@ class Unit extends MX_Controller
     
 
     function _get_data_from_db($update_id) {
-        $where['unit.id'] = $update_id;
+        $where['supplier.id'] = $update_id;
         $query = $this->_get_by_arr_id($where);
         foreach ($query->result() as
                 $row) {
             $data['id'] = $row->id;
             $data['name'] = $row->name;
-            $data['date'] = $row->date;
+            $data['city'] = $row->city;
+            $data['comments'] = $row->comments;
+            $data['company_name'] = $row->company_name;
+            $data['phone'] = $row->phone;
             $data['status'] = $row->status;
             $data['org_id'] = $row->org_id;
         }
@@ -53,7 +56,10 @@ class Unit extends MX_Controller
     
     function _get_data_from_post() {
         $data['name'] = $this->input->post('name');
-        $data['date'] = date('Y-m-d');
+        $data['city'] = $this->input->post('city');
+        $data['phone'] = $this->input->post('phone');
+        $data['company_name'] = $this->input->post('company_name');
+        $data['comments'] = $this->input->post('comments');
         $user_data = $this->session->userdata('user_data');
         $data['org_id'] = $user_data['user_id'];
         return $data;
@@ -72,10 +78,10 @@ class Unit extends MX_Controller
         {
             $id = $this->_insert($data);
         }
-            $this->session->set_flashdata('message', 'unit'.' '.DATA_SAVED);										
+            $this->session->set_flashdata('message', 'supplier'.' '.DATA_SAVED);										
 	        $this->session->set_flashdata('status', 'success');
         
-        redirect(ADMIN_BASE_URL . 'unit');
+        redirect(ADMIN_BASE_URL . 'supplier');
     }
 
     function delete() {
@@ -89,7 +95,7 @@ class Unit extends MX_Controller
         $update_id = $this->uri->segment(4);
         $where['id'] = $update_id;
         $this->_set_publish($where);
-        $this->session->set_flashdata('message', 'Unit published successfully.');
+        $this->session->set_flashdata('message', 'supplier published successfully.');
         redirect(ADMIN_BASE_URL . 'program/manage/' . '');
     }
 
@@ -97,7 +103,7 @@ class Unit extends MX_Controller
         $update_id = $this->uri->segment(4);
         $where['id'] = $update_id;
         $this->_set_unpublish($where);
-        $this->session->set_flashdata('message', 'Unit un-published successfully.');
+        $this->session->set_flashdata('message', 'supplier un-published successfully.');
         redirect(ADMIN_BASE_URL . 'program/manage/' . '');
     }
 
@@ -124,48 +130,48 @@ class Unit extends MX_Controller
 ///////////////////////////     HELPER FUNCTIONS    ////////////////////
 
     function _set_publish($arr_col) {
-        $this->load->model('mdl_unit');
-        $this->mdl_unit->_set_publish($arr_col);
+        $this->load->model('mdl_supplier');
+        $this->mdl_supplier->_set_publish($arr_col);
     }
 
     function _set_unpublish($arr_col) {
-        $this->load->model('mdl_unit');
-        $this->mdl_unit->_set_unpublish($arr_col);
+        $this->load->model('mdl_supplier');
+        $this->mdl_supplier->_set_unpublish($arr_col);
     }
 
     function _get($order_by) {
-        $this->load->model('mdl_unit');
-        $query = $this->mdl_unit->_get($order_by);
+        $this->load->model('mdl_supplier');
+        $query = $this->mdl_supplier->_get($order_by);
         return $query;
     }
 
     function _get_by_arr_id($arr_col) {
-        $this->load->model('mdl_unit');
-        return $this->mdl_unit->_get_by_arr_id($arr_col);
+        $this->load->model('mdl_supplier');
+        return $this->mdl_supplier->_get_by_arr_id($arr_col);
     }
 
     function _insert($data) {
-        $this->load->model('mdl_unit');
-        return $this->mdl_unit->_insert($data);
+        $this->load->model('mdl_supplier');
+        return $this->mdl_supplier->_insert($data);
     }
 
     function _update($arr_col, $org_id, $data) {
-        $this->load->model('mdl_unit');
-        $this->mdl_unit->_update($arr_col, $org_id, $data);
+        $this->load->model('mdl_supplier');
+        $this->mdl_supplier->_update($arr_col, $org_id, $data);
     }
 
     function _update_id($id, $data) {
-        $this->load->model('mdl_unit');
-        $this->mdl_unit->_update_id($id, $data);
+        $this->load->model('mdl_supplier');
+        $this->mdl_supplier->_update_id($id, $data);
     }
 
     function _delete($arr_col, $org_id) {       
-        $this->load->model('mdl_unit');
-        $this->mdl_unit->_delete($arr_col, $org_id);
+        $this->load->model('mdl_supplier');
+        $this->mdl_supplier->_delete($arr_col, $org_id);
     }
 
-    function _get_by_arr_id_unit($org_id){
-        $this->load->model('mdl_unit');
-        return $this->mdl_unit->_get_by_arr_id_unit($org_id);
+    function _get_by_arr_id_supplier($org_id){
+        $this->load->model('mdl_supplier');
+        return $this->mdl_supplier->_get_by_arr_id_supplier($org_id);
     }
 }

@@ -3,14 +3,14 @@
 if (!defined('BASEPATH'))
     exit('No direct script access allowed');
 
-class Mdl_unit extends CI_Model {
+class Mdl_supplier extends CI_Model {
 
     function __construct() {
         parent::__construct();
     }
 
     function get_table() {
-        $table = "unit";
+        $table = "supplier";
         return $table;
     }
 
@@ -23,7 +23,7 @@ class Mdl_unit extends CI_Model {
         return $this->db->get($table);
     }
 
-    function _get_by_arr_id_unit($org_id) {
+    function _get_by_arr_id_supplier($org_id) {
         $table = $this->get_table();
         $this->db->where('status','1');
         $this->db->where('org_id',$org_id);
