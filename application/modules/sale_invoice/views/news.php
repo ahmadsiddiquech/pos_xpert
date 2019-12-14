@@ -1,6 +1,6 @@
 <!-- Page content-->
 <div class="content-wrapper">
-    <h3>Invoice<a href="invoice/create"><button type="button" class="btn btn-primary btn-lg pull-right"><i class="fa fa-plus"></i>&nbsp;&nbsp;&nbsp;<b>Add Invoice</b></button></a></h3>
+    <h3>Sale Invoice<a href="sale_invoice/create"><button type="button" class="btn btn-primary btn-lg pull-right"><i class="fa fa-plus"></i>&nbsp;&nbsp;&nbsp;<b>Add Sale Invoice</b></button></a></h3>
     <div class="container-fluid">
         <!-- START DATATABLE 1 -->
         <div class="row">
@@ -11,12 +11,10 @@
                         <thead class="bg-th">
                         <tr class="bg-col">
                         <th class="sr">S.No</th>
-                        <th>Invoice Id</th>
-                        <th>Ref. Id</th>
-                        <th>Pateint Name</th>
-                        <th>Delivery Date</th>
-                        <th>Test Info</th>
-                        <th>Net Amount</th>
+                        <th>Sale Invoice Id</th>
+                        <th>Customer Name</th>
+                        <th>Date</th>
+                        <th>Grand Total</th>
                         <th>Actions</th>
                         </tr>
                         </thead>
@@ -27,28 +25,26 @@
                                     foreach ($news->result() as
                                             $new) {
                                         $i++;
-                                        $print_url = ADMIN_BASE_URL . 'invoice/print_invoice/' . $new->id ;
-                                        $edit_url = ADMIN_BASE_URL . 'invoice/report/' . $new->id ;
-                                        $delete_url = ADMIN_BASE_URL . 'invoice/delete/' . $new->id;
+                                        $print_url = ADMIN_BASE_URL . 'sale_invoice/print_sale_invoice/' . $new->id ;
+                                        $edit_url = ADMIN_BASE_URL . 'sale_invoice/create/' . $new->id ;
+                                        $delete_url = ADMIN_BASE_URL . 'sale_invoice/delete/' . $new->id;
                                         ?>
                                         <tr id="Row_<?=$new->id?>" class="odd gradeX " >
                                         <td width='2%'><?php echo $i;?></td>
                                         <td><?php echo $new->id  ?></td>
-                                        <td><?php echo $new->p_id ?></td>
-                                        <td><?php echo $new->name ?></td>
-                                        <td><?php echo $new->delivery_date ?></td>
-                                        <td><?php echo $new->test_name.' - '.$new->category_name ?></td>
-                                        <td><?php echo $new->net_amount ?></td>
+                                        <td><?php echo $new->customer_name ?></td>
+                                        <td><?php echo $new->date ?></td>
+                                        <td><?php echo $new->grand_total ?></td>
                                         
                                         <td class="table_action">
                                         <a class="btn yellow c-btn view_details" rel="<?=$new->id?>"><i class="fa fa-list"  title="See Detail"></i></a>
                                         <?php
 
-                                        echo anchor($print_url, '<i class="fa fa-print"></i>', array('class' => 'action_edit btn blue c-btn','title' => 'Print Invoice'));
+                                        echo anchor($print_url, '<i class="fa fa-print"></i>', array('class' => 'action_edit btn blue c-btn','title' => 'Print Sale Invoice'));
 
-                                        echo anchor($edit_url, '<i class="fa fa-mail-forward"></i>', array('class' => 'action_edit btn blue c-btn','title' => 'Enter Result'));
+                                        echo anchor($edit_url, '<i class="fa fa-pencil"></i>', array('class' => 'action_edit btn blue c-btn','title' => 'Edit Sale Invoice'));
 
-                                        echo anchor('"javascript:;"', '<i class="fa fa-times"></i>', array('class' => 'delete_record btn red c-btn', 'rel' => $new->id, 'title' => 'Delete invoice'));
+                                        echo anchor('"javascript:;"', '<i class="fa fa-times"></i>', array('class' => 'delete_record btn red c-btn', 'rel' => $new->id, 'title' => 'Delete Sale Invoice'));
                                         ?>
                                         </td>
                                     </tr>
@@ -73,7 +69,7 @@ $(document).ready(function(){
     var id = $(this).attr('rel');
       $.ajax({
             type: 'POST',
-            url: "<?php echo ADMIN_BASE_URL?>invoice/detail",
+            url: "<?php echo ADMIN_BASE_URL?>sale_invoice/detail",
             data: {'id': id},
             async: false,
             success: function(exam_body) {
@@ -88,8 +84,8 @@ $(document).ready(function(){
         var id = $(this).attr('rel');
         e.preventDefault();
       swal({
-        title : "Are you sure to delete the selected invoice?",
-        text : "You will not be able to recover this invoice!",
+        title : "Are you sure to delete the selected sale_invoice?",
+        text : "You will not be able to recover this sale_invoice!",
         type : "warning",
         showCancelButton : true,
         confirmButtonColor : "#DD6B55",
@@ -100,14 +96,14 @@ $(document).ready(function(){
             
                $.ajax({
                     type: 'POST',
-                    url: "<?php echo ADMIN_BASE_URL?>invoice/delete",
+                    url: "<?php echo ADMIN_BASE_URL?>sale_invoice/delete",
                     data: {'id': id},
                     async: false,
                     success: function() {
                     location.reload();
                     }
                 });
-        swal("Deleted!", "invoice has been deleted.", "success");
+        swal("Deleted!", "sale_invoice has been deleted.", "success");
       });
 
     });

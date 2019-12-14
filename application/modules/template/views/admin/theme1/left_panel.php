@@ -59,12 +59,12 @@
                 </a>
           </li>
           <li>
-            <a href="#fee" data-toggle="collapse">
+            <a href="#category" data-toggle="collapse">
                 <em class="fa fa-files-o"></em>
                 <span>Categroy</span>
                 <i class="fa fa-caret-down"></i>
             </a>
-            <ul id="fee" class="nav sidebar-subnav collapse" style="padding-left: 30px">
+            <ul id="category" class="nav sidebar-subnav collapse" style="padding-left: 30px">
                 <li class="<?php if($curr_url == 'category'){echo 'active';}    ?>">
                   <a href="<?php $controller='category';
                     echo ADMIN_BASE_URL . $controller ?>">
@@ -77,6 +77,36 @@
                     echo ADMIN_BASE_URL . $controller ?>">
                     <em class="fa fa-file-o"></em>
                     <span>Sub Category</span>
+                  </a>
+                </li>
+            </ul>
+          </li>
+          <li class="<?php if($curr_url == 'product'){echo 'active';}    ?>">
+                <a href="<?php $controller='product'; 
+                   echo ADMIN_BASE_URL . $controller ?>">
+                   <em class="fa fa-th-large"></em>
+                   <span>Product</span>
+                </a>
+          </li>
+          <li>
+            <a href="#sale_invoice" data-toggle="collapse">
+                <em class="fa fa-files-o"></em>
+                <span>Sale Invoice</span>
+                <i class="fa fa-caret-down"></i>
+            </a>
+            <ul id="sale_invoice" class="nav sidebar-subnav collapse" style="padding-left: 30px">
+                <li class="<?php if($curr_url == 'sale_invoice'){echo 'active';}    ?>">
+                  <a href="<?php $controller='sale_invoice';
+                    echo ADMIN_BASE_URL . $controller ?>">
+                    <em class="fa fa-file"></em>
+                    <span>New Invoice</span>
+                  </a>
+                </li>
+                <li class="<?php if($curr_url == 'sale_invoice/manage'){echo 'active';}    ?>">
+                  <a href="<?php $controller='sale_invoice/manage';
+                    echo ADMIN_BASE_URL . $controller ?>">
+                    <em class="fa fa-file-o"></em>
+                    <span>View Report</span>
                   </a>
                 </li>
             </ul>
