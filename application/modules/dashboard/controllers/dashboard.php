@@ -18,26 +18,26 @@ function index(){
         $ci->load->library('session');
         $user_data = $ci->session->userdata('user_data');
         $data['organization'] = $user_data['user_name'];
-        $data['program'] = $this->get_total_program();
-        $data['student'] = $this->get_total_student();
+        $data['invoice'] = $this->get_total_invoice();
+        $data['supplier'] = $this->get_total_supplier();
         $data['announcement'] = $this->get_announcement();
-        $data['teacher'] = $this->get_total_teacher_parent('Teacher');
-        $data['parent'] = $this->get_total_teacher_parent('Parent');
+        $data['customer'] = $this->get_total_customer();
+        $data['product'] = $this->get_total_product();
         $data['income'] = $this->get_income();
         $data['expense'] = $this->get_expense();
         $this->template->admin($data);
     }
 
-    function get_total_program(){
+    function get_total_invoice(){
         $user_data = $this->session->userdata('user_data');
         $org_id = $user_data['user_id'];
-        return $this->_get_total_program($org_id)->num_rows();
+        return $this->_get_total_invoice($org_id)->num_rows();
     }
 
-    function get_total_student(){
+    function get_total_supplier(){
     	$user_data = $this->session->userdata('user_data');
         $org_id = $user_data['user_id'];
-        return $this->_get_total_student($org_id)->num_rows();
+        return $this->_get_total_supplier($org_id)->num_rows();
     }
 
     function get_announcement(){
@@ -46,10 +46,16 @@ function index(){
         return  $this->_get_announcement($org_id)->result_array();
     }
 
-    function get_total_teacher_parent($designation){
+    function get_total_customer(){
     	$user_data = $this->session->userdata('user_data');
         $org_id = $user_data['user_id'];
-        return $this->_get_total_teacher_parent($org_id,$designation)->num_rows();
+        return $this->_get_total_customer($org_id)->num_rows();
+    }
+
+    function get_total_product(){
+        $user_data = $this->session->userdata('user_data');
+        $org_id = $user_data['user_id'];
+        return $this->_get_total_product($org_id)->num_rows();
     }
 
     function get_income(){
@@ -117,14 +123,14 @@ function index(){
         return $this->mdl_dash->_get_expense($startDate,$endDate,$org_id);
     }
     
-    function _get_total_student($org_id){
+    function _get_total_customer($org_id){
     	$this->load->model('mdl_dash');
-    	return $this->mdl_dash->_get_total_student($org_id);
+    	return $this->mdl_dash->_get_total_customer($org_id);
     }
 
-    function _get_total_program($org_id){
+    function _get_total_supplier($org_id){
         $this->load->model('mdl_dash');
-        return $this->mdl_dash->_get_total_program($org_id);
+        return $this->mdl_dash->_get_total_supplier($org_id);
     }
 
     function _get_announcement($org_id){
@@ -132,9 +138,14 @@ function index(){
     	return $this->mdl_dash->_get_announcement($org_id);
     }
 
-    function _get_total_teacher_parent($org_id,$designation){
+    function _get_total_invoice($org_id){
     	$this->load->model('mdl_dash');
-    	return $this->mdl_dash->_get_total_teacher_parent($org_id,$designation);
+    	return $this->mdl_dash->_get_total_invoice($org_id);
+    }
+
+    function _get_total_product($org_id){
+        $this->load->model('mdl_dash');
+        return $this->mdl_dash->_get_total_product($org_id);
     }
 
 }

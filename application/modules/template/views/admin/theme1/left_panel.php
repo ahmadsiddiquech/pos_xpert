@@ -111,6 +111,29 @@
                 </li>
             </ul>
           </li>
+          <li>
+            <a href="#purchase_invoice" data-toggle="collapse">
+                <em class="fa fa-files-o"></em>
+                <span>Purchase Invoice</span>
+                <i class="fa fa-caret-down"></i>
+            </a>
+            <ul id="purchase_invoice" class="nav sidebar-subnav collapse" style="padding-left: 30px">
+                <li class="<?php if($curr_url == 'purchase_invoice'){echo 'active';}    ?>">
+                  <a href="<?php $controller='purchase_invoice';
+                    echo ADMIN_BASE_URL . $controller ?>">
+                    <em class="fa fa-file"></em>
+                    <span>New Invoice</span>
+                  </a>
+                </li>
+                <li class="<?php if($curr_url == 'purchase_invoice/manage'){echo 'active';}    ?>">
+                  <a href="<?php $controller='purchase_invoice/manage';
+                    echo ADMIN_BASE_URL . $controller ?>">
+                    <em class="fa fa-file-o"></em>
+                    <span>View Report</span>
+                  </a>
+                </li>
+            </ul>
+          </li>
           <!-- <li class="<?php if($curr_url == 'category'){echo 'active';}    ?>">
                 <a href="<?php $controller='category'; 
                    echo ADMIN_BASE_URL . $controller ?>">

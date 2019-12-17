@@ -19,12 +19,12 @@
       <h3>
         <?php 
         if (empty($update_id)) 
-                    $strTitle = 'Add sale invoice';
+                    $strTitle = 'Add Purchase invoice';
                 else 
-                    $strTitle = 'Edit sale invoice';
+                    $strTitle = 'Edit Purchase invoice';
                     echo $strTitle;
                     ?>
-                    <a href="<?php echo ADMIN_BASE_URL . 'sale_invoice/manage'; ?>"><button type="button" class="btn btn-lg btn-primary pull-right"><i class="fa fa-chevron-left"></i>&nbsp;&nbsp;&nbsp;<b>View Sale Invoice</b></button></a>
+                    <a href="<?php echo ADMIN_BASE_URL . 'purchase_invoice/manage'; ?>"><button type="button" class="btn btn-lg btn-primary pull-right"><i class="fa fa-chevron-left"></i>&nbsp;&nbsp;&nbsp;<b>View Purchase Invoice</b></button></a>
        </h3>             
             
     </div>
@@ -48,9 +48,9 @@
                             
                         }
                         if (isset($hidden) && !empty($hidden))
-                            echo form_open_multipart(ADMIN_BASE_URL . 'sale_invoice/submit/' . $update_id, $attributes, $hidden);
+                            echo form_open_multipart(ADMIN_BASE_URL . 'purchase_invoice/submit/' . $update_id, $attributes, $hidden);
                         else
-                            echo form_open_multipart(ADMIN_BASE_URL . 'sale_invoice/submit/' . $update_id, $attributes);
+                            echo form_open_multipart(ADMIN_BASE_URL . 'purchase_invoice/submit/' . $update_id, $attributes);
                         ?>
                   <div class="form-body">
 
@@ -76,17 +76,36 @@
                       <div class="col-sm-5">
                           <div class="form-group">
                             <div class="control-label col-md-4">
-                              <label>Customer Name</label>
+                              <label>Supplier Name</label>
                             </div>
                             <div class="col-md-8">
-                              <select name="customer" id="customer" class="chosen form-control" tabindex="2">
-                              <?php if(isset($customer) && !empty($customer))
-                              foreach ($customer as $key => $value):?>
-                                <option <?php if(isset($news['customer_id']) && $news['customer_id'] == $value['id']) echo "selected"; ?> value="<?php echo $value['id'].','.$value['name'] ?>"><?=$value['name'];?></option>
+                              <select name="supplier" id="supplier" class="chosen form-control" required="required" tabindex="2">
+                              <?php if(isset($supplier) && !empty($supplier))
+                              foreach ($supplier as $key => $value):?>
+                                <option <?php if(isset($news['supplier_id']) && $news['supplier_id'] == $value['id']) echo "selected"; ?> value="<?php echo $value['id'].','.$value['name'] ?>"><?=$value['name'];?></option>
                               <?php endforeach; ?>
                             </select>
                             </div>
                           </div>
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="col-sm-5">
+                        <div class="form-group">
+                          <?php
+                              $data = array(
+                              'name' => 'ref_no',
+                              'id' => 'ref_no',
+                              'class' => 'form-control',
+                              'type' => 'ref_no',
+                              'tabindex' => '3',
+                              'data-parsley-maxlength'=>TEXT_BOX_RANGE
+                              );
+                              $attribute = array('class' => 'control-label col-md-4');
+                              ?>
+                          <?php echo form_label('Reference No', 'ref_no', $attribute); ?>
+                          <div class="col-md-8"> <?php echo form_input($data); ?></div>
+                        </div>
                       </div>
                     </div>
                     <hr>
@@ -103,7 +122,7 @@
                               <label>Product</label>
                             </div>
                             <div class="col-md-8">
-                              <select name="product" id="product" class="chosen form-control product" tabindex="3">
+                              <select name="product" id="product" class="chosen form-control product" tabindex="4">
                                 <option value=""></option>
                               <?php if(isset($product) && !empty($product))
                               foreach ($product as $key => $value):?>
@@ -120,7 +139,7 @@
                         </div>
                         </div>
                       </div>
-                    <button class="btn btn-primary add_product btn-lg" tabindex="4" style="border-radius: 7px !important;padding-left: 30px;padding-right: 30px;font-size: 20px;">Add</button>
+                    <button class="btn btn-primary add_product btn-lg" tabindex="5" style="border-radius: 7px !important;padding-left: 30px;padding-right: 30px;font-size: 20px;">Add</button>
                     </div>
                     <div class="row" style="padding-top: 20px;">
                       <div class="col-md-1">
@@ -156,7 +175,7 @@
                             <h4 style="text-align: right;">Discount</h4>
                           </div>
                           <div class="col-md-6">
-                            <input type="number" name="discount" id="discount" class="form-control" value="0" style="text-align: center;" tabindex="5">
+                            <input type="number" name="discount" id="discount" class="form-control" value="0" style="text-align: center;" tabindex="6">
                           </div>
                         </div>
                         <div class="row">
@@ -172,7 +191,7 @@
                             <h4 style="text-align: right;">Cash Received</h4>
                           </div>
                           <div class="col-md-6">
-                            <input type="number" name="paid_amount" id="paid_amount" class="form-control" value="0" style="text-align: center;" tabindex="6">
+                            <input type="number" name="paid_amount" id="paid_amount" class="form-control" value="0" style="text-align: center;" tabindex="7">
                           </div>
                         </div>
                         <div class="row">
@@ -195,12 +214,12 @@
                     <div class="col-md-12">
                       <div class="col-md-offset-2 col-md-9" style="padding-bottom:15px;padding-top:15px;">
                        <span style="margin-left:40px"></span>
-                       <button type="submit" id="button1" class="btn btn-success btn-lg" tabindex="7" style="margin-left:20px; border-radius: 7px !important; padding: 20px;font-size: 20px;"><i class="fa fa-print"></i>&nbsp;Save & Print</button>
-                       <a href="<?php echo ADMIN_BASE_URL . 'sale_invoice/create'; ?>">
-                        <button type="button" class="btn btn-info btn-lg" style="margin-left:20px; border-radius: 7px !important; padding: 20px;font-size: 20px;" tabindex="8"><i class="fa fa-file"></i>&nbsp;New</button>
+                       <button type="submit" id="button1" class="btn btn-success btn-lg" tabindex="8" style="margin-left:20px; border-radius: 7px !important; padding: 20px;font-size: 20px;"><i class="fa fa-print"></i>&nbsp;Save & Print</button>
+                       <a href="<?php echo ADMIN_BASE_URL . 'purchase_invoice/create'; ?>">
+                        <button type="button" class="btn btn-info btn-lg" style="margin-left:20px; border-radius: 7px !important; padding: 20px;font-size: 20px;" tabindex="9"><i class="fa fa-file"></i>&nbsp;New</button>
                         </a>
-                        <a href="<?php echo ADMIN_BASE_URL . 'sale_invoice'; ?>">
-                        <button type="button" class="btn btn-danger btn-lg" style="margin-left:20px;border-radius: 7px !important;padding: 20px;font-size: 20px;" tabindex="9"><i class="fa fa-undo"></i>&nbsp;Cancel</button>
+                        <a href="<?php echo ADMIN_BASE_URL . 'purchase_invoice'; ?>">
+                        <button type="button" class="btn btn-danger btn-lg" style="margin-left:20px;border-radius: 7px !important;padding: 20px;font-size: 20px;" tabindex="10"><i class="fa fa-undo"></i>&nbsp;Cancel</button>
                         </a>
                       </div>
                     </div>
@@ -233,7 +252,7 @@ var qty = $('input[name=qty]').val();
 var total_pay = $('input[name=total_pay]').val();
     $.ajax({
                 type: 'POST',
-                url: "<?php echo ADMIN_BASE_URL?>sale_invoice/add_product",
+                url: "<?php echo ADMIN_BASE_URL?>purchase_invoice/add_product",
                 data: {'product': product ,'total_pay' :total_pay , 'qty':qty},
                 dataType: 'json',
                 async: false,
