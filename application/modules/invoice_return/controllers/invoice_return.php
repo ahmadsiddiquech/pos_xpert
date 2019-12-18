@@ -107,17 +107,9 @@ class purchase_invoice extends MX_Controller
         }
         else {
             $purchase_invoice_id = $this->_insert_purchase_invoice($data);
-            $where['id'] = $data['supplier_id'];
-            $supplier = Modules::run('supplier/_get_by_arr_id',$where)->result_array();
             if ($data['status'] == 'Un-Paid') {
-                $data2['remaining'] = $supplier[0]['remaining'] + $data['grand_total'];
-                $data2['total'] = $supplier[0]['total'] + $data['grand_total'];
+                $this->_update_supplier_amount($data['supplier_id'],$data['grand_total'],$org_id);
             }
-            elseif ($data['status'] == 'Paid'){
-                $data2['paid'] = $supplier[0]['paid'] + $data['grand_total'];
-                $data2['total'] = $supplier[0]['total'] + $data['grand_total'];
-            }
-            $this->_update_supplier_amount($data['supplier_id'],$data2,$org_id);
             $product_invoice = $this->insert_product($purchase_invoice_id,$org_id);
             $this->print_invoice_on_save($purchase_invoice_id,$org_id);
         }

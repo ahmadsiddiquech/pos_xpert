@@ -89,6 +89,30 @@
                           </div>
                       </div>
                     </div>
+                    <div class="row">
+                       <div class="col-sm-5">
+                        <div class="form-group">
+                          <?php
+                                        $data = array(
+                                        'name' => 'status',
+                                        'id' => 'status',
+                                        'class' => 'form-control',
+                                        'type' => 'text',
+                                        'tabindex' => '3',
+                                        'value' => $news['status'],
+                                        );
+                                        $attribute = array('class' => 'control-label col-md-4');
+                                        ?>
+                          <?php echo form_label('Status<span style="color:red">*</span>', 'status', $attribute); ?>
+                          <div class="col-md-8"> 
+                            <select name="status" required="required" class="form-control" tabindex="4">
+                              <option value="Paid" <?php if($news['status']=='Paid') echo "selected"; ?>>Paid</option>
+                              <option value="Un-Paid" <?php if($news['status']=='Un-Paid') echo "selected"; ?>>Un-Paid</option>
+                            </select>
+                      </div>
+                        </div>
+                      </div>
+                    </div>
                     <hr>
 
                     <div class="row">
@@ -103,7 +127,7 @@
                               <label>Product</label>
                             </div>
                             <div class="col-md-8">
-                              <select name="product" id="product" class="chosen form-control product" tabindex="3">
+                              <select name="product" id="product" class="chosen form-control product" tabindex="5">
                                 <option value=""></option>
                               <?php if(isset($product) && !empty($product))
                               foreach ($product as $key => $value):?>
@@ -120,7 +144,7 @@
                         </div>
                         </div>
                       </div>
-                    <button class="btn btn-primary add_product btn-lg" tabindex="4" style="border-radius: 7px !important;padding-left: 30px;padding-right: 30px;font-size: 20px;">Add</button>
+                    <button class="btn btn-primary add_product btn-lg" tabindex="6" style="border-radius: 7px !important;padding-left: 30px;padding-right: 30px;font-size: 20px;">Add</button>
                     </div>
                     <div class="row" style="padding-top: 20px;">
                       <div class="col-md-1">
@@ -156,7 +180,7 @@
                             <h4 style="text-align: right;">Discount</h4>
                           </div>
                           <div class="col-md-6">
-                            <input type="number" name="discount" id="discount" class="form-control" value="0" style="text-align: center;" tabindex="5">
+                            <input type="number" name="discount" id="discount" class="form-control" value="0" style="text-align: center;" tabindex="7">
                           </div>
                         </div>
                         <div class="row">
@@ -172,7 +196,7 @@
                             <h4 style="text-align: right;">Cash Received</h4>
                           </div>
                           <div class="col-md-6">
-                            <input type="number" name="paid_amount" id="paid_amount" class="form-control" value="0" style="text-align: center;" tabindex="6">
+                            <input type="number" name="paid_amount" id="paid_amount" class="form-control" value="0" style="text-align: center;" tabindex="8">
                           </div>
                         </div>
                         <div class="row">
@@ -195,12 +219,12 @@
                     <div class="col-md-12">
                       <div class="col-md-offset-2 col-md-9" style="padding-bottom:15px;padding-top:15px;">
                        <span style="margin-left:40px"></span>
-                       <button type="submit" id="button1" class="btn btn-success btn-lg" tabindex="7" style="margin-left:20px; border-radius: 7px !important; padding: 20px;font-size: 20px;"><i class="fa fa-print"></i>&nbsp;Save & Print</button>
+                       <button type="submit" id="button1" class="btn btn-success btn-lg" tabindex="9" style="margin-left:20px; border-radius: 7px !important; padding: 20px;font-size: 20px;"><i class="fa fa-print"></i>&nbsp;Save & Print</button>
                        <a href="<?php echo ADMIN_BASE_URL . 'sale_invoice/create'; ?>">
-                        <button type="button" class="btn btn-info btn-lg" style="margin-left:20px; border-radius: 7px !important; padding: 20px;font-size: 20px;" tabindex="8"><i class="fa fa-file"></i>&nbsp;New</button>
+                        <button type="button" class="btn btn-info btn-lg" style="margin-left:20px; border-radius: 7px !important; padding: 20px;font-size: 20px;" tabindex="10"><i class="fa fa-file"></i>&nbsp;New</button>
                         </a>
                         <a href="<?php echo ADMIN_BASE_URL . 'sale_invoice'; ?>">
-                        <button type="button" class="btn btn-danger btn-lg" style="margin-left:20px;border-radius: 7px !important;padding: 20px;font-size: 20px;" tabindex="9"><i class="fa fa-undo"></i>&nbsp;Cancel</button>
+                        <button type="button" class="btn btn-danger btn-lg" style="margin-left:20px;border-radius: 7px !important;padding: 20px;font-size: 20px;" tabindex="11"><i class="fa fa-undo"></i>&nbsp;Cancel</button>
                         </a>
                       </div>
                     </div>

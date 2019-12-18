@@ -34,6 +34,61 @@ class Supplier extends MX_Controller
         $this->load->module('template');
         $this->template->admin($data);
     }
+
+    function invoice_list() {
+        $supplier_id = $this->uri->segment(4);
+        if (is_numeric($supplier_id) && $supplier_id != 0) {
+            $data['news'] = $this->_get_invoice_list($supplier_id);
+        }
+        $data['view_file'] = 'invoice_list';
+        $this->load->module('template');
+        $this->template->admin($data);
+    }
+
+    function transaction() {
+        $supplier_id = $this->uri->segment(4);
+        $where['id'] = $supplier_id;
+        if (is_numeric($supplier_id) && $supplier_id != 0) {
+            $data['news'] = $this->_get_by_arr_id($where)->result_array();
+        }
+        $data['view_file'] = 'transaction';
+        $this->load->module('template');
+        $this->template->admin($data);
+    }
+
+    function transaction_list() {
+        $supplier_id = $this->uri->segment(4);
+        if (is_numeric($supplier_id) && $supplier_id != 0) {
+            $data['news'] = $this->_get_transaction_list($supplier_id);
+        }
+        $data['view_file'] = 'transaction_list';
+        $this->load->module('template');
+        $this->template->admin($data);
+    }
+
+    function submit_transaction() {
+        $data['depositer_id'] = $this->input->post('id');
+        $data['depositer_name'] = $this->input->post('name');
+        $data['depositer_type'] = 'supplier';
+        $data['total'] = $this->input->post('total');
+        $data['paid'] = $this->input->post('paid');
+        $data['remaining'] = $this->input->post('remaining');
+        $data['transaction_amount'] = $this->input->post('transaction_amount');
+        $data['date'] = date('Y-m-d');
+        $user_data = $this->session->userdata('user_data');
+        $data['org_id'] = $user_data['user_id'];
+
+        $this->_insert_transaction($data);
+
+        $data2['paid'] = $data['paid'] + $data['transaction_amount'];
+        $data2['remaining'] = $data['remaining'] - $data['transaction_amount'];
+        Modules::run('purchase_invoice/_update_supplier_amount',$data['depositer_id'],$data2,$data['org_id']);
+
+        $this->session->set_flashdata('message', 'supplier'.' '.DATA_SAVED);                                        
+        $this->session->set_flashdata('status', 'success');
+        
+        redirect(ADMIN_BASE_URL . 'supplier');
+    }
     
 
     function _get_data_from_db($update_id) {
@@ -47,6 +102,9 @@ class Supplier extends MX_Controller
             $data['comments'] = $row->comments;
             $data['company_name'] = $row->company_name;
             $data['phone'] = $row->phone;
+            $data['total'] = $row->total;
+            $data['paid'] = $row->paid;
+            $data['remaining'] = $row->remaining;
             $data['status'] = $row->status;
             $data['org_id'] = $row->org_id;
         }
@@ -155,6 +213,11 @@ class Supplier extends MX_Controller
         return $this->mdl_supplier->_insert($data);
     }
 
+    function _insert_transaction($data) {
+        $this->load->model('mdl_supplier');
+        return $this->mdl_supplier->_insert_transaction($data);
+    }
+
     function _update($arr_col, $org_id, $data) {
         $this->load->model('mdl_supplier');
         $this->mdl_supplier->_update($arr_col, $org_id, $data);
@@ -173,5 +236,15 @@ class Supplier extends MX_Controller
     function _get_by_arr_id_supplier($org_id){
         $this->load->model('mdl_supplier');
         return $this->mdl_supplier->_get_by_arr_id_supplier($org_id);
+    }
+
+    function _get_invoice_list($supplier_id) {
+        $this->load->model('mdl_supplier');
+        return $this->mdl_supplier->_get_invoice_list($supplier_id);
+    }
+
+    function _get_transaction_list($supplier_id) {
+        $this->load->model('mdl_supplier');
+        return $this->mdl_supplier->_get_transaction_list($supplier_id);
     }
 }

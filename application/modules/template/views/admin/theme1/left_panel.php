@@ -134,6 +134,20 @@
                 </li>
             </ul>
           </li>
+          <!-- <li class="<?php if($curr_url == 'invoice_return'){echo 'active';}    ?>">
+                <a href="<?php $controller='invoice_return'; 
+                   echo ADMIN_BASE_URL . $controller ?>">
+                   <em class="fa fa-th-large"></em>
+                   <span>Invoice Return</span>
+                </a>
+          </li> -->
+          <li class="<?php if($curr_url == 'expense'){echo 'active';}    ?>">
+                <a href="<?php $controller='expense'; 
+                   echo ADMIN_BASE_URL . $controller ?>">
+                   <em class="fa fa-th-large"></em>
+                   <span>Expense</span>
+                </a>
+          </li>
           <!-- <li class="<?php if($curr_url == 'category'){echo 'active';}    ?>">
                 <a href="<?php $controller='category'; 
                    echo ADMIN_BASE_URL . $controller ?>">

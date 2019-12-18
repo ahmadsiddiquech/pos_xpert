@@ -12,27 +12,40 @@
                         <th class="sr">S.No</th>
                         <th>Customer Name</th>
                         <th>Phone</th>
-                        <th>Address</th>
+                        <th>Total</th>
+                        <th>Collected</th>
+                        <th>Balance</th>
                         <th class="" style="width:300px;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Actions</th>
                         </tr>
                         </thead>
                         <tbody>
                             <?php
                             $i = 0;
+                            $remaining = 0;
+                            $paid = 0;
+                            $total =0;
                             if (isset($news)) {
                                 foreach ($news->result() as
                                         $new) {
                                     $i++;
+                                    $total = $total + $new->total;
+                                    $paid = $paid + $new->paid;
+                                    $remaining = $remaining + $new->remaining;
                                     $set_publish_url = ADMIN_BASE_URL . 'customer/set_publish/' . $new->id;
                                     $set_unpublish_url = ADMIN_BASE_URL . 'customer/set_unpublish/' . $new->id ;
                                     $edit_url = ADMIN_BASE_URL . 'customer/create/' . $new->id ;
                                     $delete_url = ADMIN_BASE_URL . 'customer/delete/' . $new->id;
+                                    $customer_url = ADMIN_BASE_URL . 'customer/invoice_list/' . $new->id.'/'.$new->name;
+                                    $transaction_url = ADMIN_BASE_URL . 'customer/transaction/' . $new->id.'/'.$new->name;
+                                    $transaction_invoice_url = ADMIN_BASE_URL . 'customer/transaction_list/' . $new->id.'/'.$new->name;
                                     ?>
                                     <tr id="Row_<?=$new->id?>" class="odd gradeX " >
                                     <td width='2%'><?php echo $i;?></td>
                                     <td><?php echo wordwrap($new->name , 50 , "<br>\n")  ?></td>
-                                    <td><?php echo $new->address   ?></td>
                                     <td><?php echo $new->phone   ?></td>
+                                    <td><?php echo $new->total   ?></td>
+                                    <td><?php echo $new->paid   ?></td>
+                                    <td><?php echo $new->remaining   ?></td>
                                     <td class="table_action">
                                     <a class="btn yellow c-btn view_details" rel="<?=$new->id?>"><i class="fa fa-list"  title="See Detail"></i></a>
                                     <?php
@@ -48,8 +61,14 @@
                                     $iconbgclass = ' btn default c-btn';
                                     }
 
-                                    echo anchor("javascript:;",$icon, array('class' => 'action_publish' . $publish_class . $iconbgclass,
-                                    'title' => $publis_title,'rel' => $new->id,'id' => $new->id, 'status' => $new->status));
+                                    echo anchor($customer_url, '<i class="fa fa-mail-forward"></i>', array('class' => 'action_edit btn blue c-btn','title' => 'View Customer Invoices'));
+
+                                    echo anchor($transaction_url, '<i class="fa fa-money"></i>', array('class' => 'action_edit btn blue c-btn','title' => 'Make Transaction'));
+
+                                    echo anchor($transaction_invoice_url, '<i class="fa fa-eye"></i>', array('class' => 'action_edit btn blue c-btn','title' => 'View Transaction Invoice'));
+
+                                    // echo anchor("javascript:;",$icon, array('class' => 'action_publish' . $publish_class . $iconbgclass,
+                                    // 'title' => $publis_title,'rel' => $new->id,'id' => $new->id, 'status' => $new->status));
 
                                     echo anchor($edit_url, '<i class="fa fa-edit"></i>', array('class' => 'action_edit btn blue c-btn','title' => 'Edit customer'));
 
@@ -61,6 +80,11 @@
                             <?php } ?>
                         </tbody>
                     </table>
+                    <div class="pull-right" style="padding-right: 60px">
+                        <h4 style="color:red;">Grand Total: <?php echo $total ?> PKR</h4>
+                        <h4 style="color:red;">Total Collected: <?php echo $paid ?> PKR</h4>
+                        <h4 style="color:red;">Total Collectable: <?php echo $remaining ?> PKR</h4>
+                    </div>
                     </div>
                 </div>
             </div>

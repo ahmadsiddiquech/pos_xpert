@@ -49,6 +49,14 @@ class Mdl_purchase_invoice extends CI_Model {
         return $this->db->affected_rows();
     }
 
+    function _update_supplier_amount($supplier_id,$data,$org_id){
+        $table = "supplier";
+        $this->db->where('id', $supplier_id);
+        $this->db->where('org_id', $org_id);
+        $this->db->update($table,$data);
+        return $this->db->affected_rows();
+    }
+
     function _insert($data) {
         $table = $this->get_table();
         $this->db->insert($table, $data);

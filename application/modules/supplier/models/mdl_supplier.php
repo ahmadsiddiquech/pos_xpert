@@ -39,8 +39,35 @@ class Mdl_supplier extends CI_Model {
         return $this->db->get($table);
     }
 
+    function _get_invoice_list($supplier_id) {
+        $table = 'purchase_invoice';
+        $user_data = $this->session->userdata('user_data');
+        $org_id = $user_data['user_id'];
+        $this->db->order_by('id','DESC');
+        $this->db->where('supplier_id',$supplier_id);
+        $this->db->where('org_id',$org_id);
+        return $this->db->get($table);
+    }
+
+    function _get_transaction_list($supplier_id) {
+        $table = 'transaction';
+        $user_data = $this->session->userdata('user_data');
+        $org_id = $user_data['user_id'];
+        $this->db->order_by('id','DESC');
+        $this->db->where('depositer_id',$supplier_id);
+        $this->db->where('depositer_type','supplier');
+        $this->db->where('org_id',$org_id);
+        return $this->db->get($table);
+    }
+
     function _insert($data) {
         $table = $this->get_table();
+        $this->db->insert($table, $data);
+        return $this->db->insert_id();
+    }
+
+    function _insert_transaction($data) {
+        $table = 'transaction';
         $this->db->insert($table, $data);
         return $this->db->insert_id();
     }

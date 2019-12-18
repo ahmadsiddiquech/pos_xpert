@@ -4,14 +4,14 @@ if (!defined('BASEPATH')){
     exit('No direct script access allowed');
 }
 
-class Mdl_sale_invoice extends CI_Model {
+class Mdl_purchase_invoice extends CI_Model {
 
     function __construct() {
         parent::__construct();
     }
 
     function get_table() {
-        $table = "sale_invoice";
+        $table = "purchase_invoice";
         return $table;
     }
 
@@ -49,11 +49,12 @@ class Mdl_sale_invoice extends CI_Model {
         return $this->db->affected_rows();
     }
 
-    function _update_customer_amount($customer_id,$data,$org_id){
-        $table = "customer";
-        $this->db->where('id', $customer_id);
+    function _update_supplier_amount($supplier_id,$amount,$org_id){
+        $table = "supplier";
+        $this->db->where('id', $supplier_id);
         $this->db->where('org_id', $org_id);
-        $this->db->update($table,$data);
+        $this->db->set('amount',$amount);
+        $this->db->update($table);
         return $this->db->affected_rows();
     }
 
@@ -63,14 +64,14 @@ class Mdl_sale_invoice extends CI_Model {
         return $this->db->insert_id();
     }
 
-    function _insert_sale_invoice($data) {
-        $table = 'sale_invoice';
+    function _insert_purchase_invoice($data) {
+        $table = 'purchase_invoice';
         $this->db->insert($table, $data);
         return $this->db->insert_id();
     }
 
     function _insert_product($data) {
-        $table = 'sale_invoice_product';
+        $table = 'purchase_invoice_product';
         $this->db->insert($table, $data);
         return $this->db->insert_id();
     }
@@ -95,14 +96,14 @@ class Mdl_sale_invoice extends CI_Model {
         $this->db->delete($table);
     }
 
-    function _get_sale_invoice_data($sale_invoice_id,$org_id){
-        $this->db->select('users.*,sale_invoice.*,sale_invoice_product.*,customer.*');
-        $this->db->from('sale_invoice');
-        $this->db->join("sale_invoice_product", "sale_invoice_product.sale_invoice_id = sale_invoice.id", "full");
-        $this->db->join("customer", "customer.id = sale_invoice.customer_id", "full");
-        $this->db->join("users", "users.id = sale_invoice.org_id", "full");
-        $this->db->where('sale_invoice.id', $sale_invoice_id);
-        $this->db->where('sale_invoice.org_id', $org_id);
+    function _get_purchase_invoice_data($purchase_invoice_id,$org_id){
+        $this->db->select('users.*,purchase_invoice.*,purchase_invoice_product.*,supplier.*');
+        $this->db->from('purchase_invoice');
+        $this->db->join("purchase_invoice_product", "purchase_invoice_product.purchase_invoice_id = purchase_invoice.id", "full");
+        $this->db->join("supplier", "supplier.id = purchase_invoice.supplier_id", "full");
+        $this->db->join("users", "users.id = purchase_invoice.org_id", "full");
+        $this->db->where('purchase_invoice.id', $purchase_invoice_id);
+        $this->db->where('purchase_invoice.org_id', $org_id);
         return $this->db->get();
     }
 }

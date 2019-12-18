@@ -92,6 +92,7 @@ class sale_invoice extends MX_Controller
         $data['grand_total'] = $this->input->post('net_amount');
         $data['cash_received'] = $this->input->post('paid_amount');
         $data['change'] = $this->input->post('remaining');
+        $data['status'] = $this->input->post('status');
 
 
         $user_data = $this->session->userdata('user_data');
@@ -109,6 +110,17 @@ class sale_invoice extends MX_Controller
         }
         else {
             $sale_invoice_id = $this->_insert_sale_invoice($data);
+            $where['id'] = $data['customer_id'];
+            $customer = Modules::run('customer/_get_by_arr_id',$where)->result_array();
+            if ($data['status'] == 'Un-Paid') {
+                $data2['remaining'] = $customer[0]['remaining'] + $data['grand_total'];
+                $data2['total'] = $customer[0]['total'] + $data['grand_total'];
+            }
+            elseif ($data['status'] == 'Paid'){
+                $data2['paid'] = $customer[0]['paid'] + $data['grand_total'];
+                $data2['total'] = $customer[0]['total'] + $data['grand_total'];
+            }
+            $this->_update_customer_amount($data['customer_id'],$data2,$org_id);
             $product_invoice = $this->insert_product($sale_invoice_id,$org_id);
             $this->print_invoice_on_save($sale_invoice_id,$org_id);
         }
@@ -256,5 +268,10 @@ class sale_invoice extends MX_Controller
     function _update_product_stock($data2,$org_id,$product_id){
         $this->load->model('mdl_sale_invoice');
         return $this->mdl_sale_invoice->_update_product_stock($data2,$org_id,$product_id);
+    }
+
+    function _update_customer_amount($customer_id,$data,$org_id){
+        $this->load->model('mdl_sale_invoice');
+        return $this->mdl_sale_invoice->_update_customer_amount($customer_id,$data,$org_id);
     }
 }

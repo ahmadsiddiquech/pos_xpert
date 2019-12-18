@@ -34,6 +34,61 @@ class Customer extends MX_Controller
         $this->load->module('template');
         $this->template->admin($data);
     }
+
+    function invoice_list() {
+        $customer_id = $this->uri->segment(4);
+        if (is_numeric($customer_id) && $customer_id != 0) {
+            $data['news'] = $this->_get_invoice_list($customer_id);
+        }
+        $data['view_file'] = 'invoice_list';
+        $this->load->module('template');
+        $this->template->admin($data);
+    }
+
+    function transaction() {
+        $customer_id = $this->uri->segment(4);
+        $where['id'] = $customer_id;
+        if (is_numeric($customer_id) && $customer_id != 0) {
+            $data['news'] = $this->_get_by_arr_id($where)->result_array();
+        }
+        $data['view_file'] = 'transaction';
+        $this->load->module('template');
+        $this->template->admin($data);
+    }
+
+    function transaction_list() {
+        $customer_id = $this->uri->segment(4);
+        if (is_numeric($customer_id) && $customer_id != 0) {
+            $data['news'] = $this->_get_transaction_list($customer_id);
+        }
+        $data['view_file'] = 'transaction_list';
+        $this->load->module('template');
+        $this->template->admin($data);
+    }
+
+    function submit_transaction() {
+        $data['depositer_id'] = $this->input->post('id');
+        $data['depositer_name'] = $this->input->post('name');
+        $data['depositer_type'] = 'customer';
+        $data['total'] = $this->input->post('total');
+        $data['paid'] = $this->input->post('paid');
+        $data['remaining'] = $this->input->post('remaining');
+        $data['transaction_amount'] = $this->input->post('transaction_amount');
+        $data['date'] = date('Y-m-d');
+        $user_data = $this->session->userdata('user_data');
+        $data['org_id'] = $user_data['user_id'];
+
+        $this->_insert_transaction($data);
+
+        $data2['paid'] = $data['paid'] + $data['transaction_amount'];
+        $data2['remaining'] = $data['remaining'] - $data['transaction_amount'];
+        Modules::run('sale_invoice/_update_customer_amount',$data['depositer_id'],$data2,$data['org_id']);
+
+        $this->session->set_flashdata('message', 'customer'.' '.DATA_SAVED);                                        
+        $this->session->set_flashdata('status', 'success');
+        
+        redirect(ADMIN_BASE_URL . 'customer');
+    }
     
 
     function _get_data_from_db($update_id) {
@@ -45,6 +100,9 @@ class Customer extends MX_Controller
             $data['name'] = $row->name;
             $data['address'] = $row->address;
             $data['phone'] = $row->phone;
+            $data['total'] = $row->total;
+            $data['paid'] = $row->paid;
+            $data['remianing'] = $row->remianing;
             $data['status'] = $row->status;
             $data['org_id'] = $row->org_id;
         }
@@ -151,6 +209,11 @@ class Customer extends MX_Controller
         return $this->mdl_customer->_insert($data);
     }
 
+    function _insert_transaction($data) {
+        $this->load->model('mdl_customer');
+        return $this->mdl_customer->_insert_transaction($data);
+    }
+
     function _update($arr_col, $org_id, $data) {
         $this->load->model('mdl_customer');
         $this->mdl_customer->_update($arr_col, $org_id, $data);
@@ -169,5 +232,15 @@ class Customer extends MX_Controller
     function _get_by_arr_id_customer($org_id){
         $this->load->model('mdl_customer');
         return $this->mdl_customer->_get_by_arr_id_customer($org_id);
+    }
+
+    function _get_invoice_list($customer_id) {
+        $this->load->model('mdl_customer');
+        return $this->mdl_customer->_get_invoice_list($customer_id);
+    }
+
+    function _get_transaction_list($customer_id) {
+        $this->load->model('mdl_customer');
+        return $this->mdl_customer->_get_transaction_list($customer_id);
     }
 }

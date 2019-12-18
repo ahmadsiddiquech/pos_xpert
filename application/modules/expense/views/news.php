@@ -64,7 +64,7 @@
                             </tbody>
                     </table>
                     <div class="pull-right" style="padding-right: 60px">
-                        <h4>Total Expense: <?php if (isset($amount) && !empty($amount)) {
+                        <h4 style="color: red;">Total Expense: <?php if (isset($amount) && !empty($amount)) {
                             echo $amount;
                         }?></h4>
                     </div>

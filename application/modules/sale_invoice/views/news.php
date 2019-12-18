@@ -15,6 +15,7 @@
                         <th>Customer Name</th>
                         <th>Date</th>
                         <th>Grand Total</th>
+                        <th>Status</th>
                         <th>Actions</th>
                         </tr>
                         </thead>
@@ -35,6 +36,7 @@
                                         <td><?php echo $new->customer_name ?></td>
                                         <td><?php echo $new->date ?></td>
                                         <td><?php echo $new->grand_total ?></td>
+                                        <td><?php echo $new->status ?></td>
                                         
                                         <td class="table_action">
                                         <a class="btn yellow c-btn view_details" rel="<?=$new->id?>"><i class="fa fa-list"  title="See Detail"></i></a>
