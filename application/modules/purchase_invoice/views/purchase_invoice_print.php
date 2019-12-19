@@ -38,7 +38,8 @@
       </h2>
       <h5 class="display-5 text-break" style="text-align: right;">
         Invoice #<?php echo $invoice[0]['purchase_invoice_id']; ?><br>
-        Date <?php echo $invoice[0]['date']; ?>
+        Date <?php echo $invoice[0]['date']; ?><br>
+        <b><?php echo $invoice[0]['pay_status']; ?></b>
       </h5>
     </div>
   </div>
@@ -98,8 +99,8 @@
           <td colspan="1" align="right"><b>Rs.<?php echo $invoice[0]['discount']; ?></b></td>
         </tr>
         <tr>
-          <td colspan="4" align="right"><b>Grand Total: </b></td>
-          <td colspan="1" align="right"><b>Rs.<?php echo $invoice[0]['grand_total']; ?></b></td>
+          <td colspan="4" align="right"><b><h3>Total: </h3></b></td>
+          <td colspan="1" align="right"><b><h3>Rs.<?php echo $invoice[0]['grand_total']; ?></h3></b></td>
         </tr>
         <tr>
           <td colspan="4" align="right"><b>Cash Recieved: </b></td>
@@ -110,7 +111,15 @@
           <td colspan="1" align="right"><b>Rs.<?php echo $invoice[0]['change']; ?></b></td>
         </tr>
         <tr>
+          <td colspan="4" align="right"><b><h3>Remaining: </h3></b></td>
+          <td colspan="1" align="right"><b><h3>Rs.<?php echo $invoice[0]['cash_remaining']; ?></h3></b></td>
+        </tr>
+        <tr>
           <th class="border_bottom" colspan="100%"></th>
+        </tr>
+        <tr>
+          <td colspan="4" align="right"><b><h3>Total Due Balance: </h3></b></td>
+          <td colspan="1" align="right"><b><h3>Rs.<?php echo $invoice[0]['remaining']; ?></h3></b></td>
         </tr>
   </tbody>
 </table>

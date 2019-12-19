@@ -96,7 +96,7 @@ class Mdl_sale_invoice extends CI_Model {
     }
 
     function _get_sale_invoice_data($sale_invoice_id,$org_id){
-        $this->db->select('users.*,sale_invoice.*,sale_invoice_product.*,customer.*');
+        $this->db->select('users.*,sale_invoice.*,sale_invoice_product.*,customer.*,sale_invoice.status pay_status,sale_invoice.remaining cash_remaining');
         $this->db->from('sale_invoice');
         $this->db->join("sale_invoice_product", "sale_invoice_product.sale_invoice_id = sale_invoice.id", "full");
         $this->db->join("customer", "customer.id = sale_invoice.customer_id", "full");

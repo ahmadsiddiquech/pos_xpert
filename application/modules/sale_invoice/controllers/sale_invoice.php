@@ -61,13 +61,15 @@ class sale_invoice extends MX_Controller
         foreach ($query->result() as
                 $row) {
             $data['id'] = $row->id;
-            $data['change'] = $row->total_pay;
-            $data['cash_received'] = $row->discount;
-            $data['grand_total'] = $row->net_amount;
-            $data['total_payable'] = $row->paid_amount;
-            $data['date'] = $row->remaining;
-            $data['customer_name'] = $row->p_id;
-            $data['customer_id'] = $row->name;
+            $data['change'] = $row->change;
+            $data['cash_received'] = $row->cash_received;
+            $data['grand_total'] = $row->grand_total;
+            $data['discount'] = $row->discount;
+            $data['remaining'] = $row->remaining;
+            $data['total_payable'] = $row->total_payable;
+            $data['date'] = $row->date;
+            $data['customer_name'] = $row->customer_name;
+            $data['customer_id'] = $row->customer_id;
             $data['status'] = $row->status;
             $data['org_id'] = $row->org_id;
         }
@@ -91,7 +93,8 @@ class sale_invoice extends MX_Controller
         $data['discount'] = $this->input->post('discount');
         $data['grand_total'] = $this->input->post('net_amount');
         $data['cash_received'] = $this->input->post('paid_amount');
-        $data['change'] = $this->input->post('remaining');
+        $data['change'] = $this->input->post('change');
+        $data['remaining'] = $this->input->post('remaining');
         $data['status'] = $this->input->post('status');
 
 
@@ -112,15 +115,18 @@ class sale_invoice extends MX_Controller
             $sale_invoice_id = $this->_insert_sale_invoice($data);
             $where['id'] = $data['customer_id'];
             $customer = Modules::run('customer/_get_by_arr_id',$where)->result_array();
-            if ($data['status'] == 'Un-Paid') {
-                $data2['remaining'] = $customer[0]['remaining'] + $data['grand_total'];
+                $data2['remaining'] = $customer[0]['remaining'] + $data['remaining'];
                 $data2['total'] = $customer[0]['total'] + $data['grand_total'];
-            }
-            elseif ($data['status'] == 'Paid'){
-                $data2['paid'] = $customer[0]['paid'] + $data['grand_total'];
-                $data2['total'] = $customer[0]['total'] + $data['grand_total'];
-            }
+                
+                if ($data['change'] == 0) {
+                    $data2['paid'] = $customer[0]['paid'] + $data['cash_received'];
+                }
+                elseif ($data['change'] > 0) {
+                    $data2['paid'] = $customer[0]['paid'] + $data['grand_total'];
+                }
+
             $this->_update_customer_amount($data['customer_id'],$data2,$org_id);
+
             $product_invoice = $this->insert_product($sale_invoice_id,$org_id);
             $this->print_invoice_on_save($sale_invoice_id,$org_id);
         }

@@ -119,6 +119,26 @@
                       </div>
                       </div>
                       <div class="row">
+                        <div class="col-sm-5">
+                        <div class="form-group">
+                          <?php
+                                                        $data = array(
+                                                        'name' => 'ref_no',
+                                                        'id' => 'ref_no',
+                                                        'class' => 'form-control',
+                                                        'type' => 'text',
+                                                        'tabindex' => '5',
+                                                        'data-parsley-maxlength'=>TEXT_BOX_RANGE
+                                                        );
+                                                        $attribute = array('class' => 'control-label col-md-4');
+                                                        ?>
+                                                        
+                          <?php echo form_label('Reference No', 'ref_no', $attribute); ?>
+                          <div class="col-md-8"> <?php echo form_input($data); ?> </div>
+                        </div>
+                      </div>
+                      </div>
+                      <div class="row">
                         <div class="col-sm-5" >
                         <div class="form-group">
                          <input type="hidden" name="name" value="<?php echo($news[0]['name'])?>">

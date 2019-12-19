@@ -61,13 +61,16 @@ class purchase_invoice extends MX_Controller
         foreach ($query->result() as
                 $row) {
             $data['id'] = $row->id;
-            $data['change'] = $row->total_pay;
-            $data['cash_received'] = $row->discount;
-            $data['grand_total'] = $row->net_amount;
-            $data['total_payable'] = $row->paid_amount;
-            $data['date'] = $row->remaining;
-            $data['customer_name'] = $row->p_id;
-            $data['customer_id'] = $row->name;
+            $data['ref_no'] = $row->ref_no;
+            $data['change'] = $row->change;
+            $data['cash_received'] = $row->cash_received;
+            $data['remaining'] = $row->remaining;
+            $data['grand_total'] = $row->grand_total;
+            $data['total_payable'] = $row->total_payable;
+            $data['discount'] = $row->discount;
+            $data['date'] = $row->date;
+            $data['supplier_name'] = $row->supplier_name;
+            $data['supplier_id'] = $row->supplier_id;
             $data['status'] = $row->status;
             $data['org_id'] = $row->org_id;
         }
@@ -88,7 +91,8 @@ class purchase_invoice extends MX_Controller
         $data['discount'] = $this->input->post('discount');
         $data['grand_total'] = $this->input->post('net_amount');
         $data['cash_received'] = $this->input->post('paid_amount');
-        $data['change'] = $this->input->post('remaining');
+        $data['change'] = $this->input->post('change');
+        $data['remaining'] = $this->input->post('remaining');
         $data['status'] = $this->input->post('status');
 
 
@@ -109,14 +113,18 @@ class purchase_invoice extends MX_Controller
             $purchase_invoice_id = $this->_insert_purchase_invoice($data);
             $where['id'] = $data['supplier_id'];
             $supplier = Modules::run('supplier/_get_by_arr_id',$where)->result_array();
-            if ($data['status'] == 'Un-Paid') {
-                $data2['remaining'] = $supplier[0]['remaining'] + $data['grand_total'];
+
+                $data2['remaining'] = $supplier[0]['remaining'] + $data['remaining'];
                 $data2['total'] = $supplier[0]['total'] + $data['grand_total'];
-            }
-            elseif ($data['status'] == 'Paid'){
-                $data2['paid'] = $supplier[0]['paid'] + $data['grand_total'];
-                $data2['total'] = $supplier[0]['total'] + $data['grand_total'];
-            }
+                
+                if ($data['change'] == 0) {
+                    $data2['paid'] = $supplier[0]['paid'] + $data['cash_received'];
+                }
+                elseif ($data['change'] > 0) {
+                    $data2['paid'] = $supplier[0]['paid'] + $data['grand_total'];
+                }
+
+
             $this->_update_supplier_amount($data['supplier_id'],$data2,$org_id);
             $product_invoice = $this->insert_product($purchase_invoice_id,$org_id);
             $this->print_invoice_on_save($purchase_invoice_id,$org_id);
@@ -128,9 +136,9 @@ class purchase_invoice extends MX_Controller
     }
 
     function insert_product($purchase_invoice_id,$org_id){
-        $sale_product = $this->input->post('sale_product');
-        $sale_qty = $this->input->post('sale_qty');
-        $sale_amount = $this->input->post('sale_amount');
+        $sale_product = $this->input->post('purchase_product');
+        $sale_qty = $this->input->post('purchase_qty');
+        $sale_amount = $this->input->post('purchase_amount');
         $counter = 0;
         foreach ($sale_product as $key => $value) {
             $data = array();
@@ -150,7 +158,7 @@ class purchase_invoice extends MX_Controller
                     $data['p_c_name'] = $value1['p_c_name'];
                     $data['s_c_id'] = $value1['s_c_id'];
                     $data['s_c_name'] = $value1['s_c_name'];
-                    $data['sale_price'] = $value1['sale_price'];
+                    $data['sale_price'] = $value1['purchase_price'];
                     $data['qty'] = $sale_qty[$counter];
                     $data['amount'] = $sale_amount[$counter];
                     $data['org_id'] = $org_id;
@@ -177,26 +185,21 @@ class purchase_invoice extends MX_Controller
         if(isset($product) && !empty($product)){
             $productData = explode(",",$product);
             $product_id = $productData[0];
-            $sale_price = $productData[2];
+            $purchase_price = $productData[2];
         }
         $where['id'] = $product_id;
         $arr_product = Modules::run('product/_get_by_arr_id',$where)->result_array();
         $html='';
         if (isset($arr_product) && !empty($arr_product)) {
-            if ($arr_product[0]['stock'] >= $qty) {
-                foreach ($arr_product as $key => $value) {
-                    $html.='<tr>';
-                    $html.='<td><input style="text-align: center;" class="form-control" readonly type="text" name="sale_product[]" value="'.$value['id'].','.$value['name'].' - '.$value['p_c_name'].'"></td>';
-                    $html.='<td><input style="text-align: center;" class="form-control" readonly type="text" name="sale_price[]" value='.$value['sale_price'].'></td>';
-                    $html.='<td><input style="text-align: center;" class="form-control" type="number" readonly name="sale_qty[]" value='.$qty.'></td>';
-                    $html.='<td><input style="text-align: center;" class="form-control" readonly type="number" name="sale_amount[]" value='.$qty*$value['sale_price'].'></td>';
-                    $html.='</tr>';
-                }
-                $total = $totalIn + ($qty*$sale_price);
+            foreach ($arr_product as $key => $value) {
+                $html.='<tr>';
+                $html.='<td><input style="text-align: center;" class="form-control" readonly type="text" name="purchase_product[]" value="'.$value['id'].','.$value['name'].' - '.$value['p_c_name'].'"></td>';
+                $html.='<td><input style="text-align: center;" class="form-control" readonly type="text" name="purchase_price[]" value='.$value['purchase_price'].'></td>';
+                $html.='<td><input style="text-align: center;" class="form-control" type="number" readonly name="purchase_qty[]" value='.$qty.'></td>';
+                $html.='<td><input style="text-align: center;" class="form-control" readonly type="number" name="purchase_amount[]" value='.$qty*$value['purchase_price'].'></td>';
+                $html.='</tr>';
             }
-            else{
-                $total = $totalIn;
-            }
+            $total = $totalIn + ($qty*$purchase_price);
         }
         $result_array = [$html,$total];
         echo json_encode($result_array);

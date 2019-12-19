@@ -106,8 +106,8 @@
                           <?php echo form_label('Status<span style="color:red">*</span>', 'status', $attribute); ?>
                           <div class="col-md-8"> 
                             <select name="status" required="required" class="form-control" tabindex="4">
-                              <option value="Paid" <?php if($news['status']=='Paid') echo "selected"; ?>>Paid</option>
                               <option value="Un-Paid" <?php if($news['status']=='Un-Paid') echo "selected"; ?>>Un-Paid</option>
+                              <option value="Paid" <?php if($news['status']=='Paid') echo "selected"; ?>>Paid</option>
                             </select>
                       </div>
                         </div>
@@ -193,10 +193,18 @@
                         </div>
                         <div class="row">
                           <div class="col-md-6">
-                            <h4 style="text-align: right;">Cash Received</h4>
+                            <h4 style="text-align: right;">Cash Received<span style="color: red">*</span></h4>
                           </div>
                           <div class="col-md-6">
-                            <input type="number" name="paid_amount" id="paid_amount" class="form-control" value="0" style="text-align: center;" tabindex="8">
+                            <input type="number" name="paid_amount" id="paid_amount" class="form-control" value="0" style="text-align: center;" tabindex="8" required="required">
+                          </div>
+                        </div>
+                        <div class="row">
+                          <div class="col-md-6">
+                            <h4 style="text-align: right;">Remaining</h4>
+                          </div>
+                          <div class="col-md-6">
+                            <input type="number" readonly name="remaining" id="remaining" class="form-control" value="0" style="text-align: center;">
                           </div>
                         </div>
                         <div class="row">
@@ -204,7 +212,7 @@
                             <h4 style="text-align: right;">Change</h4>
                           </div>
                           <div class="col-md-6">
-                            <input type="number" readonly name="remaining" value="0" class="form-control" style="text-align: center;">
+                            <input type="number" readonly name="change" value="0" class="form-control" style="text-align: center;">
                           </div>
                         </div>
                       </div>
@@ -265,6 +273,7 @@ var total_pay = $('input[name=total_pay]').val();
                 $("#table_data").append(result[0]);
                 $('input[name=total_pay]').val(result[1]);
                 $('input[name=net_amount]').val(result[1]);
+                $('input[name=remaining]').val(result[1]);
               }
 });
 });
@@ -274,13 +283,26 @@ $('input[name=discount]').keyup(function() {
     var discount = $(this).val();
     var net_amount = total_pay - discount;
     $('input[name=net_amount]').val(net_amount);
+    $('input[name=remaining]').val(net_amount);
 });
 
 $('input[name=paid_amount]').keyup(function() {
     var net_amount = parseInt($('input[name=net_amount]').val());
     var paid_amount = $(this).val();
-    var remaining = paid_amount - net_amount;
-    $('input[name=remaining]').val(remaining);
+    var change = paid_amount - net_amount;
+    var remaining = net_amount - paid_amount;
+    if (change > 0) {
+      $('input[name=change]').val(change);
+    }
+    else{
+      $('input[name=change]').val(0);
+    }
+     if (remaining > 0) {
+      $('input[name=remaining]').val(remaining);
+     }
+     else{
+      $('input[name=remaining]').val(0);
+     }
     
 });
 

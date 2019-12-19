@@ -19,6 +19,7 @@
                         <th>Purchase Invoice Id</th>
                         <th>Date</th>
                         <th>Grand Total</th>
+                        <th>Remaining</th>
                         <th>Status</th>
                         </tr>
                         </thead>
@@ -26,21 +27,20 @@
                             <?php
                             $i = 0;
                             $remaining = 0;
-                            $paid = 0;
+                            $grand_total = 0;
                             if (isset($news)) {
                                 foreach ($news->result() as
                                         $new) {
                                     $i++;
-                                    $paid = $paid + $new->grand_total;
-                                    if ($new->status == 'Un-Paid') {
-                                        $remaining = $remaining + $new->grand_total;
-                                    }
+                                    $grand_total = $grand_total + $new->grand_total;
+                                    $remaining = $remaining + $new->remaining;
                                     ?>
                                 <tr id="Row_<?=$new->id?>" class="odd gradeX " >
                                     <td width='2%'><?php echo $i;?></td>
                                     <td><?php echo wordwrap($new->id)  ?></td>
                                     <td><?php echo wordwrap($new->date)  ?></td>
                                     <td><?php echo wordwrap($new->grand_total)  ?></td>
+                                    <td><?php echo wordwrap($new->remaining)  ?></td>
                                     <td><?php echo wordwrap($new->status)  ?></td>
                                 </tr>
                                 <?php } ?>    
@@ -48,8 +48,8 @@
                         </tbody>
                     </table>
                     <div class="pull-right" style="padding-right: 60px">
-                        <h4 style="color:red;">Grand Total: <?php echo $paid+$remaining ?> PKR</h4>
-                        <h4 style="color:red;">Total Paid: <?php echo $paid ?> PKR</h4>
+                        <h4 style="color:red;">Grand Total: <?php echo $grand_total ?> PKR</h4>
+                        <h4 style="color:red;">Total Paid: <?php echo $grand_total-$remaining ?> PKR</h4>
                         <h4 style="color:red;">Total Payable: <?php echo $remaining ?> PKR</h4>
                     </div>
                     </div>

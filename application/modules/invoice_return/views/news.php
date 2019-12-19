@@ -1,6 +1,6 @@
 <!-- Page content-->
 <div class="content-wrapper">
-    <h3>Purchase Invoice<a href="purchase_invoice/create"><button type="button" class="btn btn-primary btn-lg pull-right"><i class="fa fa-plus"></i>&nbsp;&nbsp;&nbsp;<b>Add Purchase Invoice</b></button></a></h3>
+    <h3>Invoice Return<a href="invoice_return/create"><button type="button" class="btn btn-primary btn-lg pull-right"><i class="fa fa-plus"></i>&nbsp;&nbsp;&nbsp;<b>Add Purchase Invoice</b></button></a></h3>
     <div class="container-fluid">
         <!-- START DATATABLE 1 -->
         <div class="row">
@@ -11,11 +11,10 @@
                         <thead class="bg-th">
                         <tr class="bg-col">
                         <th class="sr">S.No</th>
-                        <th>Purchase Invoice Id</th>
-                        <th>Supplier Name</th>
+                        <th>Invoice Return Id</th>
+                        <th>Returnee Name</th>
                         <th>Date</th>
                         <th>Grand Total</th>
-                        <th>Status</th>
                         <th>Actions</th>
                         </tr>
                         </thead>
@@ -26,9 +25,9 @@
                                     foreach ($news->result() as
                                             $new) {
                                         $i++;
-                                        $print_url = ADMIN_BASE_URL . 'purchase_invoice/print_purchase_invoice/' . $new->id ;
-                                        $edit_url = ADMIN_BASE_URL . 'purchase_invoice/create/' . $new->id ;
-                                        $delete_url = ADMIN_BASE_URL . 'purchase_invoice/delete/' . $new->id;
+                                        $print_url = ADMIN_BASE_URL . 'invoice_return/print_invoice_return/' . $new->id ;
+                                        $edit_url = ADMIN_BASE_URL . 'invoice_return/create/' . $new->id ;
+                                        $delete_url = ADMIN_BASE_URL . 'invoice_return/delete/' . $new->id;
                                         ?>
                                         <tr id="Row_<?=$new->id?>" class="odd gradeX " >
                                         <td width='2%'><?php echo $i;?></td>
@@ -71,7 +70,7 @@ $(document).ready(function(){
     var id = $(this).attr('rel');
       $.ajax({
             type: 'POST',
-            url: "<?php echo ADMIN_BASE_URL?>purchase_invoice/detail",
+            url: "<?php echo ADMIN_BASE_URL?>invoice_return/detail",
             data: {'id': id},
             async: false,
             success: function(exam_body) {
@@ -86,8 +85,8 @@ $(document).ready(function(){
         var id = $(this).attr('rel');
         e.preventDefault();
       swal({
-        title : "Are you sure to delete the selected purchase_invoice?",
-        text : "You will not be able to recover this purchase_invoice!",
+        title : "Are you sure to delete the selected invoice_return?",
+        text : "You will not be able to recover this invoice_return!",
         type : "warning",
         showCancelButton : true,
         confirmButtonColor : "#DD6B55",
@@ -98,14 +97,14 @@ $(document).ready(function(){
             
                $.ajax({
                     type: 'POST',
-                    url: "<?php echo ADMIN_BASE_URL?>purchase_invoice/delete",
+                    url: "<?php echo ADMIN_BASE_URL?>invoice_return/delete",
                     data: {'id': id},
                     async: false,
                     success: function() {
                     location.reload();
                     }
                 });
-        swal("Deleted!", "purchase_invoice has been deleted.", "success");
+        swal("Deleted!", "invoice_return has been deleted.", "success");
       });
 
     });

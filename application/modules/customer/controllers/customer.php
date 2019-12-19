@@ -73,6 +73,7 @@ class Customer extends MX_Controller
         $data['total'] = $this->input->post('total');
         $data['paid'] = $this->input->post('paid');
         $data['remaining'] = $this->input->post('remaining');
+        $data['ref_no'] = $this->input->post('ref_no');
         $data['transaction_amount'] = $this->input->post('transaction_amount');
         $data['date'] = date('Y-m-d');
         $user_data = $this->session->userdata('user_data');

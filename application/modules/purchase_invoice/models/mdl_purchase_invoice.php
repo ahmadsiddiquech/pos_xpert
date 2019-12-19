@@ -96,7 +96,7 @@ class Mdl_purchase_invoice extends CI_Model {
     }
 
     function _get_purchase_invoice_data($purchase_invoice_id,$org_id){
-        $this->db->select('users.*,purchase_invoice.*,purchase_invoice_product.*,supplier.*');
+        $this->db->select('users.*,purchase_invoice.*,purchase_invoice_product.*,supplier.*,purchase_invoice.status pay_status,purchase_invoice.remaining cash_remaining');
         $this->db->from('purchase_invoice');
         $this->db->join("purchase_invoice_product", "purchase_invoice_product.purchase_invoice_id = purchase_invoice.id", "full");
         $this->db->join("supplier", "supplier.id = purchase_invoice.supplier_id", "full");

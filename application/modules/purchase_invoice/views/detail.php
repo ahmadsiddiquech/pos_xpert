@@ -8,7 +8,7 @@
         <h4><b>Date:&nbsp;&nbsp;</b></h4><?php echo $user['date']; ?>
     </div>
     <div class="col-md-6">
-        <h4><b>Supplier Name:&nbsp;&nbsp;</b></h4><?php echo $user['customer_name']; ?>
+        <h4><b>Supplier Name:&nbsp;&nbsp;</b></h4><?php echo $user['supplier_name']; ?>
     </div>
 </div>
 <div class="row">
@@ -24,10 +24,14 @@
         <h4><b>Grand Total:&nbsp;&nbsp;</b></h4><?php echo $user['grand_total']; ?>
     </div>
     <div class="col-md-6">
-        <h4><b>Paid Amount:&nbsp;&nbsp;</b></h4><?php echo $user['paid_amount']; ?>
+        <h4><b>Cash Received:&nbsp;&nbsp;</b></h4><?php echo $user['cash_received']; ?>
     </div>
 </div>
 <div class="row">
+    <div class="col-md-6">
+        <h4><b>Remaining:&nbsp;&nbsp;</b></h4><?php echo $user['remaining']; ?>
+    </div>
+
     <div class="col-md-6">
         <h4><b>Change:&nbsp;&nbsp;</b></h4><?php echo $user['change']; ?>
     </div>
