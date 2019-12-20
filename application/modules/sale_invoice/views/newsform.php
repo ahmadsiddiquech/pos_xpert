@@ -79,7 +79,8 @@
                               <label>Customer Name</label>
                             </div>
                             <div class="col-md-8">
-                              <select name="customer" id="customer" class="chosen form-control" tabindex="2">
+                              <select name="customer" id="customer" class="chosen form-control customer" tabindex="2">
+                                <option value="">Select an Option</option>
                               <?php if(isset($customer) && !empty($customer))
                               foreach ($customer as $key => $value):?>
                                 <option <?php if(isset($news['customer_id']) && $news['customer_id'] == $value['id']) echo "selected"; ?> value="<?php echo $value['id'].','.$value['name'] ?>"><?=$value['name'];?></option>
@@ -157,6 +158,7 @@
                         <th>Price per Unit</th>
                         <th>Quantity</th>
                         <th>Amount</th>
+                        <th>Action</th>
                        </tr>
                       </thead>
                       <tbody id="table_data">
@@ -256,7 +258,14 @@
 
 
 <script>
-  $(document).ready(function(){
+
+  function delete_row(x){
+    var row_id = x.parentNode.parentNode.rowIndex;
+    document.getElementById("table_data").deleteRow(row_id-1);
+  };
+
+
+$(document).ready(function(){
 
 $(document).on("click", ".add_product", function(event){
 event.preventDefault();
@@ -270,12 +279,29 @@ var total_pay = $('input[name=total_pay]').val();
                 dataType: 'json',
                 async: false,
                 success: function(result) {
-                $("#table_data").append(result[0]);
+                  if (result[0] == "") {
+                    toastr.error('Product out of stock');
+                  }
+                  else{
+                    $("#table_data").append(result[0]);
+                  }
                 $('input[name=total_pay]').val(result[1]);
                 $('input[name=net_amount]').val(result[1]);
                 $('input[name=remaining]').val(result[1]);
               }
 });
+});
+
+$(document).on("click", ".delete", function(event){
+event.preventDefault();
+var amount = $(this).attr('amount');
+var total_pay = $('input[name=total_pay]').val();
+$('input[name=total_pay]').val(total_pay-amount);
+var net_amount = $('input[name=net_amount]').val();
+$('input[name=net_amount]').val(net_amount-amount);
+var remaining = $('input[name=remaining]').val();
+$('input[name=remaining]').val(remaining-amount);
+
 });
 
 $('input[name=discount]').keyup(function() {

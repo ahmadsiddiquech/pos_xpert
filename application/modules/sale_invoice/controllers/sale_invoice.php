@@ -191,6 +191,7 @@ class sale_invoice extends MX_Controller
         $where['id'] = $product_id;
         $arr_product = Modules::run('product/_get_by_arr_id',$where)->result_array();
         $html='';
+        $i = 0;
         if (isset($arr_product) && !empty($arr_product)) {
             if ($arr_product[0]['stock'] >= $qty) {
                 foreach ($arr_product as $key => $value) {
@@ -199,6 +200,7 @@ class sale_invoice extends MX_Controller
                     $html.='<td><input style="text-align: center;" class="form-control" readonly type="text" name="sale_price[]" value='.$value['sale_price'].'></td>';
                     $html.='<td><input style="text-align: center;" class="form-control" type="number" readonly name="sale_qty[]" value='.$qty.'></td>';
                     $html.='<td><input style="text-align: center;" class="form-control" readonly type="number" name="sale_amount[]" value='.$qty*$value['sale_price'].'></td>';
+                    $html.='<td><a class="btn delete" onclick="delete_row(this)" amount='.$qty*$value['sale_price'].'><i class="fa fa-remove"  title="Delete Item"></i></a></td>';
                     $html.='</tr>';
                 }
                 $total = $totalIn + ($qty*$sale_price);

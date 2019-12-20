@@ -174,6 +174,7 @@
                         <th>Price per Unit</th>
                         <th>Quantity</th>
                         <th>Amount</th>
+                        <th>Actions</th>
                        </tr>
                       </thead>
                       <tbody id="table_data">
@@ -273,7 +274,13 @@
 
 
 <script>
-  $(document).ready(function(){
+
+    function delete_row(x){
+      var row_id = x.parentNode.parentNode.rowIndex;
+      document.getElementById("table_data").deleteRow(row_id-1);
+    };
+
+$(document).ready(function(){
 
 $(document).on("click", ".add_product", function(event){
 event.preventDefault();
@@ -293,6 +300,18 @@ var total_pay = $('input[name=total_pay]').val();
                 $('input[name=remaining]').val(result[1]);
               }
 });
+});
+
+$(document).on("click", ".delete", function(event){
+event.preventDefault();
+  var amount = $(this).attr('amount');
+  var total_pay = $('input[name=total_pay]').val();
+  $('input[name=total_pay]').val(total_pay-amount);
+  var net_amount = $('input[name=net_amount]').val();
+  $('input[name=net_amount]').val(net_amount-amount);
+  var remaining = $('input[name=remaining]').val();
+  $('input[name=remaining]').val(remaining-amount);
+
 });
 
 $('input[name=discount]').keyup(function() {

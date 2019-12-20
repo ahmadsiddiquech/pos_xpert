@@ -197,6 +197,7 @@ class purchase_invoice extends MX_Controller
                 $html.='<td><input style="text-align: center;" class="form-control" readonly type="text" name="purchase_price[]" value='.$value['purchase_price'].'></td>';
                 $html.='<td><input style="text-align: center;" class="form-control" type="number" readonly name="purchase_qty[]" value='.$qty.'></td>';
                 $html.='<td><input style="text-align: center;" class="form-control" readonly type="number" name="purchase_amount[]" value='.$qty*$value['purchase_price'].'></td>';
+                $html.='<td><a class="btn delete" onclick="delete_row(this)" amount='.$qty*$value['purchase_price'].'><i class="fa fa-remove"  title="Delete Item"></i></a></td>';
                 $html.='</tr>';
             }
             $total = $totalIn + ($qty*$purchase_price);
