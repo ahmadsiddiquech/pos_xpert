@@ -45,6 +45,14 @@ class Supplier extends MX_Controller
         $this->template->admin($data);
     }
 
+    function invoice_list_print() {
+        $supplier_id = $this->uri->segment(4);
+        $user_data = $this->session->userdata('user_data');
+        $org_id = $user_data['user_id'];
+        $data['invoice'] = $this->_get_invoice_list_print($supplier_id,$org_id)->result_array();
+        $this->load->view('invoice_list_print',$data);
+    }
+
     function product_list() {
         $invoice_id = $this->uri->segment(4);
         if (is_numeric($invoice_id) && $invoice_id != 0) {
@@ -255,6 +263,11 @@ class Supplier extends MX_Controller
     function _get_invoice_list($supplier_id) {
         $this->load->model('mdl_supplier');
         return $this->mdl_supplier->_get_invoice_list($supplier_id);
+    }
+
+    function _get_invoice_list_print($supplier_id,$org_id) {
+        $this->load->model('mdl_supplier');
+        return $this->mdl_supplier->_get_invoice_list_print($supplier_id,$org_id);
     }
 
     function _get_product_list($invoice_id) {

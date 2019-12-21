@@ -3,7 +3,7 @@ if ( ! defined('BASEPATH')){
     exit('No direct script access allowed');
 }
 
-class purchase_invoice extends MX_Controller
+class stock_return extends MX_Controller
 {
 
     function __construct() {
@@ -16,7 +16,7 @@ class purchase_invoice extends MX_Controller
     }
 
     function manage() {
-        $data['news'] = $this->_get('purchase_invoice.id desc');
+        $data['news'] = $this->_get('stock_return.id desc');
         $data['view_file'] = 'news';
         $this->load->module('template');
         $this->template->admin($data);
@@ -32,10 +32,8 @@ class purchase_invoice extends MX_Controller
         else {
             $data['news'] = $this->_get_data_from_post();
         }
-        $supplier = Modules::run('supplier/_get_by_arr_id_supplier',$org_id)->result_array();
         $product = Modules::run('product/_get_by_arr_id_product',$org_id)->result_array();
 
-        $data['supplier'] = $supplier;
         $data['product'] = $product;
         $data['update_id'] = $update_id;
         $data['view_file'] = 'newsform';
@@ -53,14 +51,13 @@ class purchase_invoice extends MX_Controller
         $this->template->admin($data);
     }
 
-    function print_purchase_invoice() {
-        $purchase_invoice_id = $this->uri->segment(4);
+    function print_stock_return() {
+        $stock_return_id = $this->uri->segment(4);
         $user_data = $this->session->userdata('user_data');
         $org_id = $user_data['user_id'];
-        $data['invoice'] = $this->_get_purchase_invoice_data($purchase_invoice_id,$org_id)->result_array();
-        $this->load->view('purchase_invoice_print',$data);
+        $data['invoice'] = $this->_get_stock_return_data($stock_return_id,$org_id)->result_array();
+        $this->load->view('stock_return_print',$data);
     }
-
  
     function _get_data_from_db($update_id) {
         $query = $this->_get_by_arr_id($update_id);
@@ -85,11 +82,11 @@ class purchase_invoice extends MX_Controller
     }
 
     function _get_data_from_post() {
-        $supplier = $this->input->post('supplier');
-        if (isset($supplier) && !empty($supplier)) {
-            $supplier2=explode(',', $supplier);
-            $data['supplier_id'] = $supplier2[0];
-            $data['supplier_name'] = $supplier2[1];
+        $returnee = $this->input->post('returnee');
+        if (isset($returnee) && !empty($returnee)) {
+            $returnee2=explode(',', $returnee);
+            $data['return_id'] = $returnee2[0];
+            $data['return_name'] = $returnee2[1];
         }
         $data['date'] = $this->input->post('date');
         $data['ref_no'] = $this->input->post('ref_no');
@@ -99,7 +96,7 @@ class purchase_invoice extends MX_Controller
         $data['cash_received'] = $this->input->post('paid_amount');
         $data['change'] = $this->input->post('change');
         $data['remaining'] = $this->input->post('remaining');
-        $data['status'] = $this->input->post('status');
+        $data['return_type'] = $this->input->post('return_type');
 
 
         $user_data = $this->session->userdata('user_data');
@@ -116,32 +113,48 @@ class purchase_invoice extends MX_Controller
             $id = $this->_update($update_id,$org_id,$data);
         }
         else {
-            $purchase_invoice_id = $this->_insert_purchase_invoice($data);
-            $where['id'] = $data['supplier_id'];
-            $supplier = Modules::run('supplier/_get_by_arr_id',$where)->result_array();
+            $stock_return_id = $this->_insert_stock_return($data);
+            if ($data['return_type'] == 'Supplier') {
+                $where['id'] = $data['return_id'];
+                $supplier = Modules::run('supplier/_get_by_arr_id',$where)->result_array();
 
-                $data2['remaining'] = $supplier[0]['remaining'] + $data['remaining'];
-                $data2['total'] = $supplier[0]['total'] + $data['grand_total'];
+                if ($data['remaining'] == 0) {
+                    $data2['total'] = $supplier[0]['total'];
+                    $data2['paid'] = $supplier[0]['paid'];
+                    $data2['remaining'] = $supplier[0]['remaining'];
+                }
+                elseif ($data['remaining'] > 0) {
+                    $data2['total'] = $supplier[0]['total'] - $data['remaining'];
+                    $data2['remaining'] = $supplier[0]['remaining'] - $data['remaining'];
+                }
                 
-                if ($data['change'] == 0) {
-                    $data2['paid'] = $supplier[0]['paid'] + $data['cash_received'];
+                $this->_update_supplier_amount($data['return_id'],$data2,$org_id);
+                $product_invoice = $this->insert_product($stock_return_id,$data['return_type'],$org_id);
+            }
+            elseif ($data['return_type'] == 'Customer') {
+                $where['id'] = $data['return_id'];
+                $customer = Modules::run('customer/_get_by_arr_id',$where)->result_array();
+
+                if ($data['remaining'] == 0) {
+                    $data2['total'] = $customer[0]['total'];
+                    $data2['paid'] = $customer[0]['paid'];
+                    $data2['remaining'] = $customer[0]['remaining'];
                 }
-                elseif ($data['change'] > 0) {
-                    $data2['paid'] = $supplier[0]['paid'] + $data['grand_total'];
+                elseif ($data['remaining'] > 0) {
+                    $data2['total'] = $customer[0]['total'] - $data['remaining'];
+                    $data2['remaining'] = $customer[0]['remaining'] - $data['remaining'];
                 }
-
-
-            $this->_update_supplier_amount($data['supplier_id'],$data2,$org_id);
-            $this->insert_product($purchase_invoice_id,$org_id);
-
+                $this->_update_customer_amount($data['return_id'],$data2,$org_id);
+                $product_invoice = $this->insert_product($stock_return_id,$data['return_type'],$org_id);
+            }
         }
-        $this->session->set_flashdata('message', 'purchase_invoice'.' '.DATA_SAVED);
+        $this->session->set_flashdata('message', 'stock_return'.' '.DATA_SAVED);
         $this->session->set_flashdata('status', 'success');
-        
-        redirect(ADMIN_BASE_URL . 'purchase_invoice/print_purchase_invoice/'.$purchase_invoice_id);
+        redirect(ADMIN_BASE_URL . 'stock_return/manage');
+        // redirect(ADMIN_BASE_URL . 'stock_return/print_stock_return/'.$stock_return_id);
     }
 
-    function insert_product($purchase_invoice_id,$org_id){
+    function insert_product($stock_return_id,$return_type,$org_id){
         $sale_product = $this->input->post('purchase_product');
         $sale_qty = $this->input->post('purchase_qty');
         $sale_amount = $this->input->post('purchase_amount');
@@ -157,21 +170,26 @@ class purchase_invoice extends MX_Controller
             $arr_product = Modules::run('product/_get_by_arr_id',$where)->result_array();
             if (isset($arr_product) && !empty($arr_product)) {
                 foreach ($arr_product as $key => $value1) {
-                    $data['purchase_invoice_id'] = $purchase_invoice_id;
+                    $data['stock_return_id'] = $stock_return_id;
                     $data['product_id'] = $value1['id'];
                     $data['product_name'] = $value1['name'];
                     $data['p_c_id'] = $value1['p_c_id'];
                     $data['p_c_name'] = $value1['p_c_name'];
                     $data['s_c_id'] = $value1['s_c_id'];
                     $data['s_c_name'] = $value1['s_c_name'];
-                    $data['sale_price'] = $value1['purchase_price'];
+                    $data['price'] = $value1['purchase_price'];
                     $data['qty'] = $sale_qty[$counter];
                     $data['amount'] = $sale_amount[$counter];
                     $data['org_id'] = $org_id;
 
-
-                    $data2['stock'] = $value1['stock'] + $sale_qty[$counter];
-                    $rows = $this->_update_product_stock($data2,$org_id,$value1['id']);
+                    if ($return_type == 'Supplier') {
+                        $data2['stock'] = $value1['stock'] - $sale_qty[$counter];
+                        $rows = $this->_update_product_stock($data2,$org_id,$value1['id']);   
+                    }
+                    elseif ($return_type == 'Customer') {
+                        $data2['stock'] = $value1['stock'] + $sale_qty[$counter];
+                        $rows = $this->_update_product_stock($data2,$org_id,$value1['id']);
+                    }
                 }
             }
             if(!empty($data)){
@@ -212,6 +230,24 @@ class purchase_invoice extends MX_Controller
         echo json_encode($result_array);
     }
 
+    function get_returnee(){
+        $return_type = $this->input->post('return_type');
+        $user_data = $this->session->userdata('user_data');
+        $org_id = $user_data['user_id'];
+        if ($return_type == 'Supplier') {
+            $returnee = Modules::run('supplier/_get_by_arr_id_supplier',$org_id)->result_array();
+        }
+        elseif ($return_type == 'Customer') {
+            $returnee = Modules::run('customer/_get_by_arr_id_customer',$org_id)->result_array();
+        }
+
+        $html='';
+        foreach ($returnee as $key => $value) {
+            $html.='<option value="'.$value['id'].','.$value['name'].'">'.$value['name'].'</option>';
+        }
+        echo $html;
+    }
+
     //==============AJAX FUNCTIONS END==================
 
     function delete() {
@@ -228,62 +264,67 @@ class purchase_invoice extends MX_Controller
     }
 
     function _get($order_by) {
-        $this->load->model('mdl_purchase_invoice');
-        return $this->mdl_purchase_invoice->_get($order_by);
+        $this->load->model('mdl_stock_return');
+        return $this->mdl_stock_return->_get($order_by);
     }
 
     function _get_by_arr_id($update_id) {
-        $this->load->model('mdl_purchase_invoice');
-        return $this->mdl_purchase_invoice->_get_by_arr_id($update_id);
+        $this->load->model('mdl_stock_return');
+        return $this->mdl_stock_return->_get_by_arr_id($update_id);
     }
 
     function _get_data_from_db_test($update_id) {
-        $this->load->model('mdl_purchase_invoice');
-        return $this->mdl_purchase_invoice->_get_data_from_db_test($update_id);
+        $this->load->model('mdl_stock_return');
+        return $this->mdl_stock_return->_get_data_from_db_test($update_id);
     }
 
     function _insert_product($data){
-        $this->load->model('mdl_purchase_invoice');
-        return $this->mdl_purchase_invoice->_insert_product($data);
+        $this->load->model('mdl_stock_return');
+        return $this->mdl_stock_return->_insert_product($data);
     }
 
-    function _insert_purchase_invoice($data){
-        $this->load->model('mdl_purchase_invoice');
-        return $this->mdl_purchase_invoice->_insert_purchase_invoice($data);
+    function _insert_stock_return($data){
+        $this->load->model('mdl_stock_return');
+        return $this->mdl_stock_return->_insert_stock_return($data);
     }
 
     function _update($arr_col, $org_id, $data) {
-        $this->load->model('mdl_purchase_invoice');
-        $this->mdl_purchase_invoice->_update($arr_col, $org_id, $data);
+        $this->load->model('mdl_stock_return');
+        $this->mdl_stock_return->_update($arr_col, $org_id, $data);
     }
 
     function _update_id($id, $data) {
-        $this->load->model('mdl_purchase_invoice');
-        $this->mdl_purchase_invoice->_update_id($id, $data);
+        $this->load->model('mdl_stock_return');
+        $this->mdl_stock_return->_update_id($id, $data);
     }
 
     function _delete($arr_col, $org_id) {       
-        $this->load->model('mdl_purchase_invoice');
-        $this->mdl_purchase_invoice->_delete($arr_col, $org_id);
+        $this->load->model('mdl_stock_return');
+        $this->mdl_stock_return->_delete($arr_col, $org_id);
     }
 
-    function _get_purchase_invoice_data($purchase_invoice_id,$org_id) {
-        $this->load->model('mdl_purchase_invoice');
-        return $this->mdl_purchase_invoice->_get_purchase_invoice_data($purchase_invoice_id,$org_id);
+    function _get_stock_return_data($stock_return_id,$org_id) {
+        $this->load->model('mdl_stock_return');
+        return $this->mdl_stock_return->_get_stock_return_data($stock_return_id,$org_id);
     }
 
     function _update_product_stock($data2,$org_id,$product_id){
-        $this->load->model('mdl_purchase_invoice');
-        return $this->mdl_purchase_invoice->_update_product_stock($data2,$org_id,$product_id);
+        $this->load->model('mdl_stock_return');
+        return $this->mdl_stock_return->_update_product_stock($data2,$org_id,$product_id);
     }
 
     function _update_supplier_amount($supplier_id,$amount,$org_id){
-        $this->load->model('mdl_purchase_invoice');
-        return $this->mdl_purchase_invoice->_update_supplier_amount($supplier_id,$amount,$org_id);
+        $this->load->model('mdl_stock_return');
+        return $this->mdl_stock_return->_update_supplier_amount($supplier_id,$amount,$org_id);
+    }
+
+    function _update_customer_amount($customer_id,$amount,$org_id){
+        $this->load->model('mdl_stock_return');
+        return $this->mdl_stock_return->_update_customer_amount($customer_id,$amount,$org_id);
     }
 
     function _get_product_list($invoice_id) {
-        $this->load->model('mdl_purchase_invoice');
-        return $this->mdl_purchase_invoice->_get_product_list($invoice_id);
+        $this->load->model('mdl_stock_return');
+        return $this->mdl_stock_return->_get_product_list($invoice_id);
     }
 }

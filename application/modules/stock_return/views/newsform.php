@@ -9,6 +9,12 @@
     border: 1px solid black;
     text-align: center;
   }
+select:invalid {
+  height: 0px !important;
+  opacity: 0 !important;
+  position: absolute !important;
+  display: flex !important;
+}
   
 </style>
 
@@ -19,12 +25,12 @@
       <h3>
         <?php 
         if (empty($update_id)) 
-                    $strTitle = 'Add Invoice Return';
+                    $strTitle = 'Add Stock Return invoice';
                 else 
-                    $strTitle = 'Edit Invoice Return';
+                    $strTitle = 'Edit Stock Return invoice';
                     echo $strTitle;
                     ?>
-                    <a href="<?php echo ADMIN_BASE_URL . 'invoice_return/manage'; ?>"><button type="button" class="btn btn-lg btn-primary pull-right"><i class="fa fa-chevron-left"></i>&nbsp;&nbsp;&nbsp;<b>View Return Invoice</b></button></a>
+                    <a href="<?php echo ADMIN_BASE_URL . 'stock_return/manage'; ?>"><button type="button" class="btn btn-lg btn-primary pull-right"><i class="fa fa-chevron-left"></i>&nbsp;&nbsp;&nbsp;<b>View Stock Return Invoice</b></button></a>
        </h3>             
             
     </div>
@@ -48,9 +54,9 @@
                             
                         }
                         if (isset($hidden) && !empty($hidden))
-                            echo form_open_multipart(ADMIN_BASE_URL . 'invoice_return/submit/' . $update_id, $attributes, $hidden);
+                            echo form_open_multipart(ADMIN_BASE_URL . 'stock_return/submit/' . $update_id, $attributes, $hidden);
                         else
-                            echo form_open_multipart(ADMIN_BASE_URL . 'invoice_return/submit/' . $update_id, $attributes);
+                            echo form_open_multipart(ADMIN_BASE_URL . 'stock_return/submit/' . $update_id, $attributes);
                         ?>
                   <div class="form-body">
 
@@ -74,23 +80,6 @@
                         </div>
                       </div>
                       <div class="col-sm-5">
-                          <div class="form-group">
-                            <div class="control-label col-md-4">
-                              <label>Supplier Name</label>
-                            </div>
-                            <div class="col-md-8">
-                              <select name="supplier" id="supplier" class="chosen form-control" required="required" tabindex="2">
-                              <?php if(isset($supplier) && !empty($supplier))
-                              foreach ($supplier as $key => $value):?>
-                                <option <?php if(isset($news['supplier_id']) && $news['supplier_id'] == $value['id']) echo "selected"; ?> value="<?php echo $value['id'].','.$value['name'] ?>"><?=$value['name'];?></option>
-                              <?php endforeach; ?>
-                            </select>
-                            </div>
-                          </div>
-                      </div>
-                    </div>
-                    <div class="row">
-                      <div class="col-sm-5">
                         <div class="form-group">
                           <?php
                               $data = array(
@@ -98,7 +87,7 @@
                               'id' => 'ref_no',
                               'class' => 'form-control',
                               'type' => 'ref_no',
-                              'tabindex' => '3',
+                              'tabindex' => '2',
                               'data-parsley-maxlength'=>TEXT_BOX_RANGE
                               );
                               $attribute = array('class' => 'control-label col-md-4');
@@ -107,27 +96,42 @@
                           <div class="col-md-8"> <?php echo form_input($data); ?></div>
                         </div>
                       </div>
+                    </div>
+                    <div class="row">
                       <div class="col-sm-5">
                         <div class="form-group">
                           <?php
                                         $data = array(
-                                        'name' => 'status',
-                                        'id' => 'status',
+                                        'name' => 'return_type',
+                                        'id' => 'return_type',
                                         'class' => 'form-control',
                                         'type' => 'text',
-                                        'tabindex' => '4',
-                                        'value' => $news['status'],
+                                        'tabindex' => '3',
+                                        'value' => $news['return_type'],
                                         );
                                         $attribute = array('class' => 'control-label col-md-4');
                                         ?>
-                          <?php echo form_label('Status<span style="color:red">*</span>', 'status', $attribute); ?>
+                          <?php echo form_label('Returnee <span style="color:red">*</span>', 'return_type', $attribute); ?>
                           <div class="col-md-8"> 
-                            <select name="status" required="required" class="form-control" tabindex="5">
-                              <option value="Paid" <?php if($news['status']=='Paid') echo "selected"; ?>>Paid</option>
-                              <option value="Un-Paid" <?php if($news['status']=='Un-Paid') echo "selected"; ?>>Un-Paid</option>
+                            <select name="return_type" id="return_type" required="required" class="form-control" tabindex="5">
+                              <option>Select</option>
+                              <option value="Customer" <?php if($news['return_type']=='Customer') echo "selected"; ?>>Customer</option>
+                              <option value="Supplier" <?php if($news['return_type']=='Supplier') echo "selected"; ?>>Supplier</option>
                             </select>
                       </div>
                         </div>
+                      </div>
+                      <div class="col-sm-5">
+                          <div class="form-group">
+                            <div class="control-label col-md-4">
+                              <label>Name</label>
+                            </div>
+                            <div class="col-md-8">
+                              <select name="returnee" id="returnee" class="form-control" required="required" tabindex="2" required="required">
+                              <option>Select</option>
+                            </select>
+                            </div>
+                          </div>
                       </div>
                     </div>
                     <hr>
@@ -174,6 +178,7 @@
                         <th>Price per Unit</th>
                         <th>Quantity</th>
                         <th>Amount</th>
+                        <th>Actions</th>
                        </tr>
                       </thead>
                       <tbody id="table_data">
@@ -210,10 +215,18 @@
                         </div>
                         <div class="row">
                           <div class="col-md-6">
-                            <h4 style="text-align: right;">Cash Received<span style="color: red">*</span></h4>
+                            <h4 style="text-align: right;">Cash Paid<span style="color: red">*</span></h4>
                           </div>
                           <div class="col-md-6">
-                            <input type="number" name="paid_amount" id="paid_amount" class="form-control" value="0" style="text-align: center;" tabindex="9" required="required">
+                            <input type="number" name="paid_amount" id="paid_amount" class="form-control" value="" style="text-align: center;" tabindex="9" required="required">
+                          </div>
+                        </div>
+                        <div class="row">
+                          <div class="col-md-6">
+                            <h4 style="text-align: right;">Remaining</h4>
+                          </div>
+                          <div class="col-md-6">
+                            <input type="number" readonly name="remaining" id="remaining" class="form-control" value="0" style="text-align: center;">
                           </div>
                         </div>
                         <div class="row">
@@ -221,7 +234,7 @@
                             <h4 style="text-align: right;">Change</h4>
                           </div>
                           <div class="col-md-6">
-                            <input type="number" readonly name="remaining" value="0" class="form-control" style="text-align: center;">
+                            <input type="number" readonly name="change" value="0" class="form-control" style="text-align: center;">
                           </div>
                         </div>
                       </div>
@@ -237,10 +250,10 @@
                       <div class="col-md-offset-2 col-md-9" style="padding-bottom:15px;padding-top:15px;">
                        <span style="margin-left:40px"></span>
                        <button type="submit" id="button1" class="btn btn-success btn-lg" tabindex="10" style="margin-left:20px; border-radius: 7px !important; padding: 20px;font-size: 20px;"><i class="fa fa-print"></i>&nbsp;Save & Print</button>
-                       <a href="<?php echo ADMIN_BASE_URL . 'invoice_return/create'; ?>">
+                       <a href="<?php echo ADMIN_BASE_URL . 'stock_return/create'; ?>">
                         <button type="button" class="btn btn-info btn-lg" style="margin-left:20px; border-radius: 7px !important; padding: 20px;font-size: 20px;" tabindex="11"><i class="fa fa-file"></i>&nbsp;New</button>
                         </a>
-                        <a href="<?php echo ADMIN_BASE_URL . 'invoice_return'; ?>">
+                        <a href="<?php echo ADMIN_BASE_URL . 'stock_return'; ?>">
                         <button type="button" class="btn btn-danger btn-lg" style="margin-left:20px;border-radius: 7px !important;padding: 20px;font-size: 20px;" tabindex="12"><i class="fa fa-undo"></i>&nbsp;Cancel</button>
                         </a>
                       </div>
@@ -265,7 +278,26 @@
 
 
 <script>
-  $(document).ready(function(){
+
+    function delete_row(x){
+      var row_id = x.parentNode.parentNode.rowIndex;
+      document.getElementById("table_data").deleteRow(row_id-1);
+    };
+
+$(document).ready(function(){
+
+$("#return_type").change(function () {
+    var return_type = this.value;
+   $.ajax({
+        type: 'POST',
+        url: "<?php echo ADMIN_BASE_URL?>stock_return/get_returnee",
+        data: {'return_type': return_type },
+        async: false,
+        success: function(result) {
+        $("#returnee").html(result);
+      }
+    });
+});
 
 $(document).on("click", ".add_product", function(event){
 event.preventDefault();
@@ -274,7 +306,7 @@ var qty = $('input[name=qty]').val();
 var total_pay = $('input[name=total_pay]').val();
     $.ajax({
                 type: 'POST',
-                url: "<?php echo ADMIN_BASE_URL?>invoice_return/add_product",
+                url: "<?php echo ADMIN_BASE_URL?>stock_return/add_product",
                 data: {'product': product ,'total_pay' :total_pay , 'qty':qty},
                 dataType: 'json',
                 async: false,
@@ -282,8 +314,21 @@ var total_pay = $('input[name=total_pay]').val();
                 $("#table_data").append(result[0]);
                 $('input[name=total_pay]').val(result[1]);
                 $('input[name=net_amount]').val(result[1]);
+                $('input[name=remaining]').val(result[1]);
               }
 });
+});
+
+$(document).on("click", ".delete", function(event){
+event.preventDefault();
+  var amount = $(this).attr('amount');
+  var total_pay = $('input[name=total_pay]').val();
+  $('input[name=total_pay]').val(total_pay-amount);
+  var net_amount = $('input[name=net_amount]').val();
+  $('input[name=net_amount]').val(net_amount-amount);
+  var remaining = $('input[name=remaining]').val();
+  $('input[name=remaining]').val(remaining-amount);
+
 });
 
 $('input[name=discount]').keyup(function() {
@@ -291,13 +336,26 @@ $('input[name=discount]').keyup(function() {
     var discount = $(this).val();
     var net_amount = total_pay - discount;
     $('input[name=net_amount]').val(net_amount);
+    $('input[name=remaining]').val(net_amount);
 });
 
 $('input[name=paid_amount]').keyup(function() {
     var net_amount = parseInt($('input[name=net_amount]').val());
     var paid_amount = $(this).val();
-    var remaining = paid_amount - net_amount;
-    $('input[name=remaining]').val(remaining);
+    var change = paid_amount - net_amount;
+    var remaining = net_amount - paid_amount;
+    if (change > 0) {
+      $('input[name=change]').val(change);
+    }
+    else{
+      $('input[name=change]').val(0);
+    }
+     if (remaining > 0) {
+      $('input[name=remaining]').val(remaining);
+     }
+     else{
+      $('input[name=remaining]').val(0);
+     }
     
 });
 

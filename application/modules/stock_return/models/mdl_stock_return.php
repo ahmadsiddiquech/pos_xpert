@@ -4,14 +4,14 @@ if (!defined('BASEPATH')){
     exit('No direct script access allowed');
 }
 
-class Mdl_invoice_return extends CI_Model {
+class Mdl_stock_return extends CI_Model {
 
     function __construct() {
         parent::__construct();
     }
 
     function get_table() {
-        $table = "invoice_return";
+        $table = "stock_return";
         return $table;
     }
 
@@ -29,6 +29,16 @@ class Mdl_invoice_return extends CI_Model {
         $user_data = $this->session->userdata('user_data');
         $org_id = $user_data['user_id'];
         $this->db->order_by($order_by);
+        $this->db->where('org_id',$org_id);
+        return $this->db->get($table);
+    }
+
+    function _get_product_list($invoice_id) {
+        $table = 'stock_return_product';
+        $user_data = $this->session->userdata('user_data');
+        $org_id = $user_data['user_id'];
+        $this->db->order_by('id','DESC');
+        $this->db->where('stock_return_id',$invoice_id);
         $this->db->where('org_id',$org_id);
         return $this->db->get($table);
     }
@@ -57,20 +67,28 @@ class Mdl_invoice_return extends CI_Model {
         return $this->db->affected_rows();
     }
 
+    function _update_customer_amount($customer_id,$data,$org_id){
+        $table = "customer";
+        $this->db->where('id', $customer_id);
+        $this->db->where('org_id', $org_id);
+        $this->db->update($table,$data);
+        return $this->db->affected_rows();
+    }
+
     function _insert($data) {
         $table = $this->get_table();
         $this->db->insert($table, $data);
         return $this->db->insert_id();
     }
 
-    function _insert_invoice_return($data) {
-        $table = 'invoice_return';
+    function _insert_stock_return($data) {
+        $table = 'stock_return';
         $this->db->insert($table, $data);
         return $this->db->insert_id();
     }
 
     function _insert_product($data) {
-        $table = 'invoice_return_product';
+        $table = 'stock_return_product';
         $this->db->insert($table, $data);
         return $this->db->insert_id();
     }
@@ -95,14 +113,14 @@ class Mdl_invoice_return extends CI_Model {
         $this->db->delete($table);
     }
 
-    function _get_invoice_return_data($invoice_return_id,$org_id){
-        $this->db->select('users.*,invoice_return.*,invoice_return_product.*,supplier.*,invoice_return.status pay_status');
-        $this->db->from('invoice_return');
-        $this->db->join("invoice_return_product", "invoice_return_product.invoice_return_id = invoice_return.id", "full");
-        $this->db->join("supplier", "supplier.id = invoice_return.return_id", "full");
-        $this->db->join("users", "users.id = invoice_return.org_id", "full");
-        $this->db->where('invoice_return.id', $invoice_return_id);
-        $this->db->where('invoice_return.org_id', $org_id);
+    function _get_stock_return_data($stock_return_id,$org_id){
+        $this->db->select('users.*,stock_return.*,stock_return_product.*,supplier.*,stock_return.status pay_status,stock_return.remaining cash_remaining');
+        $this->db->from('stock_return');
+        $this->db->join("stock_return_product", "stock_return_product.stock_return_id = stock_return.id", "full");
+        $this->db->join("supplier", "supplier.id = stock_return.supplier_id", "full");
+        $this->db->join("users", "users.id = stock_return.org_id", "full");
+        $this->db->where('stock_return.id', $stock_return_id);
+        $this->db->where('stock_return.org_id', $org_id);
         return $this->db->get();
     }
 }

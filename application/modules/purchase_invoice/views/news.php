@@ -15,6 +15,8 @@
                         <th>Supplier Name</th>
                         <th>Date</th>
                         <th>Grand Total</th>
+                        <th>Paid</th>
+                        <th>Remaining</th>
                         <th>Status</th>
                         <th>Actions</th>
                         </tr>
@@ -36,6 +38,8 @@
                                         <td><?php echo $new->supplier_name ?></td>
                                         <td><?php echo $new->date ?></td>
                                         <td><?php echo $new->grand_total ?></td>
+                                        <td><?php echo $new->cash_received ?></td>
+                                        <td><?php echo $new->remaining ?></td>
                                         <td><?php echo $new->status ?></td>
                                         
                                         <td class="table_action">

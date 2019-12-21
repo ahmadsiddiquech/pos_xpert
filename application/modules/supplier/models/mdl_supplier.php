@@ -117,4 +117,14 @@ class Mdl_supplier extends CI_Model {
         $this->db->where($where);
         $this->db->update($table, $set_un_publish);
     }
+
+    function _get_invoice_list_print($supplier_id,$org_id){
+        $this->db->select('users.*,purchase_invoice.*,supplier.*,purchase_invoice.status pay_status,purchase_invoice.remaining cash_remaining,purchase_invoice.id purchase_invoice_id');
+        $this->db->from('purchase_invoice');
+        $this->db->join("supplier", "supplier.id = purchase_invoice.supplier_id", "full");
+        $this->db->join("users", "users.id = purchase_invoice.org_id", "full");
+        $this->db->where('purchase_invoice.supplier_id', $supplier_id);
+        $this->db->where('purchase_invoice.org_id', $org_id);
+        return $this->db->get();
+    }
 }

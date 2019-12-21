@@ -117,4 +117,14 @@ class Mdl_customer extends CI_Model {
         $this->db->where('org_id',$org_id);
         return $this->db->get($table);
     }
+
+    function _get_invoice_list_print($customer_id,$org_id){
+        $this->db->select('users.*,sale_invoice.*,customer.*,sale_invoice.status pay_status,sale_invoice.remaining cash_remaining,sale_invoice.id sale_invoice_id');
+        $this->db->from('sale_invoice');
+        $this->db->join("customer", "customer.id = sale_invoice.customer_id", "full");
+        $this->db->join("users", "users.id = sale_invoice.org_id", "full");
+        $this->db->where('sale_invoice.customer_id', $customer_id);
+        $this->db->where('sale_invoice.org_id', $org_id);
+        return $this->db->get();
+    }
 }

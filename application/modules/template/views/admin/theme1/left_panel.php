@@ -135,21 +135,21 @@
             </ul>
           </li>
            <li>
-            <a href="#invoice_return" data-toggle="collapse">
+            <a href="#stock_return" data-toggle="collapse">
                 <em class="fa fa-files-o"></em>
                 <span>Stock Return</span>
                 <i class="fa fa-caret-down"></i>
             </a>
-            <ul id="invoice_return" class="nav sidebar-subnav collapse" style="padding-left: 30px">
-                <li class="<?php if($curr_url == 'invoice_return'){echo 'active';}    ?>">
-                  <a href="<?php $controller='invoice_return';
+            <ul id="stock_return" class="nav sidebar-subnav collapse" style="padding-left: 30px">
+                <li class="<?php if($curr_url == 'stock_return'){echo 'active';}    ?>">
+                  <a href="<?php $controller='stock_return';
                     echo ADMIN_BASE_URL . $controller ?>">
                     <em class="fa fa-file"></em>
-                    <span>New Invoice</span>
+                    <span>Add Return</span>
                   </a>
                 </li>
-                <li class="<?php if($curr_url == 'invoice_return/manage'){echo 'active';}    ?>">
-                  <a href="<?php $controller='invoice_return/manage';
+                <li class="<?php if($curr_url == 'stock_return/manage'){echo 'active';}    ?>">
+                  <a href="<?php $controller='stock_return/manage';
                     echo ADMIN_BASE_URL . $controller ?>">
                     <em class="fa fa-file-o"></em>
                     <span>View Report</span>
