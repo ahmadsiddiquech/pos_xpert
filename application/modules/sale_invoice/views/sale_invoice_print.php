@@ -63,9 +63,17 @@
       Invoice To
       </h2>
       <h5 class="display-5 text-break" style="text-align: left;">
-        <?php echo $invoice[0]['name']; ?><br>
-        <?php echo $invoice[0]['address']; ?><br>
-        <?php echo $invoice[0]['phone']; ?><br>
+        <?php if (isset($invoice[0]['name'])) {
+          echo $invoice[0]['name'];
+        } else{
+          echo "Walk-In Customer";
+        } ?><br>
+        <?php if (isset($invoice[0]['address'])) {
+          echo $invoice[0]['address'];
+        } ?><br>
+        <?php if (isset($invoice[0]['phone'])) {
+          echo $invoice[0]['phone'];
+        } ?><br>
       </h5>
     </div>
   </div>

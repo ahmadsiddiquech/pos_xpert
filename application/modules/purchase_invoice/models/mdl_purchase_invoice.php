@@ -33,6 +33,16 @@ class Mdl_purchase_invoice extends CI_Model {
         return $this->db->get($table);
     }
 
+    function _get_product_list($invoice_id) {
+        $table = 'purchase_invoice_product';
+        $user_data = $this->session->userdata('user_data');
+        $org_id = $user_data['user_id'];
+        $this->db->order_by('id','DESC');
+        $this->db->where('purchase_invoice_id',$invoice_id);
+        $this->db->where('org_id',$org_id);
+        return $this->db->get($table);
+    }
+
     function update_result($test_id,$result_value){
         $table = "test_invoice";
         $this->db->where('id', $test_id);

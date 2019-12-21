@@ -3,9 +3,10 @@
     <h3>
         <?php 
     $urlPath = $this->uri->segment(5);
+    $customer_id = $this->uri->segment(6);
     echo ucwords(str_replace('%20',' ',$urlPath));
     ?>
-    <a href="<?php echo ADMIN_BASE_URL . 'customer'; ?>"><button type="button" class="btn btn-lg btn-primary pull-right"><i class="fa fa-chevron-left"></i>&nbsp;&nbsp;&nbsp;<b>Back</b></button></a></h3>
+    <a href="<?php echo ADMIN_BASE_URL . 'customer/invoice_list/'.$customer_id.'/'.$urlPath; ?>"><button type="button" class="btn btn-lg btn-primary pull-right"><i class="fa fa-chevron-left"></i>&nbsp;&nbsp;&nbsp;<b>Back</b></button></a></h3>
     <div class="container-fluid">
         <!-- START DATATABLE 1 -->
         <div class="row">
@@ -16,12 +17,11 @@
                         <thead class="bg-th">
                         <tr class="bg-col">
                         <th class="sr">S.No</th>
-                        <th>Sale Invoice Id</th>
-                        <th>Date</th>
-                        <th>Grand Total</th>
-                        <th>Remaining</th>
-                        <th>Status</th>
-                        <th>Actions</th>
+                        <th>Product Name</th>
+                        <th>Category</th>
+                        <th>Unit Price</th>
+                        <th>Qty</th>
+                        <th>Total Price</th>
                         </tr>
                         </thead>
                         <tbody>
@@ -31,21 +31,14 @@
                                 foreach ($news->result() as
                                         $new) {
                                     $i++;
-                                $customer_id = $this->uri->segment(4);
-                                $product_url = ADMIN_BASE_URL . 'customer/product_list/' . $new->id.'/'.$new->customer_name . '/' .$customer_id;
                                     ?>
                                 <tr id="Row_<?=$new->id?>" class="odd gradeX " >
                                     <td width='2%'><?php echo $i;?></td>
-                                    <td><?php echo wordwrap($new->id)  ?></td>
-                                    <td><?php echo wordwrap($new->date)  ?></td>
-                                    <td><?php echo wordwrap($new->grand_total)  ?></td>
-                                    <td><?php echo wordwrap($new->remaining)  ?></td>
-                                    <td><?php echo wordwrap($new->status)  ?></td>
-                                    <td>
-                                    <?php
-                                    echo anchor($product_url, '<i class="fa fa-mail-forward"></i>', array('class' => 'action_edit btn blue c-btn','title' => 'View Invoice Products'));
-                                    ?>
-                                </td>
+                                    <td><?php echo wordwrap($new->product_name) ?></td>
+                                    <td><?php echo wordwrap($new->p_c_name) ?></td>
+                                    <td><?php echo wordwrap($new->sale_price) ?></td>
+                                    <td><?php echo wordwrap($new->qty) ?></td>
+                                    <td><?php echo wordwrap($new->amount) ?></td>
                                 </tr>
                                 <?php } ?>    
                             <?php } ?>

@@ -43,6 +43,16 @@ class purchase_invoice extends MX_Controller
         $this->template->admin($data);
     }
 
+    function product_list() {
+        $invoice_id = $this->uri->segment(4);
+        if (is_numeric($invoice_id) && $invoice_id != 0) {
+            $data['news'] = $this->_get_product_list($invoice_id);
+        }
+        $data['view_file'] = 'product_list';
+        $this->load->module('template');
+        $this->template->admin($data);
+    }
+
     function print_purchase_invoice() {
         $purchase_invoice_id = $this->uri->segment(4);
         $user_data = $this->session->userdata('user_data');
@@ -274,5 +284,10 @@ class purchase_invoice extends MX_Controller
     function _update_supplier_amount($customer_id,$amount,$org_id){
         $this->load->model('mdl_purchase_invoice');
         return $this->mdl_purchase_invoice->_update_supplier_amount($customer_id,$amount,$org_id);
+    }
+
+    function _get_product_list($invoice_id) {
+        $this->load->model('mdl_purchase_invoice');
+        return $this->mdl_purchase_invoice->_get_product_list($invoice_id);
     }
 }

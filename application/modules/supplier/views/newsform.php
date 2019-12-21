@@ -126,11 +126,50 @@
                         <div class="form-group">
                           <?php
                                                         $data = array(
+                                                        'name' => 'total',
+                                                        'id' => 'total',
+                                                        'class' => 'form-control',
+                                                        'type' => 'text',
+                                                        'tabindex' => '5',
+                                                        'value' => $news['total'],
+                                                        'data-parsley-maxlength'=>TEXT_BOX_RANGE
+                                                        );
+                                                        $attribute = array('class' => 'control-label col-md-4');
+                                                        ?>
+                                                        
+                          <?php echo form_label('Account Payable', 'total', $attribute); ?>
+                          <div class="col-md-8"> <?php echo form_input($data); ?></div>
+                        </div>
+                      </div>
+                        <div class="col-sm-5">
+                        <div class="form-group">
+                          <?php
+                                                        $data = array(
+                                                        'name' => 'paid',
+                                                        'id' => 'paid',
+                                                        'class' => 'form-control',
+                                                        'type' => 'text',
+                                                        'tabindex' => '7',
+                                                        'value' => $news['paid'],
+                                                        'data-parsley-maxlength'=>TEXT_BOX_RANGE
+                                                        );
+                                                        $attribute = array('class' => 'control-label col-md-4');
+                                                        ?>
+                                                        
+                          <?php echo form_label('Account Paid', 'paid', $attribute); ?>
+                          <div class="col-md-8"> <?php echo form_input($data); ?></div>
+                        </div>
+                      </div>
+                      <div class="row">
+                      <div class="col-sm-5">
+                        <div class="form-group">
+                          <?php
+                                                        $data = array(
                                                         'name' => 'comments',
                                                         'id' => 'comments',
                                                         'class' => 'form-control',
                                                         'type' => 'text',
-                                                        'tabindex' => '5',
+                                                        'tabindex' => '8',
                                                         'value' => $news['comments'],
                                                         'data-parsley-maxlength'=>TEXT_BOX_RANGE
                                                         );
@@ -140,6 +179,7 @@
                           <?php echo form_label('Comments', 'comments', $attribute); ?>
                           <div class="col-md-8"> <?php echo form_input($data); ?></div>
                         </div>
+                      </div>
                       </div>
                       </div>
 

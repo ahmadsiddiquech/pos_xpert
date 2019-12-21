@@ -21,19 +21,18 @@
                         <th>Grand Total</th>
                         <th>Remaining</th>
                         <th>Status</th>
+                        <th>Actions</th>
                         </tr>
                         </thead>
                         <tbody>
                             <?php
                             $i = 0;
-                            $remaining = 0;
-                            $grand_total = 0;
                             if (isset($news)) {
                                 foreach ($news->result() as
                                         $new) {
                                     $i++;
-                                    $grand_total = $grand_total + $new->grand_total;
-                                    $remaining = $remaining + $new->remaining;
+                                $supplier_id = $this->uri->segment(4);
+                                $product_url = ADMIN_BASE_URL . 'supplier/product_list/' . $new->id.'/'.$new->supplier_name . '/' .$supplier_id;
                                     ?>
                                 <tr id="Row_<?=$new->id?>" class="odd gradeX " >
                                     <td width='2%'><?php echo $i;?></td>
@@ -42,16 +41,16 @@
                                     <td><?php echo wordwrap($new->grand_total)  ?></td>
                                     <td><?php echo wordwrap($new->remaining)  ?></td>
                                     <td><?php echo wordwrap($new->status)  ?></td>
+                                    <td>
+                                    <?php
+                                    echo anchor($product_url, '<i class="fa fa-mail-forward"></i>', array('class' => 'action_edit btn blue c-btn','title' => 'View Invoice Products'));
+                                    ?>
+                                </td>
                                 </tr>
                                 <?php } ?>    
                             <?php } ?>
                         </tbody>
                     </table>
-                    <div class="pull-right" style="padding-right: 60px">
-                        <h4 style="color:red;">Grand Total: <?php echo $grand_total ?> PKR</h4>
-                        <h4 style="color:red;">Total Paid: <?php echo $grand_total-$remaining ?> PKR</h4>
-                        <h4 style="color:red;">Total Payable: <?php echo $remaining ?> PKR</h4>
-                    </div>
                     </div>
                 </div>
             </div>

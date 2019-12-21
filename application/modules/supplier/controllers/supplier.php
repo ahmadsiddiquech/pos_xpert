@@ -45,6 +45,16 @@ class Supplier extends MX_Controller
         $this->template->admin($data);
     }
 
+    function product_list() {
+        $invoice_id = $this->uri->segment(4);
+        if (is_numeric($invoice_id) && $invoice_id != 0) {
+            $data['news'] = $this->_get_product_list($invoice_id);
+        }
+        $data['view_file'] = 'product_list';
+        $this->load->module('template');
+        $this->template->admin($data);
+    }
+
     function transaction() {
         $supplier_id = $this->uri->segment(4);
         $where['id'] = $supplier_id;
@@ -118,6 +128,9 @@ class Supplier extends MX_Controller
         $data['city'] = $this->input->post('city');
         $data['phone'] = $this->input->post('phone');
         $data['company_name'] = $this->input->post('company_name');
+        $data['total'] = $this->input->post('total');
+        $data['paid'] = $this->input->post('paid');
+        $data['remaining'] = $data['total'] - $data['paid'];
         $data['comments'] = $this->input->post('comments');
         $user_data = $this->session->userdata('user_data');
         $data['org_id'] = $user_data['user_id'];
@@ -242,6 +255,11 @@ class Supplier extends MX_Controller
     function _get_invoice_list($supplier_id) {
         $this->load->model('mdl_supplier');
         return $this->mdl_supplier->_get_invoice_list($supplier_id);
+    }
+
+    function _get_product_list($invoice_id) {
+        $this->load->model('mdl_supplier');
+        return $this->mdl_supplier->_get_product_list($invoice_id);
     }
 
     function _get_transaction_list($supplier_id) {

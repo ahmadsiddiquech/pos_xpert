@@ -43,16 +43,24 @@ class sale_invoice extends MX_Controller
         $this->template->admin($data);
     }
 
+    function product_list() {
+        $invoice_id = $this->uri->segment(4);
+        if (is_numeric($invoice_id) && $invoice_id != 0) {
+            $data['news'] = $this->_get_product_list($invoice_id);
+        }
+        $data['view_file'] = 'product_list';
+        $this->load->module('template');
+        $this->template->admin($data);
+    }
+
     function print_sale_invoice() {
         $sale_invoice_id = $this->uri->segment(4);
         $user_data = $this->session->userdata('user_data');
         $org_id = $user_data['user_id'];
-        $data['invoice'] = $this->_get_sale_invoice_data($sale_invoice_id,$org_id)->result_array();
-        $this->load->view('sale_invoice_print',$data);
-    }
-
-    function print_invoice_on_save($sale_invoice_id,$org_id) {
-        $data['invoice'] = $this->_get_sale_invoice_data($sale_invoice_id,$org_id)->result_array();
+        $customer = $this->_get_by_arr_id($sale_invoice_id)->result_array();
+        if (isset($customer) && !empty($customer)) {
+            $data['invoice'] = $this->_get_sale_invoice_data($sale_invoice_id,$customer[0]['customer_id'],$org_id)->result_array();
+        }
         $this->load->view('sale_invoice_print',$data);
     }
  
@@ -113,8 +121,10 @@ class sale_invoice extends MX_Controller
         }
         else {
             $sale_invoice_id = $this->_insert_sale_invoice($data);
-            $where['id'] = $data['customer_id'];
-            $customer = Modules::run('customer/_get_by_arr_id',$where)->result_array();
+            
+            if ($data['customer_id'] != 0) {
+                $where['id'] = $data['customer_id'];
+                $customer = Modules::run('customer/_get_by_arr_id',$where)->result_array();
                 $data2['remaining'] = $customer[0]['remaining'] + $data['remaining'];
                 $data2['total'] = $customer[0]['total'] + $data['grand_total'];
                 
@@ -125,15 +135,15 @@ class sale_invoice extends MX_Controller
                     $data2['paid'] = $customer[0]['paid'] + $data['grand_total'];
                 }
 
-            $this->_update_customer_amount($data['customer_id'],$data2,$org_id);
+                $this->_update_customer_amount($data['customer_id'],$data2,$org_id);
+            }
 
-            $product_invoice = $this->insert_product($sale_invoice_id,$org_id);
-            $this->print_invoice_on_save($sale_invoice_id,$org_id);
+            $this->insert_product($sale_invoice_id,$org_id);
         }
-        // $this->session->set_flashdata('message', 'sale_invoice'.' '.DATA_SAVED);
-        // $this->session->set_flashdata('status', 'success');
+        $this->session->set_flashdata('message', 'sale_invoice'.' '.DATA_SAVED);
+        $this->session->set_flashdata('status', 'success');
         
-        // redirect(ADMIN_BASE_URL . 'sale_invoice');
+        redirect(ADMIN_BASE_URL . 'sale_invoice/print_sale_invoice/'.$sale_invoice_id);
     }
 
     function insert_product($sale_invoice_id,$org_id){
@@ -170,7 +180,7 @@ class sale_invoice extends MX_Controller
                 }
             }
             if(!empty($data)){
-                $this->_insert_product($data);
+                $invoice_product_id = $this->_insert_product($data);
             }
             $counter++; 
         }
@@ -268,9 +278,9 @@ class sale_invoice extends MX_Controller
         $this->mdl_sale_invoice->_delete($arr_col, $org_id);
     }
 
-    function _get_sale_invoice_data($sale_invoice_id,$org_id) {
+    function _get_sale_invoice_data($sale_invoice_id,$customer_id,$org_id) {
         $this->load->model('mdl_sale_invoice');
-        return $this->mdl_sale_invoice->_get_sale_invoice_data($sale_invoice_id,$org_id);
+        return $this->mdl_sale_invoice->_get_sale_invoice_data($sale_invoice_id,$customer_id,$org_id);
     }
 
     function _update_product_stock($data2,$org_id,$product_id){
@@ -281,5 +291,10 @@ class sale_invoice extends MX_Controller
     function _update_customer_amount($customer_id,$data,$org_id){
         $this->load->model('mdl_sale_invoice');
         return $this->mdl_sale_invoice->_update_customer_amount($customer_id,$data,$org_id);
+    }
+
+    function _get_product_list($invoice_id) {
+        $this->load->model('mdl_sale_invoice');
+        return $this->mdl_sale_invoice->_get_product_list($invoice_id);
     }
 }

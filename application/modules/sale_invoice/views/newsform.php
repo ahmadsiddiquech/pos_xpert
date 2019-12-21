@@ -9,6 +9,13 @@
     border: 1px solid black;
     text-align: center;
   }
+
+select:invalid {
+  height: 0px !important;
+  opacity: 0 !important;
+  position: absolute !important;
+  display: flex !important;
+}
   
 </style>
 
@@ -79,8 +86,9 @@
                               <label>Customer Name</label>
                             </div>
                             <div class="col-md-8">
-                              <select name="customer" id="customer" class="chosen form-control customer" tabindex="2">
-                                <option value="">Select an Option</option>
+                              <select name="customer" id="customer" class="chosen form-control customer" tabindex="2" required="required">
+                                <option value=""></option>
+                                <option value="">Walk In</option>
                               <?php if(isset($customer) && !empty($customer))
                               foreach ($customer as $key => $value):?>
                                 <option <?php if(isset($news['customer_id']) && $news['customer_id'] == $value['id']) echo "selected"; ?> value="<?php echo $value['id'].','.$value['name'] ?>"><?=$value['name'];?></option>
@@ -198,7 +206,7 @@
                             <h4 style="text-align: right;">Cash Received<span style="color: red">*</span></h4>
                           </div>
                           <div class="col-md-6">
-                            <input type="number" name="paid_amount" id="paid_amount" class="form-control" value="0" style="text-align: center;" tabindex="8" required="required">
+                            <input type="number" name="paid_amount" id="paid_amount" class="form-control" value="" style="text-align: center;" tabindex="8" required="required">
                           </div>
                         </div>
                         <div class="row">
@@ -333,6 +341,9 @@ $('input[name=paid_amount]').keyup(function() {
 });
 
 $(".chosen").chosen();
+});
+$.validator.setDefaults({ 
+  ignore: []
 });
 
              

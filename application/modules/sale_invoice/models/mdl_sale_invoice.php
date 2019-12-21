@@ -33,6 +33,16 @@ class Mdl_sale_invoice extends CI_Model {
         return $this->db->get($table);
     }
 
+    function _get_product_list($invoice_id) {
+        $table = 'sale_invoice_product';
+        $user_data = $this->session->userdata('user_data');
+        $org_id = $user_data['user_id'];
+        $this->db->order_by('id','DESC');
+        $this->db->where('sale_invoice_id',$invoice_id);
+        $this->db->where('org_id',$org_id);
+        return $this->db->get($table);
+    }
+
     function update_result($test_id,$result_value){
         $table = "test_invoice";
         $this->db->where('id', $test_id);
@@ -95,11 +105,14 @@ class Mdl_sale_invoice extends CI_Model {
         $this->db->delete($table);
     }
 
-    function _get_sale_invoice_data($sale_invoice_id,$org_id){
-        $this->db->select('users.*,sale_invoice.*,sale_invoice_product.*,customer.*,sale_invoice.status pay_status,sale_invoice.remaining cash_remaining');
+    function _get_sale_invoice_data($sale_invoice_id,$customer_id,$org_id){
+        $this->db->select('users.*,sale_invoice.*,sale_invoice_product.*,sale_invoice.status pay_status,sale_invoice.remaining cash_remaining');
         $this->db->from('sale_invoice');
         $this->db->join("sale_invoice_product", "sale_invoice_product.sale_invoice_id = sale_invoice.id", "full");
-        $this->db->join("customer", "customer.id = sale_invoice.customer_id", "full");
+        if ($customer_id != 0) {
+            $this->db->join("customer", "customer.id = sale_invoice.customer_id", "full");
+            $this->db->select('users.*,sale_invoice.*,sale_invoice_product.*,customer.*,sale_invoice.status pay_status,sale_invoice.remaining cash_remaining');
+        }
         $this->db->join("users", "users.id = sale_invoice.org_id", "full");
         $this->db->where('sale_invoice.id', $sale_invoice_id);
         $this->db->where('sale_invoice.org_id', $org_id);

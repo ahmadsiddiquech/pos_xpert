@@ -58,7 +58,7 @@
                                                         ?>
                                                         
                           <?php echo form_label('Customer Name<span style="color:red">*</span>', 'name', $attribute); ?>
-                          <div class="col-md-8"> <?php echo form_input($data); ?>  <span id="message"></span></div>
+                          <div class="col-md-8"> <?php echo form_input($data); ?></div>
                         </div>
                       </div>
                       <div class="col-sm-5">
@@ -77,7 +77,7 @@
                                                         ?>
                                                         
                           <?php echo form_label('Address', 'address', $attribute); ?>
-                          <div class="col-md-8"> <?php echo form_input($data); ?>  <span id="message"></span></div>
+                          <div class="col-md-8"> <?php echo form_input($data); ?></div>
                         </div>
                       </div>
                       </div>
@@ -98,7 +98,47 @@
                                                         ?>
                                                         
                           <?php echo form_label('Phone No.', 'phone', $attribute); ?>
-                          <div class="col-md-8"> <?php echo form_input($data); ?>  <span id="message"></span></div>
+                          <div class="col-md-8"> <?php echo form_input($data); ?></div>
+                        </div>
+                      </div>
+                      <div class="col-sm-5">
+                        <div class="form-group">
+                          <?php
+                                                        $data = array(
+                                                        'name' => 'total',
+                                                        'id' => 'total',
+                                                        'class' => 'form-control',
+                                                        'type' => 'text',
+                                                        'tabindex' => '4',
+                                                        'value' => $news['total'],
+                                                        'data-parsley-maxlength'=>TEXT_BOX_RANGE
+                                                        );
+                                                        $attribute = array('class' => 'control-label col-md-4');
+                                                        ?>
+                                                        
+                          <?php echo form_label('Account Receivable', 'total', $attribute); ?>
+                          <div class="col-md-8"> <?php echo form_input($data); ?> </div>
+                        </div>
+                      </div>
+                      </div>
+                      <div class="row">
+                       <div class="col-sm-5">
+                        <div class="form-group">
+                          <?php
+                                                        $data = array(
+                                                        'name' => 'paid',
+                                                        'id' => 'paid',
+                                                        'class' => 'form-control',
+                                                        'type' => 'text',
+                                                        'tabindex' => '5',
+                                                        'value' => $news['paid'],
+                                                        'data-parsley-maxlength'=>TEXT_BOX_RANGE
+                                                        );
+                                                        $attribute = array('class' => 'control-label col-md-4');
+                                                        ?>
+                                                        
+                          <?php echo form_label('Account Received', 'paid', $attribute); ?>
+                          <div class="col-md-8"> <?php echo form_input($data); ?> </div>
                         </div>
                       </div>
                       </div>

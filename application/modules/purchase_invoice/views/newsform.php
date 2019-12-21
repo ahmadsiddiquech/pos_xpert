@@ -9,6 +9,12 @@
     border: 1px solid black;
     text-align: center;
   }
+select:invalid {
+  height: 0px !important;
+  opacity: 0 !important;
+  position: absolute !important;
+  display: flex !important;
+}
   
 </style>
 
@@ -79,7 +85,8 @@
                               <label>Supplier Name</label>
                             </div>
                             <div class="col-md-8">
-                              <select name="supplier" id="supplier" class="chosen form-control" required="required" tabindex="2">
+                              <select name="supplier" id="supplier" class="chosen form-control" required="required" tabindex="2" required="required">
+                                <option value=""></option>
                               <?php if(isset($supplier) && !empty($supplier))
                               foreach ($supplier as $key => $value):?>
                                 <option <?php if(isset($news['supplier_id']) && $news['supplier_id'] == $value['id']) echo "selected"; ?> value="<?php echo $value['id'].','.$value['name'] ?>"><?=$value['name'];?></option>
@@ -214,7 +221,7 @@
                             <h4 style="text-align: right;">Cash Paid<span style="color: red">*</span></h4>
                           </div>
                           <div class="col-md-6">
-                            <input type="number" name="paid_amount" id="paid_amount" class="form-control" value="0" style="text-align: center;" tabindex="9" required="required">
+                            <input type="number" name="paid_amount" id="paid_amount" class="form-control" value="" style="text-align: center;" tabindex="9" required="required">
                           </div>
                         </div>
                         <div class="row">

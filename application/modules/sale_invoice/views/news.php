@@ -27,8 +27,8 @@
                                             $new) {
                                         $i++;
                                         $print_url = ADMIN_BASE_URL . 'sale_invoice/print_sale_invoice/' . $new->id ;
-                                        $edit_url = ADMIN_BASE_URL . 'sale_invoice/create/' . $new->id ;
                                         $delete_url = ADMIN_BASE_URL . 'sale_invoice/delete/' . $new->id;
+                                        $product_url = ADMIN_BASE_URL . 'sale_invoice/product_list/' . $new->id.'/'.$new->customer_name;
                                         ?>
                                         <tr id="Row_<?=$new->id?>" class="odd gradeX " >
                                         <td width='2%'><?php echo $i;?></td>
@@ -42,9 +42,9 @@
                                         <a class="btn yellow c-btn view_details" rel="<?=$new->id?>"><i class="fa fa-list"  title="See Detail"></i></a>
                                         <?php
 
-                                        echo anchor($print_url, '<i class="fa fa-print"></i>', array('class' => 'action_edit btn blue c-btn','title' => 'Print Sale Invoice'));
+                                        echo anchor($product_url, '<i class="fa fa-mail-forward"></i>', array('class' => 'action_edit btn blue c-btn','title' => 'View Invoice Product'));
 
-                                        echo anchor($edit_url, '<i class="fa fa-pencil"></i>', array('class' => 'action_edit btn blue c-btn','title' => 'Edit Sale Invoice'));
+                                        echo anchor($print_url, '<i class="fa fa-print"></i>', array('class' => 'action_edit btn blue c-btn','title' => 'Print Sale Invoice'));
 
                                         echo anchor('"javascript:;"', '<i class="fa fa-times"></i>', array('class' => 'delete_record btn red c-btn', 'rel' => $new->id, 'title' => 'Delete Sale Invoice'));
                                         ?>

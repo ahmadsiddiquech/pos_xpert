@@ -45,6 +45,16 @@ class Customer extends MX_Controller
         $this->template->admin($data);
     }
 
+    function product_list() {
+        $invoice_id = $this->uri->segment(4);
+        if (is_numeric($invoice_id) && $invoice_id != 0) {
+            $data['news'] = $this->_get_product_list($invoice_id);
+        }
+        $data['view_file'] = 'product_list';
+        $this->load->module('template');
+        $this->template->admin($data);
+    }
+
     function transaction() {
         $customer_id = $this->uri->segment(4);
         $where['id'] = $customer_id;
@@ -103,7 +113,7 @@ class Customer extends MX_Controller
             $data['phone'] = $row->phone;
             $data['total'] = $row->total;
             $data['paid'] = $row->paid;
-            $data['remianing'] = $row->remianing;
+            $data['remaining'] = $row->remaining;
             $data['status'] = $row->status;
             $data['org_id'] = $row->org_id;
         }
@@ -115,6 +125,9 @@ class Customer extends MX_Controller
         $data['name'] = $this->input->post('name');
         $data['address'] = $this->input->post('address');
         $data['phone'] = $this->input->post('phone');
+        $data['total'] = $this->input->post('total');
+        $data['paid'] = $this->input->post('paid');
+        $data['remaining'] = $data['total'] - $data['paid'];
         $user_data = $this->session->userdata('user_data');
         $data['org_id'] = $user_data['user_id'];
         return $data;
@@ -238,6 +251,11 @@ class Customer extends MX_Controller
     function _get_invoice_list($customer_id) {
         $this->load->model('mdl_customer');
         return $this->mdl_customer->_get_invoice_list($customer_id);
+    }
+
+    function _get_product_list($invoice_id) {
+        $this->load->model('mdl_customer');
+        return $this->mdl_customer->_get_product_list($invoice_id);
     }
 
     function _get_transaction_list($customer_id) {

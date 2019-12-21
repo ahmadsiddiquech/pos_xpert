@@ -26,10 +26,18 @@
                         <tbody>
                             <?php
                             $i = 0;
+                            $total = 0;
+                            $paid = 0;
+                            $remaining = 0;
+                            $transaction = 0;
                             if (isset($news)) {
+                                $result = $news->result_array();
+                                $total = $result[0]['total'];
                                 foreach ($news->result() as
                                         $new) {
                                     $i++;
+                                    $paid = $paid + $new->paid;
+                                    $transaction = $new->transaction_amount;
                                     ?>
                                 <tr id="Row_<?=$new->id?>" class="odd gradeX " >
                                     <td width='2%'><?php echo $i;?></td>
@@ -43,6 +51,11 @@
                             <?php } ?>
                         </tbody>
                     </table>
+                    <div class="pull-right" style="padding-right: 60px">
+                        <h4 style="color:red;">Grand Total: <?php echo $total ?> PKR</h4>
+                        <h4 style="color:red;">Total Paid: <?php echo $paid+$transaction ?> PKR</h4>
+                        <h4 style="color:red;">Total Payabale: <?php echo $total-($paid+$transaction) ?> PKR</h4>
+                    </div>
                     </div>
                 </div>
             </div>
