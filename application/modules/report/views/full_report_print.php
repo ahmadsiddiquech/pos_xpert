@@ -26,16 +26,16 @@
     </div>
     <div class="col-md-6 ">
       <h1 style="text-align: center;">
-      <?php echo $invoice[0]['org_name']; ?>
+      <?php echo $org[0]['org_name']; ?>
       </h1>
       <h5 class="display-5 text-break" style="text-align: center;">
-        <?php echo $invoice[0]['org_address']; ?><br>
-        Ph: <?php echo $invoice[0]['org_phone']; ?>
+        <?php echo $org[0]['org_address']; ?><br>
+        Ph: <?php echo $org[0]['org_phone']; ?>
       </h5>
     </div>
     <div class="col-md-3">
       <h2 style="text-align: right;">
-      Invoice Report
+      Company Report
       </h2>
       <h5 class="display-5 text-break" style="text-align: right;">
         Issue Date: <?php echo date('Y-m-d'); ?><br>
@@ -58,37 +58,98 @@
     </div>
   </div>
   <p class="border_bottom"></p>
-  <div class="row pl-3 pr-3">
-    <div class="col-md-5" style="border: 1px solid black;">
-      <h2 style="text-align: left;">
-      Report From
-      </h2>
-      <h5 class="display-5 text-break" style="text-align: left;">
-        <?php echo $invoice[0]['org_name']; ?><br>
-        <?php echo $invoice[0]['org_address']; ?><br>
-        <?php echo $invoice[0]['org_phone']; ?><br>
-      </h5>
-    </div>
-    <div class="col-md-2"></div>
-    <div class="col-md-5" style="border: 1px solid black;">
-      <h2 style="text-align: left;">
-      Report To
-      </h2>
-      <h5 class="display-5 text-break" style="text-align: left;">
-        <?php echo $invoice[0]['name']; ?><br>
-        <?php if ($return_type == 'Supplier') {
-          echo $invoice[0]['city'];
-        }elseif ($return_type == 'Customer') {
-          echo $invoice[0]['address'];
-        }  ?><br>
-        <?php echo $invoice[0]['phone']; ?><br>
-      </h5>
+  <div class="row">&nbsp;</div>
+  <div class="row">&nbsp;</div>
+  <div class="row">&nbsp;</div>
+
+  <div class="row">
+    <div class="col-md-12">
+      <h1 style="text-align: center;">
+        <b>Gross</b>
+      </h1>
+      <hr>
     </div>
   </div>
+  <table width="100%">
+    <?php 
+      $total_sale = 0;
+      $total_sale_discount = 0;
+      $total_purchase = 0;
+      $total_purchase_discount = 0;
+      $total_expense = 0;
+      foreach ($sale_invoice as $key => $value) { 
+        $total_sale = $total_sale + $value['total_payable'];
+        $total_sale_discount = $total_sale_discount + $value['discount'];
+      }
+      foreach ($purchase_invoice as $key => $value) { 
+        $total_purchase = $total_purchase + $value['total_payable'];
+        $total_purchase_discount = $total_purchase_discount + $value['discount'];
+      }
+      foreach ($expense as $key => $value) { 
+        $total_expense = $total_expense + $value['amount'];
+      }
+    ?>
+    <tr>
+      <th><h3>Total Sale<h3></th>
+      <td><h3><?=$total_sale?></h3></td>
+    </tr>
+    <tr>
+      <th><h3>Total Purchase<h3></th>
+      <td><h3><?=$total_purchase?></h3></td>
+    </tr>
+    <tr>
+      <td style="border-bottom: 2px solid black" colspan="100%">&nbsp;</td>
+    </tr>
+    <tr>
+      <th><h3><b>Gross Profit<b><h3></th>
+      <td><h3><b><?php echo ($total_sale - $total_purchase)?></b></h3></td>
+    </tr>
+    
+  </table>
+   <p class="border_bottom"></p>
   <div class="row">&nbsp;</div>
   <div class="row">&nbsp;</div>
   <div class="row">&nbsp;</div>
-<table width="100%">
+  <div class="row">
+    <div class="col-md-12">
+      <h1 style="text-align: center;">
+        <b>Net</b>
+      </h1>
+      <hr>
+    </div>
+  </div>
+    <table width="100%">
+    <tr>
+      <th><h3>Total Sale<h3></th>
+      <td><h3><?=$total_sale?></h3></td>
+    </tr>
+    <tr>
+      <th><h3>Total Sale Discount<h3></th>
+      <td><h3><?=$total_sale_discount?></h3></td>
+    </tr>
+    <tr>
+      <th><h3>Total Purchase<h3></th>
+      <td><h3><?=$total_purchase?></h3></td>
+    </tr>
+    <tr>
+      <th><h3>Total Purchase Discount<h3></th>
+      <td><h3><?=$total_purchase_discount?></h3></td>
+    </tr>
+    <tr>
+      <th><h3>Total Expense<h3></th>
+      <td><h3><?=$total_expense?></h3></td>
+    </tr>
+    <tr>
+      <td style="border-bottom: 2px solid black" colspan="100%">&nbsp;</td>
+    </tr>
+    <tr>
+      <th><h3><b>Net Profit<b><h3></th>
+      <td><h3><b><?php echo ($total_sale - ($total_purchase+$total_expense))?></b></h3></td>
+    </tr>
+    
+  </table>
+
+<!-- <table width="100%">
   <thead align="center">
     <th colspan="1" class="border1">Invoice Id</th>
     <th colspan="1" class="border1">Date</th>
@@ -155,7 +216,7 @@
           <th class="border_bottom" colspan="100%"></th>
         </tr>
   </tbody>
-</table>
+</table> -->
   <div class="row mt-5 pt-5">
     <div class="col-md-9"></div>
     <div class="col-md-3">

@@ -26,14 +26,20 @@ class Report extends MX_Controller
         $update_id = $this->uri->segment(4);
         $user_data = $this->session->userdata('user_data');
         $org_id = $user_data['user_id'];
-        if (is_numeric($update_id) && $update_id != 0) {
-            $data['news'] = $this->_get_data_from_db($update_id);
-        }
-        else {
-            $data['news'] = $this->_get_data_from_post();
-        }
+        $data['news'] = $this->_get_data_from_post();
         $data['update_id'] = $update_id;
         $data['view_file'] = 'newsform';
+        $this->load->module('template');
+        $this->template->admin($data);
+    }
+
+    function full_report() {
+        $update_id = $this->uri->segment(4);
+        $user_data = $this->session->userdata('user_data');
+        $org_id = $user_data['user_id'];
+        $data['news'] = $this->_get_data_from_post();
+        $data['update_id'] = $update_id;
+        $data['view_file'] = 'full_report';
         $this->load->module('template');
         $this->template->admin($data);
     }
@@ -84,12 +90,29 @@ class Report extends MX_Controller
     }
 
     function submit() {
-        $update_id = $this->uri->segment(4);
         $data = $this->_get_data_from_post();
         $data['invoice'] = $this->_get_report($data)->result_array();
         $data['from'] = $data['from'];
         $data['to'] = $data['to'];
         $this->load->view('invoice_list_print',$data);
+    }
+
+    function submit_full_report() {
+        $user_data = $this->session->userdata('user_data');
+        $data['org_id'] = $user_data['user_id'];
+        $data['from'] = $this->input->post('from');
+        $data['to'] = $this->input->post('to');
+        $data['org'] = $this->_get_org($data['org_id'])->result_array();
+
+        $data['sale_invoice'] = $this->_get_sale_invoice($data)->result_array();
+
+        $data['purchase_invoice'] = $this->_get_purchase_invoice($data)->result_array();
+        
+        $data['expense'] = $this->_get_expense($data)->result_array();
+        
+        $data['stock_return'] = $this->_get_stock_return($data)->result_array();
+        
+        $this->load->view('full_report_print',$data);
     }
 
     function insert_product($report_id,$return_type,$org_id){
@@ -264,5 +287,30 @@ class Report extends MX_Controller
     function _get_report($data) {
         $this->load->model('mdl_report');
         return $this->mdl_report->_get_report($data);
+    }
+
+    function _get_org($org_id) {
+        $this->load->model('mdl_report');
+        return $this->mdl_report->_get_org($org_id);
+    }
+
+    function _get_sale_invoice($data) {
+        $this->load->model('mdl_report');
+        return $this->mdl_report->_get_sale_invoice($data);
+    }
+
+    function _get_purchase_invoice($data) {
+        $this->load->model('mdl_report');
+        return $this->mdl_report->_get_purchase_invoice($data);
+    }
+
+    function _get_stock_return($data) {
+        $this->load->model('mdl_report');
+        return $this->mdl_report->_get_stock_return($data);
+    }
+
+    function _get_expense($data) {
+        $this->load->model('mdl_report');
+        return $this->mdl_report->_get_expense($data);
     }
 }

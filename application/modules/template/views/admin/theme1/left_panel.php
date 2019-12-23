@@ -140,12 +140,28 @@
                 </li>
             </ul>
           </li>
-          <li class="<?php if($curr_url == 'report'){echo 'active';}    ?>">
-                <a href="<?php $controller='report'; 
-                   echo ADMIN_BASE_URL . $controller ?>">
-                   <em class="fa fa-bar-chart"></em>
-                   <span>Report</span>
-                </a>
+          <li>
+            <a href="#report" data-toggle="collapse">
+                <em class="fa fa-bar-chart"></em>
+                <span>Report</span>
+                <i class="fa fa-caret-down"></i>
+            </a>
+            <ul id="report" class="nav sidebar-subnav collapse" style="padding-left: 30px">
+                <li class="<?php if($curr_url == 'report'){echo 'active';}    ?>">
+                  <a href="<?php $controller='report';
+                    echo ADMIN_BASE_URL . $controller ?>">
+                    <em class="fa fa-file-text-o"></em>
+                    <span>Individual Report</span>
+                  </a>
+                </li>
+                <li class="<?php if($curr_url == 'report/full_report'){echo 'active';}    ?>">
+                  <a href="<?php $controller='report/full_report';
+                    echo ADMIN_BASE_URL . $controller ?>">
+                    <em class="fa fa-files-o"></em>
+                    <span>Full Report</span>
+                  </a>
+                </li>
+            </ul>
           </li>
           <li class="<?php if($curr_url == 'expense'){echo 'active';}    ?>">
                 <a href="<?php $controller='expense'; 
