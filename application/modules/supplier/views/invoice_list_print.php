@@ -35,7 +35,7 @@
     </div>
     <div class="col-md-3">
       <h2 style="text-align: right;">
-      Sale Invoice Report
+      Purchase Invoice Report
       </h2>
       <h5 class="display-5 text-break" style="text-align: right;">
         Date: <?php echo date('Y-m-d'); ?><br>
@@ -79,7 +79,8 @@
     <th colspan="1" class="border1">Discount</th>
     <th colspan="1" class="border1">Grand Total</th>
     <th colspan="1" class="border1">Cash Received</th>
-    <th colspan="1" class="border1" style="border-right: 1px solid black">Remaining</th>
+    <th colspan="1" class="border1">Remaining</th>
+    <th colspan="1" class="border1" style="border-right: 1px solid black">Status</th>
   </thead>
   <tbody>
   <?php 
@@ -103,33 +104,35 @@
       <td colspan="1" class="border1"> <?php echo $value['discount'];?></td>
       <td colspan="1" class="border1"> <?php echo $value['grand_total'];?></td>
       <td colspan="1" class="border1"> <?php echo $value['cash_received'];?></td>
-      <td colspan="1" class="border1" style="border-right: 1px solid black"> <?php echo $value['cash_remaining'];?></td>
+      <td colspan="1" class="border1"> <?php echo $value['cash_remaining'];?>
+      <td colspan="1" class="border1" style="border-right: 1px solid black"> <?php echo $value['pay_status'];?>
+      </td>
     </tr>
   <?php  }  ?>
   <tr><td>&nbsp;</td></tr>
   <tr><td>&nbsp;</td></tr>
         <tr>
           <td colspan="4" align="right"><b><h3>Total Amount: </h3></b></td>
-          <td colspan="1" align="right"><b><h3>Rs.<?php echo $total; ?></h3></b></td>
+          <td colspan="2" align="right"><b><h3>Rs.<?php echo $total; ?></h3></b></td>
         </tr>
         <tr>
           <td colspan="4" align="right"><b><h3>Discount: </h3></b></td>
-          <td colspan="1" align="right"><b><h3>Rs.<?php echo $discount; ?></h3></b></td>
+          <td colspan="2" align="right"><b><h3>Rs.<?php echo $discount; ?></h3></b></td>
         </tr>
         <tr>
           <td colspan="4" align="right"><b><h3>Grand Total: </h3></b></td>
-          <td colspan="1" align="right"><b><h3>Rs.<?php echo $grand_total; ?></h3></b></td>
+          <td colspan="2" align="right"><b><h3>Rs.<?php echo $grand_total; ?></h3></b></td>
         </tr>
         <tr>
           <td colspan="4" align="right"><b><h3>Cash Recieved: </h3></b></td>
-          <td colspan="1" align="right"><b><h3>Rs.<?php echo $grand_total - $cash_remaining; ?></h3></b></td>
+          <td colspan="2" align="right"><b><h3>Rs.<?php echo $grand_total - $cash_remaining; ?></h3></b></td>
         </tr>
         <tr>
           <th class="border_bottom" colspan="100%"></th>
         </tr>
         <tr>
           <td colspan="4" align="right"><b><h3>Remaining: </h3></b></td>
-          <td colspan="1" align="right"><b><h3>Rs.<?php echo $cash_remaining; ?></h3></b></td>
+          <td colspan="2" align="right"><b><h3>Rs.<?php echo $cash_remaining; ?></h3></b></td>
         </tr>
         <tr>
           <th class="border_bottom" colspan="100%"></th>

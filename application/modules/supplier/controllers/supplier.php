@@ -190,11 +190,11 @@ class Supplier extends MX_Controller
     function change_status() {
         $id = $this->input->post('id');
         $status = $this->input->post('status');
-        if ($status == PUBLISHED){
-            $status = UN_PUBLISHED;
+        if ($status == 'Paid'){
+            $status = 'Un-Paid';
         }
         else{
-            $status = PUBLISHED;
+            $status = 'Paid';
         }
         $data = array('status' => $status);
         $status = $this->_update_id($id, $data);

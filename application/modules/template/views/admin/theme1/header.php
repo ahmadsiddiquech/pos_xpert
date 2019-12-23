@@ -5,7 +5,7 @@
    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
    <meta name="description" content="Bootstrap Admin App + jQuery">
    <meta name="keywords" content="app, responsive, jquery, bootstrap, dashboard, admin">
-   <title>HazriXpert</title>
+   <title>POS Xpert</title>
    <link rel="icon" type="image/png" href="<?php echo STATIC_ADMIN_IMAGE ?>favicon.ico">
    
    <!-- JQUERY-->
@@ -63,11 +63,12 @@
             <div class="navbar-header">
                <a href="#/" class="navbar-brand">
                   <div class="brand-logo">
-                     <!-- <h3 style="color: white;margin: 0;padding:10px">HazriXpert</h3> -->
-                      <img src="<?php echo STATIC_ADMIN_IMAGE?>logo-full.png" style="width: 85%;" alt="App Logo" class="img-responsive">
+                     <h3 style="color: white;margin: 0;padding:10px">POS Xpert</h3>
+                      <!-- <img src="<?php echo STATIC_ADMIN_IMAGE?>logo-full.png" style="width: 85%;" alt="App Logo" class="img-responsive"> -->
                   </div>
                   <div class="brand-logo-collapsed">
-                     <img src="<?php echo STATIC_ADMIN_IMAGE?>logo.png" style="width: 80%;padding-top: 5px;" alt="App Logo" class="img-responsive"> 
+                     <!-- <img src="<?php echo STATIC_ADMIN_IMAGE?>logo.png" style="width: 80%;padding-top: 5px;" alt="App Logo" class="img-responsive"> --> 
+                     <h3 style="color: white;margin: 0;padding:10px">POS</h3>
                   </div>
                </a>
             </div>

@@ -79,7 +79,7 @@ class Mdl_customer extends CI_Model {
     }
 
     function _update_id($id, $data) {
-        $table = $this->get_table();
+        $table = 'sale_invoice';
         $this->db->where('id',$id);
         $this->db->update($table, $data);
     }
@@ -95,14 +95,14 @@ class Mdl_customer extends CI_Model {
 
     function _set_publish($where) {
         $table = $this->get_table();
-        $set_publish['status'] = 1;
+        $set_publish['status'] = 'Paid';
         $this->db->where($where);
         $this->db->update($table, $set_publish);
     }
 
     function _set_unpublish($where) {
         $table = $this->get_table();
-        $set_un_publish['status'] = 0;
+        $set_un_publish['status'] = 'Un-Paid';
         $this->db->where($where);
         $this->db->update($table, $set_un_publish);
     }
@@ -124,6 +124,7 @@ class Mdl_customer extends CI_Model {
         $this->db->join("customer", "customer.id = sale_invoice.customer_id", "full");
         $this->db->join("users", "users.id = sale_invoice.org_id", "full");
         $this->db->where('sale_invoice.customer_id', $customer_id);
+        $this->db->order_by('sale_invoice.id', 'DESC');
         $this->db->where('sale_invoice.org_id', $org_id);
         return $this->db->get();
     }

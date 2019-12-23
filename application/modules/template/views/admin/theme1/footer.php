@@ -1,6 +1,6 @@
     <!-- Page footer-->
 
-    <footer><span>&copy; <script>document.write(new Date().getFullYear())</script> - Hazri Xpert</span></footer>
+    <footer><span>&copy; <script>document.write(new Date().getFullYear())</script> - POS Xpert</span></footer>
 
     </div><!-- wrapper div ends here -->
 

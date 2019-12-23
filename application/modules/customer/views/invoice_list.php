@@ -41,6 +41,8 @@
                                 $remaining = $remaining + $new->remaining;
                                 $customer_id = $this->uri->segment(4);
                                 $product_url = ADMIN_BASE_URL . 'customer/product_list/' . $new->id.'/'.$new->customer_name . '/' .$customer_id;
+                                $set_publish_url = ADMIN_BASE_URL . 'customer/set_publish/' . $new->id;
+                                $set_unpublish_url = ADMIN_BASE_URL . 'customer/set_unpublish/' . $new->id ;
                                     ?>
                                 <tr id="Row_<?=$new->id?>" class="odd gradeX " >
                                     <td width='2%'><?php echo $i;?></td>
@@ -52,7 +54,21 @@
                                     <td><?php echo wordwrap($new->status)  ?></td>
                                     <td>
                                     <?php
+                                        $publish_class = ' table_action_publish';
+                                        $publis_title = 'Set as Un-Paid';
+                                        $icon = '<i class="fa fa-check"></i>';
+                                        $iconbgclass = ' btn green c-btn';
+                                        if ($new->status  != 'Paid' ) {
+                                            $publish_class = ' table_action_unpublish';
+                                            $publis_title = 'Set as Paid';
+                                            $icon = '<i class="fa fa-credit-card"></i>';
+                                            $iconbgclass = ' btn default c-btn';
+                                        }
+                                        
                                     echo anchor($product_url, '<i class="fa fa-mail-forward"></i>', array('class' => 'action_edit btn blue c-btn','title' => 'View Invoice Products'));
+
+                                    echo anchor("javascript:;",$icon, array('class' => 'action_publish' . $publish_class . $iconbgclass,
+                                        'title' => $publis_title,'rel' => $new->id,'id' => $new->id, 'status' => $new->status));
                                     ?>
                                 </td>
                                 </tr>
@@ -71,4 +87,48 @@
         </div>
     <!-- END DATATABLE 1 -->
     </div>
-</div>    
+</div>
+
+<script type="text/javascript">
+$(document).ready(function(){
+
+        $(document).off("click",".action_publish").on("click",".action_publish", function(event) {
+            event.preventDefault();
+            var id = $(this).attr('rel');
+            var status = $(this).attr('status');
+             $.ajax({
+                type: 'POST',
+                url: "<?= ADMIN_BASE_URL ?>customer/change_status",
+                data: {'id': id, 'status': status},
+                async: false,
+                success: function(result) {
+                    if($('#'+id).hasClass('default')==true)
+                    {
+                        $('#'+id).addClass('green');
+                        $('#'+id).removeClass('default');
+                        $('#'+id).find('i.fa-credit-card').removeClass('fa-credit-card').addClass('fa-check');
+                    }else{
+                        $('#'+id).addClass('default');
+                        $('#'+id).removeClass('green');
+                        $('#'+id).find('i.fa-check').removeClass('fa-check').addClass('fa-credit-card');
+                    }
+                    $("#listing").load('<?php echo ADMIN_BASE_URL?>customer/invoice_list/<?php $this->uri->segment(4)?>');
+                    toastr.success('Status Changed Successfully');
+                }
+            });
+            if (status == 'Paid') {
+                $(this).removeClass('table_action_publish');
+                $(this).addClass('table_action_unpublish');
+                $(this).attr('title', 'Set as Paid');
+                $(this).attr('status', 'Un-Paid');
+            } else {
+                $(this).removeClass('table_action_unpublish');
+                $(this).addClass('table_action_publish');
+                $(this).attr('title', 'Set as Un-Paid');
+                $(this).attr('status', 'Paid');
+            }
+           
+        });
+});
+
+</script>

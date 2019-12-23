@@ -1,9 +1,4 @@
 <?php 
-/*************************************************
-Created By: Waseem Khan
-Dated: 03/18/2016
-
-*************************************************/
 if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
 class Mdl_org extends CI_Model {

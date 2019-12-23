@@ -265,7 +265,7 @@ function _update_status_event($id, $data) {
     $this->load->model('mdl_org');
     $this->mdl_org->_update_id($id, $data);
 }
-function _insert($data, $type){
+function _insert($data){
 $this->load->model('mdl_org');
 return $this->mdl_org->_insert($data);
 }

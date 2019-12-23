@@ -90,7 +90,7 @@ class Mdl_supplier extends CI_Model {
     }
 
     function _update_id($id, $data) {
-        $table = $this->get_table();
+        $table = 'purchase_invoice';
         $this->db->where('id',$id);
         $this->db->update($table, $data);
     }
@@ -124,6 +124,7 @@ class Mdl_supplier extends CI_Model {
         $this->db->join("supplier", "supplier.id = purchase_invoice.supplier_id", "full");
         $this->db->join("users", "users.id = purchase_invoice.org_id", "full");
         $this->db->where('purchase_invoice.supplier_id', $supplier_id);
+        $this->db->order_by('purchase_invoice.id', 'DESC');
         $this->db->where('purchase_invoice.org_id', $org_id);
         return $this->db->get();
     }

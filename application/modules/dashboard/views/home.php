@@ -118,7 +118,8 @@ body {font-family: Verdana, sans-serif;}
   </div>
 </div>
 <div class="row" style="padding-top: 20px;">
-  <div class="col-md-8" style="padding-left: 40px;">
+  <div class="col-md-1"></div>
+  <div class="col-md-10">
       <div class="month" style="border-radius: 5px;">      
   <ul>
     <li>
@@ -162,16 +163,6 @@ body {font-family: Verdana, sans-serif;}
     ?>
 </ul>
     </div>
-    <div class="col-md-4">
-      <div class="card text-white col-md-11 shadow" style="background-color: rgb(242, 115, 34); border-radius: 5px;">
-          <div class="card-body">
-              <h3 class="card-text"><center>Announcement<br></center></h3>
-              <img src="<?php echo IMAGE_BASE_URL.'announcement/medium_images/'.$announcement[0]['image']; ?>" style="width: 100%;">
-              <h4 class="card-text"> <center><?php echo $announcement[0]['title']; ?></center></h4>
-              <h5 class="card-text"> <center><?php echo $announcement[0]['description']; ?></center></h5>
-          </div>
-      </div>
-  </div>
 </div>
 <!-- END PAGE HEADER-->
 </div>
@@ -201,7 +192,7 @@ $(document).ready(function() {
     },
     {
     label: "Income",
-    data: [<?=$income?>],
+    data: [<?=$expense?>],
     backgroundColor: [
     'rgba(0, 137, 132, .2)',
     ],
