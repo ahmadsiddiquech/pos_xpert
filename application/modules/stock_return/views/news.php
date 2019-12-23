@@ -27,7 +27,6 @@
                                     foreach ($news->result() as
                                             $new) {
                                         $i++;
-                                        $print_url = ADMIN_BASE_URL . 'stock_return/print_stock_return/' . $new->id ;
                                         $delete_url = ADMIN_BASE_URL . 'stock_return/delete/' . $new->id;
                                         $product_url = ADMIN_BASE_URL . 'stock_return/product_list/' . $new->id.'/'.$new->return_name;
                                         ?>
@@ -45,8 +44,6 @@
                                         <?php
 
                                         echo anchor($product_url, '<i class="fa fa-mail-forward"></i>', array('class' => 'action_edit btn blue c-btn','title' => 'View Invoice Product'));
-
-                                        echo anchor($print_url, '<i class="fa fa-print"></i>', array('class' => 'action_edit btn blue c-btn','title' => 'Print purchase Invoice'));
 
                                         echo anchor('"javascript:;"', '<i class="fa fa-times"></i>', array('class' => 'delete_record btn red c-btn', 'rel' => $new->id, 'title' => 'Delete purchase Invoice'));
                                         ?>

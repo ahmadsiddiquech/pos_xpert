@@ -4,7 +4,7 @@ if (!defined('BASEPATH')){
     exit('No direct script access allowed');
 }
 
-class Mdl_stock_return extends CI_Model {
+class Mdl_report extends CI_Model {
 
     function __construct() {
         parent::__construct();
@@ -33,14 +33,32 @@ class Mdl_stock_return extends CI_Model {
         return $this->db->get($table);
     }
 
-    function _get_product_list($invoice_id) {
-        $table = 'stock_return_product';
+    function _get_report($data) {
         $user_data = $this->session->userdata('user_data');
         $org_id = $user_data['user_id'];
-        $this->db->order_by('id','DESC');
-        $this->db->where('stock_return_id',$invoice_id);
-        $this->db->where('org_id',$org_id);
-        return $this->db->get($table);
+
+        if ($data['return_type'] == 'Customer') {
+             $this->db->select('users.*,sale_invoice.*,customer.*,sale_invoice.status pay_status,sale_invoice.remaining cash_remaining,sale_invoice.id invoice_id');
+            $this->db->from('sale_invoice');
+            $this->db->order_by('sale_invoice.id', 'DESC');
+            $this->db->join("customer", "customer.id = sale_invoice.customer_id", "full");
+            $this->db->join("users", "users.id = sale_invoice.org_id", "full");
+            $this->db->where('sale_invoice.customer_id', $data['return_id']);
+            $this->db->where('sale_invoice.org_id', $org_id);
+            $this->db->where('sale_invoice.date >=',$data['from']);
+            $this->db->where('sale_invoice.date <=',$data['to']);
+        }
+        elseif ($data['return_type'] == 'Supplier') {
+            $this->db->select('users.*,purchase_invoice.*,supplier.*,purchase_invoice.status pay_status,purchase_invoice.remaining cash_remaining,purchase_invoice.id invoice_id');
+            $this->db->from('purchase_invoice');
+            $this->db->join("supplier", "supplier.id = purchase_invoice.supplier_id", "full");
+            $this->db->join("users", "users.id = purchase_invoice.org_id", "full");
+            $this->db->where('purchase_invoice.supplier_id', $data['return_id']);
+            $this->db->where('purchase_invoice.org_id', $org_id);
+            $this->db->where('purchase_invoice.date >=',$data['from']);
+            $this->db->where('purchase_invoice.date <=',$data['to']);
+        }
+        return $this->db->get();
     }
 
     function update_result($test_id,$result_value){
@@ -113,4 +131,14 @@ class Mdl_stock_return extends CI_Model {
         $this->db->delete($table);
     }
 
+    function _get_stock_return_data($stock_return_id,$org_id){
+        $this->db->select('users.*,stock_return.*,stock_return_product.*,supplier.*,stock_return.status pay_status,stock_return.remaining cash_remaining');
+        $this->db->from('stock_return');
+        $this->db->join("stock_return_product", "stock_return_product.stock_return_id = stock_return.id", "full");
+        $this->db->join("supplier", "supplier.id = stock_return.supplier_id", "full");
+        $this->db->join("users", "users.id = stock_return.org_id", "full");
+        $this->db->where('stock_return.id', $stock_return_id);
+        $this->db->where('stock_return.org_id', $org_id);
+        return $this->db->get();
+    }
 }

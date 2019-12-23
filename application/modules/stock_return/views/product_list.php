@@ -5,7 +5,7 @@
     $urlPath = $this->uri->segment(5);
     echo ucwords(str_replace('%20',' ',$urlPath));
     ?>
-    <a href="<?php echo ADMIN_BASE_URL . 'purchase_invoice/manage' ?>"><button type="button" class="btn btn-lg btn-primary pull-right"><i class="fa fa-chevron-left"></i>&nbsp;&nbsp;&nbsp;<b>Back</b></button></a></h3>
+    <a href="<?php echo ADMIN_BASE_URL . 'stock_return/manage' ?>"><button type="button" class="btn btn-lg btn-primary pull-right"><i class="fa fa-chevron-left"></i>&nbsp;&nbsp;&nbsp;<b>Back</b></button></a></h3>
     <div class="container-fluid">
         <!-- START DATATABLE 1 -->
         <div class="row">
@@ -35,7 +35,7 @@
                                     <td width='2%'><?php echo $i;?></td>
                                     <td><?php echo wordwrap($new->product_name) ?></td>
                                     <td><?php echo wordwrap($new->p_c_name) ?></td>
-                                    <td><?php echo wordwrap($new->sale_price) ?></td>
+                                    <td><?php echo wordwrap($new->price) ?></td>
                                     <td><?php echo wordwrap($new->qty) ?></td>
                                     <td><?php echo wordwrap($new->amount) ?></td>
                                 </tr>

@@ -8,7 +8,7 @@
         <h4><b>Date:&nbsp;&nbsp;</b></h4><?php echo $user['date']; ?>
     </div>
     <div class="col-md-6">
-        <h4><b>Supplier Name:&nbsp;&nbsp;</b></h4><?php echo $user['supplier_name']; ?>
+        <h4><b>Name:&nbsp;&nbsp;</b></h4><?php echo $user['return_name']; ?>
     </div>
 </div>
 <div class="row">
