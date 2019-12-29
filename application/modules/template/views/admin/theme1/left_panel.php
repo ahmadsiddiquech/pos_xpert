@@ -161,6 +161,13 @@
                     <span>Full Report</span>
                   </a>
                 </li>
+                <li class="<?php if($curr_url == 'report/income_statement'){echo 'active';}    ?>">
+                  <a href="<?php $controller='report/income_statement';
+                    echo ADMIN_BASE_URL . $controller ?>">
+                    <em class="fa fa-file-archive-o"></em>
+                    <span>Income Statement</span>
+                  </a>
+                </li>
             </ul>
           </li>
           <li class="<?php if($curr_url == 'expense'){echo 'active';}    ?>">

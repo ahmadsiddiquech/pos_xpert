@@ -64,7 +64,7 @@ class Mdl_report extends CI_Model {
         elseif ($data['return_type'] == 'Supplier') {
             $this->db->select('users.*,purchase_invoice.*,supplier.*,purchase_invoice.status pay_status,purchase_invoice.remaining cash_remaining,purchase_invoice.id invoice_id');
             $this->db->from('purchase_invoice');
-            $this->db->order_by('sale_invoice.id', 'DESC');
+            $this->db->order_by('purchase_invoice.id', 'DESC');
             $this->db->join("supplier", "supplier.id = purchase_invoice.supplier_id", "full");
             $this->db->join("users", "users.id = purchase_invoice.org_id", "full");
             $this->db->where('purchase_invoice.supplier_id', $data['return_id']);

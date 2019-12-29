@@ -302,13 +302,11 @@ var total_pay = $('input[name=total_pay]').val();
 
 $(document).on("click", ".delete", function(event){
 event.preventDefault();
-var amount = $(this).attr('amount');
-var total_pay = $('input[name=total_pay]').val();
-$('input[name=total_pay]').val(total_pay-amount);
-var net_amount = $('input[name=net_amount]').val();
-$('input[name=net_amount]').val(net_amount-amount);
-var remaining = $('input[name=remaining]').val();
-$('input[name=remaining]').val(remaining-amount);
+  var amount = $(this).attr('amount');
+  var total_pay = $('input[name=total_pay]').val();
+  $('input[name=total_pay]').val(total_pay-amount);
+  var net_amount = $('input[name=net_amount]').val();
+  $('input[name=net_amount]').val(net_amount-amount);
 
 });
 
