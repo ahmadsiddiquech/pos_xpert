@@ -205,7 +205,7 @@ select:invalid {
                             <h4 style="text-align: right;">Discount</h4>
                           </div>
                           <div class="col-md-6">
-                            <input type="number" name="discount" id="discount" class="form-control" value="0" style="text-align: center;" tabindex="8">
+                            <input type="number" name="discount" id="discount" class="form-control" value="0" style="text-align: center;" tabindex="13">
                           </div>
                         </div>
                         <div class="row">
@@ -218,10 +218,10 @@ select:invalid {
                         </div>
                         <div class="row">
                           <div class="col-md-6">
-                            <h4 style="text-align: right;">Cash Paid<span style="color: red">*</span></h4>
+                            <h4 style="text-align: right;">Cash Received<span style="color: red">*</span></h4>
                           </div>
                           <div class="col-md-6">
-                            <input type="number" name="paid_amount" id="paid_amount" class="form-control" value="" style="text-align: center;" tabindex="9" required="required">
+                            <input type="number" name="paid_amount" id="paid_amount" class="form-control" value="" style="text-align: center;" tabindex="14" required="required">
                           </div>
                         </div>
                         <div class="row">
@@ -252,12 +252,12 @@ select:invalid {
                     <div class="col-md-12">
                       <div class="col-md-offset-2 col-md-9" style="padding-bottom:15px;padding-top:15px;">
                        <span style="margin-left:40px"></span>
-                       <button type="submit" id="button1" class="btn btn-success btn-lg" tabindex="10" style="margin-left:20px; border-radius: 7px !important; padding: 20px;font-size: 20px;"><i class="fa fa-print"></i>&nbsp;Save & Print</button>
+                       <button type="submit" id="button1" class="btn btn-success btn-lg" tabindex="15" style="margin-left:20px; border-radius: 7px !important; padding: 20px;font-size: 20px;"><i class="fa fa-print"></i>&nbsp;Save & Print</button>
                        <a href="<?php echo ADMIN_BASE_URL . 'purchase_invoice/create'; ?>">
-                        <button type="button" class="btn btn-info btn-lg" style="margin-left:20px; border-radius: 7px !important; padding: 20px;font-size: 20px;" tabindex="11"><i class="fa fa-file"></i>&nbsp;New</button>
+                        <button type="button" class="btn btn-info btn-lg" style="margin-left:20px; border-radius: 7px !important; padding: 20px;font-size: 20px;" tabindex="16"><i class="fa fa-file"></i>&nbsp;New</button>
                         </a>
                         <a href="<?php echo ADMIN_BASE_URL . 'purchase_invoice'; ?>">
-                        <button type="button" class="btn btn-danger btn-lg" style="margin-left:20px;border-radius: 7px !important;padding: 20px;font-size: 20px;" tabindex="12"><i class="fa fa-undo"></i>&nbsp;Cancel</button>
+                        <button type="button" class="btn btn-danger btn-lg" style="margin-left:20px;border-radius: 7px !important;padding: 20px;font-size: 20px;" tabindex="17"><i class="fa fa-undo"></i>&nbsp;Cancel</button>
                         </a>
                       </div>
                     </div>
@@ -328,6 +328,7 @@ $('input[name=discount]').keyup(function() {
     $('input[name=net_amount]').val(net_amount);
     $('input[name=remaining]').val(net_amount);
 });
+
 
 $('input[name=paid_amount]').keyup(function() {
     var net_amount = parseInt($('input[name=net_amount]').val());

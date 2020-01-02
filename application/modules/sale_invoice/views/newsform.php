@@ -318,6 +318,10 @@ $('input[name=discount]').keyup(function() {
     $('input[name=remaining]').val(net_amount);
 });
 
+$('input[name=sale_qty]').keyup(function() {
+    alert("ghf");
+});
+
 $('input[name=paid_amount]').keyup(function() {
     var net_amount = parseInt($('input[name=net_amount]').val());
     var paid_amount = $(this).val();

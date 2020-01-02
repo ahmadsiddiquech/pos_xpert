@@ -3,7 +3,6 @@
 <style type="text/css">
   @media print {
     html, body {
-        
         font-family: 'Roboto', sans-serif;
     }
   }

@@ -2,10 +2,11 @@
 <style type="text/css">
   @media print {
     html, body {
-        width: 80mm;
-        font-family: 'Roboto', sans-serif;
+      width: 80mm;
+      font-family: 'Roboto', sans-serif;
     }
   }
+  @page { margin: 0; }
   body {
     font-family: 'Roboto', sans-serif;
   }

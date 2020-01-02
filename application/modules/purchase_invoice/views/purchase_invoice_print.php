@@ -99,7 +99,7 @@
           <td colspan="1" align="right"><b>Rs.<?php echo $invoice[0]['discount']; ?></b></td>
         </tr>
         <tr>
-          <td colspan="4" align="right"><b><h3>Total: </h3></b></td>
+          <td colspan="4" align="right"><b><h3>Grand Total: </h3></b></td>
           <td colspan="1" align="right"><b><h3>Rs.<?php echo $invoice[0]['grand_total']; ?></h3></b></td>
         </tr>
         <tr>
