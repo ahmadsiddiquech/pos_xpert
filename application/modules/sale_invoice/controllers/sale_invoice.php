@@ -120,12 +120,14 @@ class sale_invoice extends MX_Controller
     function submit() {
         $update_id = $this->uri->segment(4);
         $data = $this->_get_data_from_post();
+
         $user_data = $this->session->userdata('user_data');
         $org_id = $user_data['user_id'];
         if ($update_id != 0) {
             $id = $this->_update($update_id,$org_id,$data);
         }
         else {
+            // print_r($data);exit();
             $sale_invoice_id = $this->_insert_sale_invoice($data);
             
             if ($data['customer_id'] != 0) {
@@ -140,10 +142,20 @@ class sale_invoice extends MX_Controller
                 elseif ($data['change'] > 0) {
                     $data2['paid'] = $customer[0]['paid'] + $data['grand_total'];
                 }
-
                 $this->_update_customer_amount($data['customer_id'],$data2,$org_id);
             }
 
+            if ($data['change'] == 0) {
+                    $data3['paid'] = $data['cash_received'];
+                }
+                elseif ($data['change'] > 0) {
+                    $data3['paid'] = $data['grand_total'];
+            }
+
+            $cash_in_hand = Modules::run('account/_get_cash_in_hand')->result_array();
+            $cash['opening_balance'] = $cash_in_hand[0]['opening_balance'] + $data3['paid'];
+            Modules::run('account/_update_cash_in_hand',$cash);
+            
             $this->insert_product($sale_invoice_id,$org_id);
         }
         $this->session->set_flashdata('message', 'sale_invoice'.' '.DATA_SAVED);
@@ -214,7 +226,7 @@ class sale_invoice extends MX_Controller
                     $html.='<tr>';
                     $html.='<td><input style="text-align: center;" class="form-control" readonly type="text" name="sale_product[]" value="'.$value['id'].','.$value['name'].' - '.$value['p_c_name'].'"></td>';
                     $html.='<td><input style="text-align: center;" class="form-control" readonly type="text" name="sale_price[]" value='.$value['sale_price'].'></td>';
-                    $html.='<td><input style="text-align: center;" class="form-control" type="number"  name="sale_qty" value='.$qty.'></td>';
+                    $html.='<td><input style="text-align: center;" class="form-control" type="number"  name="sale_qty[]" value='.$qty.'></td>';
                     $html.='<td><input style="text-align: center;" class="form-control" readonly type="number" name="sale_amount[]" value='.$qty*$value['sale_price'].'></td>';
                     $html.='<td><a class="btn delete" onclick="delete_row(this)" amount='.$qty*$value['sale_price'].'><i class="fa fa-remove"  title="Delete Item" style="color:red;"></i></a></td>';
                     $html.='</tr>';

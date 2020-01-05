@@ -27,6 +27,36 @@
                    <span>Dashboard</span>
                 </a>
           </li>
+          <li>
+            <a href="#account" data-toggle="collapse">
+                <em class="fa fa-male"></em>
+                <span>Account</span>
+                <i class="fa fa-caret-down"></i>
+            </a>
+            <ul id="account" class="nav sidebar-subnav collapse" style="padding-left: 30px">
+                <li class="<?php if($curr_url == 'account'){echo 'active';}    ?>">
+                  <a href="<?php $controller='account';
+                    echo ADMIN_BASE_URL . $controller ?>">
+                    <em class="fa fa-file-text-o"></em>
+                    <span>View Account</span>
+                  </a>
+                </li>
+                <li class="<?php if($curr_url == 'account/transaction_list'){echo 'active';}    ?>">
+                  <a href="<?php $controller='account/transaction_list';
+                    echo ADMIN_BASE_URL . $controller ?>">
+                    <em class="fa fa-dollar"></em>
+                    <span>View Transaction</span>
+                  </a>
+                </li>
+                <!-- <li class="<?php if($curr_url == 'account'){echo 'active';}    ?>">
+                  <a href="<?php $controller='account';
+                    echo ADMIN_BASE_URL . $controller ?>">
+                    <em class="fa fa-pie-chart"></em>
+                    <span>Chart of Account</span>
+                  </a>
+                </li> -->
+            </ul>
+          </li>
           <li class="<?php if($curr_url == 'customer'){echo 'active';}    ?>">
                 <a href="<?php $controller='customer'; 
                    echo ADMIN_BASE_URL . $controller ?>">

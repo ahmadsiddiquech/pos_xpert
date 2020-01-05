@@ -133,8 +133,18 @@ class purchase_invoice extends MX_Controller
 
             $this->_update_supplier_amount($data['supplier_id'],$data2,$org_id);
             $this->insert_product($purchase_invoice_id,$org_id);
-
         }
+
+        if ($data['change'] == 0) {
+                $data3['paid'] = $data['cash_received'];
+            }
+            elseif ($data['change'] > 0) {
+                $data3['paid'] = $data['grand_total'];
+        }
+
+        $cash_in_hand = Modules::run('account/_get_cash_in_hand')->result_array();
+        $cash['opening_balance'] = $cash_in_hand[0]['opening_balance'] - $data3['paid'];
+        Modules::run('account/_update_cash_in_hand',$cash);
         $this->session->set_flashdata('message', 'purchase_invoice'.' '.DATA_SAVED);
         $this->session->set_flashdata('status', 'success');
         

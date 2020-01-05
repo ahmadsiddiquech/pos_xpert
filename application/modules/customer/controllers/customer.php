@@ -103,6 +103,10 @@ class Customer extends MX_Controller
         $data2['remaining'] = $data['remaining'] - $data['transaction_amount'];
         Modules::run('sale_invoice/_update_customer_amount',$data['depositer_id'],$data2,$data['org_id']);
 
+        $cash_in_hand = Modules::run('account/_get_cash_in_hand')->result_array();
+        $cash['opening_balance'] = $cash_in_hand[0]['opening_balance'] + $data['transaction_amount'];
+        Modules::run('account/_update_cash_in_hand',$cash);
+
         $this->session->set_flashdata('message', 'customer'.' '.DATA_SAVED);                                        
         $this->session->set_flashdata('status', 'success');
         
