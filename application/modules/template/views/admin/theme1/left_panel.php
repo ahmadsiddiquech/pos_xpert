@@ -48,13 +48,13 @@
                     <span>View Transaction</span>
                   </a>
                 </li>
-                <!-- <li class="<?php if($curr_url == 'account'){echo 'active';}    ?>">
-                  <a href="<?php $controller='account';
+                <li class="<?php if($curr_url == 'account/chart_of_account'){echo 'active';}    ?>">
+                  <a href="<?php $controller='account/chart_of_account';
                     echo ADMIN_BASE_URL . $controller ?>">
                     <em class="fa fa-pie-chart"></em>
                     <span>Chart of Account</span>
                   </a>
-                </li> -->
+                </li>
             </ul>
           </li>
           <li class="<?php if($curr_url == 'customer'){echo 'active';}    ?>">

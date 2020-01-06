@@ -41,6 +41,15 @@ class Mdl_account extends CI_Model {
         return $this->db->get($table);
     }
 
+    function _get_chart_of_account($order_by){
+        $user_data = $this->session->userdata('user_data');
+        $org_id = $user_data['user_id'];
+        $table = $this->get_table();
+        $this->db->where('org_id',$org_id);
+        $this->db->order_by($order_by);
+        return $this->db->get($table);
+    }
+
     function _insert($data) {
         $table = $this->get_table();
         $this->db->insert($table, $data);
@@ -96,7 +105,7 @@ class Mdl_account extends CI_Model {
         $this->db->update($table, $data);
     }
 
-    function _update_cash(,$type,$data) {
+    function _update_cash($type,$data) {
         $user_data = $this->session->userdata('user_data');
         $org_id = $user_data['user_id'];
         $table = $this->get_table();

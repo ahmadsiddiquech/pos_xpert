@@ -35,6 +35,18 @@ class Account extends MX_Controller
         $this->template->admin($data);
     }
 
+    function chart_of_account() {
+        $account = $this->_get('id desc');
+        $customer = Modules::run('customer/_get','id desc');
+        $supplier = Modules::run('supplier/_get','id desc');
+        $data['news'] = $account;
+        $data['customer'] = $customer;
+        $data['supplier'] = $supplier;
+        $data['view_file'] = 'chart_of_account';
+        $this->load->module('template');
+        $this->template->admin($data);
+    }
+
     function transaction() {
         $account = $this->_get('id desc')->result_array();
         $data['account'] = $account;
@@ -187,6 +199,11 @@ class Account extends MX_Controller
     function _get($order_by) {
         $this->load->model('mdl_account');
         return $this->mdl_account->_get($order_by);
+    }
+
+    function _get_chart_of_account($order_by){
+        $this->load->model('mdl_account');
+        return $this->mdl_account->_get_chart_of_account($order_by);
     }
 
     function _get_by_arr_id($arr_col) {

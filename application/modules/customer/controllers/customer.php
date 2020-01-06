@@ -221,8 +221,7 @@ class Customer extends MX_Controller
 
     function _get($order_by) {
         $this->load->model('mdl_customer');
-        $query = $this->mdl_customer->_get($order_by);
-        return $query;
+        return $this->mdl_customer->_get($order_by);
     }
 
     function _get_by_arr_id($arr_col) {
