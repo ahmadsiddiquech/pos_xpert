@@ -86,41 +86,21 @@ class Account extends MX_Controller
         $data['org_id'] = $user_data['user_id'];
         $this->_insert_transaction($data);
 
-        if ($type_from == 'Cash-in-hand') {
+        if ($type_from == 'Cash-in-hand' || $type_from == 'Loan' || $type_from == 'Asset' || $type_from == 'Bank') {
             $cash_in_hand = $this->_get_cash_in_hand()->result_array();
             $cash['opening_balance'] = $cash_in_hand[0]['opening_balance'] - $data['amount'];
             $this->_update_cash_in_hand($cash);
         }
-        elseif ($type_from == 'Bank') {
-            $cash = $this->_get_account_balance($type_to)->result_array();
-            $cash['paid'] = $cash[0]['paid'] + $data['amount'];
-            $cash['remaining'] = $cash[0]['remaining'] - $data['amount'];
-            $this->_update_cash($type_from,$data);
-        }
-        elseif ($type_from == 'Loan') {
-            $cash = $this->_get_account_balance($type_to)->result_array();
-            $cash['paid'] = $cash[0]['opening_balance'] - $data['amount'];
-            $this->_update_cash($type_from,$data);
-        }
-        if ($type_to == 'Cash-in-hand') {
+
+        if ($type_to == 'Cash-in-hand' || $type_to == 'Bank') {
             $cash_in_hand = $this->_get_cash_in_hand()->result_array();
             $cash['opening_balance'] = $cash_in_hand[0]['opening_balance'] + $data['amount'];
             $this->_update_cash_in_hand($cash);
         }
-        elseif ($type_to == 'Bank') {
-            $cash = $this->_get_account_balance($type_to)->result_array();
-            $cash['opening_balance'] = $cash[0]['opening_balance'] + $data['amount'];
-            $cash['remaining'] = $cash[0]['remaining'] + $data['amount'];
-            $this->_update_cash($type_from,$data);
-        }
-        elseif ($type_to == 'Salary') {
+        elseif ($type_to == 'Salary' || $type_to == 'Loan' || $type_to == 'Asset') {
             $cash = $this->_get_account_balance($type_to)->result_array();
             $cash['paid'] = $cash[0]['paid'] + $data['amount'];
-            $this->_update_cash($type_from,$data);
-        }
-        elseif ($type_to == 'Loan') {
-            $cash = $this->_get_account_balance($type_to)->result_array();
-            $cash['opening_balance'] = $cash[0]['opening_balance'] + $data['amount'];
+            $cash['paid'] = $cash[0]['opening_balance'] - $cash['paid'];
             $this->_update_cash($type_from,$data);
         }
 

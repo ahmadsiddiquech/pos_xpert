@@ -35,13 +35,13 @@
                                     <td><?php echo $new->type ?></td>
                                     <td><?php echo $new->name ?></td>
                                     <td><?php echo $new->date ?></td>
-                                    <? if ($new->type == 'Cash-in-hand' || $new->type == 'Bank') { ?>
-                                        <td><?php echo $new->opening_balance ?></td>
+                                    <? if ($new->type == 'Cash-in-hand' || $new->type == 'Bank' || $new->type == 'Asset') { ?>
                                         <td>0</td>
+                                        <td><?php echo $new->opening_balance ?></td>
                                     <?php } 
-                                        elseif ($new->type == 'Salary' || $new->type == 'Invester') { ?>
-                                            <td>0</td>
+                                        elseif ($new->type == 'Salary' || $new->type == 'Invester' || $new->type == 'Loan') { ?>
                                             <td><?php echo $new->paid ?></td>
+                                            <td>0</td>
                                     <?php } ?>
                                 </tr>
                                 <?php } ?>    
@@ -56,8 +56,8 @@
                                     <td><?php echo 'Customer' ?></td>
                                     <td><?php echo $new->name ?></td>
                                     <td><?php echo date('Y-m-d') ?></td>
-                                    <td><?php echo $new->paid ?></td>
                                     <td>0</td>
+                                    <td><?php echo $new->remaining ?></td>
                                 </tr>
                                 <?php } ?>    
                             <?php }
@@ -71,8 +71,8 @@
                                     <td><?php echo 'Supplier' ?></td>
                                     <td><?php echo $new->name ?></td>
                                     <td><?php echo date('Y-m-d') ?></td>
+                                    <td><?php echo $new->remaining ?></td>
                                     <td>0</td>
-                                    <td><?php echo $new->paid ?></td>
                                     
                                 </tr>
                                 <?php } ?>    

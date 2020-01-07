@@ -82,6 +82,7 @@
                               <option value="Bank" <?php if($news['type']=='Bank') echo "selected"; ?>>Bank</option>
                               <option value="Salary" <?php if($news['type']=='Salary') echo "selected"; ?>>Salary</option>
                               <option value="Capital" <?php if($news['type']=='Capital') echo "selected"; ?>>Capital</option>
+                              <option value="Asset" <?php if($news['type']=='Asset') echo "selected"; ?>>Asset</option>
                               <option value="Cash-in-hand" <?php if($news['type']=='Cash-in-hand') echo "selected"; ?>>Cash-in-hand</option>
                             </select>
                       </div>

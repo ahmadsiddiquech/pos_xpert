@@ -226,7 +226,7 @@ class sale_invoice extends MX_Controller
                     $html.='<tr>';
                     $html.='<td><input style="text-align: center;" class="form-control" readonly type="text" name="sale_product[]" value="'.$value['id'].','.$value['name'].' - '.$value['p_c_name'].'"></td>';
                     $html.='<td><input style="text-align: center;" class="form-control" readonly type="text" name="sale_price[]" value='.$value['sale_price'].'></td>';
-                    $html.='<td><input style="text-align: center;" class="form-control" type="number"  name="sale_qty[]" value='.$qty.'></td>';
+                    $html.='<td><input style="text-align: center;" class="form-control" type="number"  name="sale_qty[]" readonly value='.$qty.'></td>';
                     $html.='<td><input style="text-align: center;" class="form-control" readonly type="number" name="sale_amount[]" value='.$qty*$value['sale_price'].'></td>';
                     $html.='<td><a class="btn delete" onclick="delete_row(this)" amount='.$qty*$value['sale_price'].'><i class="fa fa-remove"  title="Delete Item" style="color:red;"></i></a></td>';
                     $html.='</tr>';

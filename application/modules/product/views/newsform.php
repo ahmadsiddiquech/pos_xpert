@@ -1,3 +1,7 @@
+<link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/themes/smoothness/jquery-ui.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/chosen/1.8.7/chosen.jquery.min.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/chosen/1.8.7/chosen.min.css">
+
 <div class="page-content-wrapper">
   <div class="page-content"> 
     <div class="content-wrapper">
@@ -66,11 +70,11 @@
                               <label>Supplier</label>
                             </div>
                             <div class="col-md-8">
-                              <select name="supplier" id="supplier" class="form-control" tabindex="2">
-                              <option value="">Select</option>
+                              <select name="supplier" id="supplier" class="form-control chosen" tabindex="2">
+                              <option value=""></option>
                               <?php if(isset($supplier) && !empty($supplier))
                               foreach ($supplier as $key => $value):?>
-                                <option <?php if(isset($news['supplier_id']) && $news['supplier_id'] == $value['id']) echo "selected"; ?> value="<?php echo $value['id'].','.$value['name'] ?>"><?=$value['name'];?></option>
+                                <option <?php if(isset($news['supplier_id']) && $news['supplier_id'] == $value['id']) echo "selected"; ?> value="<?php echo $value['id'].','.$value['name'] ?>"><?php echo $value['name'].' - '.$value['company_name'];?></option>
                               <?php endforeach; ?>
                             </select>
                             </div>
@@ -85,8 +89,8 @@
                               <label>Parent Category</label>
                             </div>
                             <div class="col-md-8">
-                              <select name="parent_category" id="parent_category" class="form-control" tabindex="3">
-                              <option value="">Select</option>
+                              <select name="parent_category chosen" id="parent_category" class="form-control chosen" tabindex="3">
+                              <option value=""></option>
                               <?php if(isset($category) && !empty($category))
                               foreach ($category as $key => $value):?>
                                 <option <?php if(isset($news['p_c_id']) && $news['p_c_id'] == $value['id']) echo "selected"; ?> value="<?php echo $value['id'].','.$value['name'] ?>"><?=$value['name'];?></option>
@@ -270,5 +274,7 @@
           }
         });
   });
+
+  $(".chosen").chosen();
 });
 </script>
