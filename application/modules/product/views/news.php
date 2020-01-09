@@ -14,8 +14,9 @@
                         <tr class="bg-col">
                         <th class="sr">S.No</th>
                         <th>Product Name</th>
-                        <th>Categpry</th>
+                        <th>Category</th>
                         <th>Stock</th>
+                        <th>Purchase Price</th>
                         <th>Sale Price</th>
                         <th class="" style="width:300px;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Actions</th>
                         </tr>
@@ -23,10 +24,12 @@
                         <tbody>
                                 <?php
                                 $i = 0;
+                                $price = 0;
                                 if (isset($news)) {
                                     foreach ($news->result() as
                                             $new) {
                                         $i++;
+                                        $price = $price + ($new->stock*$new->purchase_price);
                                         $set_publish_url = ADMIN_BASE_URL . 'product/set_publish/' . $new->id;
                                         $set_unpublish_url = ADMIN_BASE_URL . 'product/set_unpublish/' . $new->id ;
                                         $edit_url = ADMIN_BASE_URL . 'product/create/' . $new->id ;
@@ -37,6 +40,7 @@
                                         <td><?php echo wordwrap($new->name , 50 , "<br>\n")  ?></td>
                                          <td><?php echo $new->p_c_name ?></td>
                                         <td><?php echo $new->stock ?></td>
+                                        <td><?php echo $new->purchase_price ?></td>
                                         <td><?php echo $new->sale_price ?></td>
                                         <td class="table_action">
 
@@ -69,6 +73,9 @@
                                 <?php } ?>
                             </tbody>
                     </table>
+                    <div class="pull-right" style="padding-right: 60px">
+                        <h4 style="color:red;">Closing Stock: <?php echo $price ?> PKR</h4>
+                    </div>
                     </div>
                 </div>
             </div>

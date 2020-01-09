@@ -116,7 +116,7 @@
                                                         $attribute = array('class' => 'control-label col-md-4');
                                                         ?>
                                                         
-                          <?php echo form_label('Account Receivable', 'total', $attribute); ?>
+                          <?php echo form_label('Amount Receivable', 'total', $attribute); ?>
                           <div class="col-md-8"> <?php echo form_input($data); ?> </div>
                         </div>
                       </div>
@@ -137,7 +137,7 @@
                                                         $attribute = array('class' => 'control-label col-md-4');
                                                         ?>
                                                         
-                          <?php echo form_label('Account Received', 'paid', $attribute); ?>
+                          <?php echo form_label('Amount Received', 'paid', $attribute); ?>
                           <div class="col-md-8"> <?php echo form_input($data); ?> </div>
                         </div>
                       </div>

@@ -117,6 +117,7 @@ select:invalid {
                             <select name="status" required="required" class="form-control" tabindex="4">
                               <option value="Un-Paid" <?php if($news['status']=='Un-Paid') echo "selected"; ?>>Un-Paid</option>
                               <option value="Paid" <?php if($news['status']=='Paid') echo "selected"; ?>>Paid</option>
+                              <option value="Partial" <?php if($news['status']=='Partial') echo "selected"; ?>>Partial</option>
                             </select>
                       </div>
                         </div>

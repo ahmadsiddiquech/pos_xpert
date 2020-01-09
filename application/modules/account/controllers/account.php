@@ -62,6 +62,113 @@ class Account extends MX_Controller
         $this->template->admin($data);
     }
 
+    function cash_payment() {
+        $user_data = $this->session->userdata('user_data');
+        $org_id = $user_data['user_id'];
+        $account = $this->_get('id desc')->result_array();
+        $supplier = Modules::run('supplier/_get_by_arr_id_supplier',$org_id)->result_array();
+        $data['account'] = $account;
+        $data['supplier'] = $supplier;
+        $data['view_file'] = 'cash_payment';
+        $this->load->module('template');
+        $this->template->admin($data);
+    }
+
+    function submit_cash_payment() {
+        $account_from = $this->input->post('account_from');
+        if (isset($account_from) && !empty($account_from)) {
+            $account_from2=explode(',', $account_from);
+            $data['account_from_id'] = $account_from2[0];
+            $data['account_from_name'] = $account_from2[1];
+            $type_from = $account_from2[2];
+        }
+
+        $account_to = $this->input->post('account_to');
+        if (isset($account_to) && !empty($account_to)) {
+            $account_to2=explode(',', $account_to);
+            $data['account_to_id'] = $account_to2[0];
+            $data['account_to_name'] = $account_to2[1];
+        }
+        $data['amount'] = $this->input->post('amount');
+        $data['comment'] = $this->input->post('comment');
+        $data['ref_no'] = $this->input->post('ref_no');
+        $data['date'] = date('Y-m-d');
+        $user_data = $this->session->userdata('user_data');
+        $data['org_id'] = $user_data['user_id'];
+        $this->_insert_transaction($data);
+
+        if ($type_from == 'Cash-in-hand' || $type_from == 'Loan' || $type_from == 'Asset' || $type_from == 'Bank') {
+            $cash_in_hand = $this->_get_cash_in_hand()->result_array();
+            $cash['opening_balance'] = $cash_in_hand[0]['opening_balance'] - $data['amount'];
+            $this->_update_cash_in_hand($cash);
+        }
+
+        $where['id'] = $data['account_to_id'];
+        $supplier = Modules::run('supplier/_get_by_arr_id',$where)->result_array();
+
+        $data2['remaining'] = $supplier[0]['remaining'] - $data['amount'];
+        $data2['paid'] = $supplier[0]['paid'] + $data['amount'];
+
+        Modules::run('purchase_invoice/_update_supplier_amount',$data['account_to_id'],$data2,$data['org_id']);
+
+        $this->session->set_flashdata('message', 'account'.' '.DATA_SAVED);                 
+        $this->session->set_flashdata('status', 'success');
+        redirect(ADMIN_BASE_URL . 'account/transaction');
+    }
+
+    function cash_recieved() {
+        $user_data = $this->session->userdata('user_data');
+        $org_id = $user_data['user_id'];
+        $account = $this->_get('id desc')->result_array();
+        $customer = Modules::run('customer/_get_by_arr_id_customer',$org_id)->result_array();
+        $data['account'] = $account;
+        $data['customer'] = $customer;
+        $data['view_file'] = 'cash_recieved';
+        $this->load->module('template');
+        $this->template->admin($data);
+    }
+
+    function submit_cash_recieved() {
+        $account_from = $this->input->post('account_from');
+        if (isset($account_from) && !empty($account_from)) {
+            $account_from2=explode(',', $account_from);
+            $data['account_from_id'] = $account_from2[0];
+            $data['account_from_name'] = $account_from2[1];
+        }
+
+        $account_to = $this->input->post('account_to');
+        if (isset($account_to) && !empty($account_to)) {
+            $account_to2=explode(',', $account_to);
+            $data['account_to_id'] = $account_to2[0];
+            $data['account_to_name'] = $account_to2[1];
+            $type_to = $account_to2[2];
+        }
+        $data['amount'] = $this->input->post('amount');
+        $data['comment'] = $this->input->post('comment');
+        $data['ref_no'] = $this->input->post('ref_no');
+        $data['date'] = date('Y-m-d');
+        $user_data = $this->session->userdata('user_data');
+        $data['org_id'] = $user_data['user_id'];
+        $this->_insert_transaction($data);
+
+        if ($type_to == 'Cash-in-hand' || $type_to == 'Loan' || $type_to == 'Asset' || $type_to == 'Bank') {
+            $cash_in_hand = $this->_get_cash_in_hand()->result_array();
+            $cash['opening_balance'] = $cash_in_hand[0]['opening_balance'] - $data['amount'];
+            $this->_update_cash_in_hand($cash);
+        }
+
+        $where['id'] = $data['account_from_id'];
+        $customer = Modules::run('customer/_get_by_arr_id',$where)->result_array();
+
+        $data2['remaining'] = $customer[0]['remaining'] - $data['amount'];
+        $data2['paid'] = $customer[0]['paid'] + $data['amount'];
+        Modules::run('sale_invoice/_update_customer_amount',$data['account_from_id'],$data2,$data['org_id']);
+
+        $this->session->set_flashdata('message', 'account'.' '.DATA_SAVED);                 
+        $this->session->set_flashdata('status', 'success');
+        redirect(ADMIN_BASE_URL . 'account/transaction');
+    }
+
     function submit_transaction() {
         $account_from = $this->input->post('account_from');
         if (isset($account_from) && !empty($account_from)) {

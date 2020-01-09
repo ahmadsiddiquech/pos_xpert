@@ -41,13 +41,6 @@
                     <span>View Account</span>
                   </a>
                 </li>
-                <li class="<?php if($curr_url == 'account/transaction_list'){echo 'active';}    ?>">
-                  <a href="<?php $controller='account/transaction_list';
-                    echo ADMIN_BASE_URL . $controller ?>">
-                    <em class="fa fa-dollar"></em>
-                    <span>View Transaction</span>
-                  </a>
-                </li>
                 <li class="<?php if($curr_url == 'account/chart_of_account'){echo 'active';}    ?>">
                   <a href="<?php $controller='account/chart_of_account';
                     echo ADMIN_BASE_URL . $controller ?>">
@@ -102,6 +95,64 @@
                 </a>
           </li>
           <li>
+            <a href="#transaction" data-toggle="collapse">
+                <em class="fa fa-dollar"></em>
+                <span>Transaction</span>
+                <i class="fa fa-caret-down"></i>
+            </a>
+            <ul id="transaction" class="nav sidebar-subnav collapse" style="padding-left: 30px">
+                <li class="<?php if($curr_url == 'sale_invoice'){echo 'active';}    ?>">
+                  <a href="<?php $controller='sale_invoice';
+                    echo ADMIN_BASE_URL . $controller ?>">
+                    <em class="fa fa-plus-square"></em>
+                    <span>Sale Invoice</span>
+                  </a>
+                </li>
+                <li class="<?php if($curr_url == 'purchase_invoice'){echo 'active';}    ?>">
+                  <a href="<?php $controller='purchase_invoice';
+                    echo ADMIN_BASE_URL . $controller ?>">
+                    <em class="fa fa-plus-square"></em>
+                    <span>Purchase Invoice</span>
+                  </a>
+                </li>
+                <li class="<?php if($curr_url == 'stock_return'){echo 'active';}    ?>">
+                  <a href="<?php $controller='stock_return';
+                    echo ADMIN_BASE_URL . $controller ?>">
+                    <em class="fa fa-plus-square"></em>
+                    <span>Stock Return Invoice</span>
+                  </a>
+                </li>
+                <li class="<?php if($curr_url == 'account/cash_payment'){echo 'active';}    ?>">
+                  <a href="<?php $controller='account/cash_payment';
+                    echo ADMIN_BASE_URL . $controller ?>">
+                    <em class="fa fa-plus-square"></em>
+                    <span>Cash Payment</span>
+                  </a>
+                </li>
+                <li class="<?php if($curr_url == 'account/cash_recieved'){echo 'active';}    ?>">
+                  <a href="<?php $controller='account/cash_recieved';
+                    echo ADMIN_BASE_URL . $controller ?>">
+                    <em class="fa fa-plus-square"></em>
+                    <span>Cash Recieved</span>
+                  </a>
+                </li>
+                <li class="<?php if($curr_url == 'account/transaction'){echo 'active';}    ?>">
+                  <a href="<?php $controller='account/transaction';
+                    echo ADMIN_BASE_URL . $controller ?>">
+                    <em class="fa fa-plus-square"></em>
+                    <span>Bank Deposit</span>
+                  </a>
+                </li>
+                <li class="<?php if($curr_url == 'account/bank_recieved'){echo 'active';}    ?>">
+                  <a href="<?php $controller='account/bank_recieved';
+                    echo ADMIN_BASE_URL . $controller ?>">
+                    <em class="fa fa-plus-square"></em>
+                    <span>Bank Recieved/JV</span>
+                  </a>
+                </li>
+            </ul>
+          </li>
+          <!-- <li>
             <a href="#sale_invoice" data-toggle="collapse">
                 <em class="fa fa-shopping-cart"></em>
                 <span>Sale Invoice</span>
@@ -169,7 +220,7 @@
                   </a>
                 </li>
             </ul>
-          </li>
+          </li> -->
           <li>
             <a href="#report" data-toggle="collapse">
                 <em class="fa fa-bar-chart"></em>
@@ -177,6 +228,34 @@
                 <i class="fa fa-caret-down"></i>
             </a>
             <ul id="report" class="nav sidebar-subnav collapse" style="padding-left: 30px">
+                <li class="<?php if($curr_url == 'sale_invoice/manage'){echo 'active';}    ?>">
+                  <a href="<?php $controller='sale_invoice/manage';
+                    echo ADMIN_BASE_URL . $controller ?>">
+                    <em class="fa fa-file-text-o"></em>
+                    <span>Sale Report</span>
+                  </a>
+                </li>
+                <li class="<?php if($curr_url == 'purchase_invoice/manage'){echo 'active';}    ?>">
+                  <a href="<?php $controller='purchase_invoice/manage';
+                    echo ADMIN_BASE_URL . $controller ?>">
+                    <em class="fa fa-file-text-o"></em>
+                    <span>Purchase Report</span>
+                  </a>
+                </li>
+                <li class="<?php if($curr_url == 'stock_return/manage'){echo 'active';}    ?>">
+                  <a href="<?php $controller='stock_return/manage';
+                    echo ADMIN_BASE_URL . $controller ?>">
+                    <em class="fa fa-file-text-o"></em>
+                    <span>Stock Return Report</span>
+                  </a>
+                </li>
+                <li class="<?php if($curr_url == 'account/transaction_list'){echo 'active';}    ?>">
+                  <a href="<?php $controller='account/transaction_list';
+                    echo ADMIN_BASE_URL . $controller ?>">
+                    <em class="fa fa-plus-square"></em>
+                    <span>Transaction Report</span>
+                  </a>
+                </li>
                 <li class="<?php if($curr_url == 'report'){echo 'active';}    ?>">
                   <a href="<?php $controller='report';
                     echo ADMIN_BASE_URL . $controller ?>">
