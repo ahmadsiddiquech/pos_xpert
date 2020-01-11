@@ -149,8 +149,8 @@ select:invalid {
                             <div class="control-label col-md-1">
                               <label>Product</label>
                             </div>
-                            <div class="col-md-8">
-                              <select name="product" id="product" class="chosen form-control product" tabindex="6">
+                            <div class="col-md-11">
+                              <select name="product" id="product" class="chosen form-control product" tabindex="5">
                                 <option value=""></option>
                               <?php if(isset($product) && !empty($product))
                               foreach ($product as $key => $value):?>
@@ -158,17 +158,25 @@ select:invalid {
                               <?php endforeach; ?>
                             </select>
                             </div>
-                          
-                          <div class="control-label col-md-1">
-                          <label>Qty</label>
-                        </div>
-                        <div class="col-md-2">
-                          <input type="text" name="qty" class="form-control" value="1" style="text-align: center;">
-                        </div>
                         </div>
                       </div>
-                    <button class="btn btn-primary add_product btn-lg" tabindex="7" style="border-radius: 7px !important;padding-left: 30px;padding-right: 30px;font-size: 20px;">Add</button>
+                    <button class="btn btn-primary add_product btn-lg" tabindex="6" style="border-radius: 7px !important;padding-left: 30px;padding-right: 30px;font-size: 20px;">Add</button>
                     </div>
+                    <div class="row">
+                    <div class="col-md-1"></div>
+                    <div class="control-label col-md-2">
+                          <label>Unit Price</label>
+                          </div>
+                        <div class="col-md-2">
+                          <input type="text" name="price" id="price" class="form-control" value="" style="text-align: center;">
+                        </div>
+                    <div class="control-label col-md-2">
+                          <label>Qty</label>
+                          </div>
+                        <div class="col-md-2">
+                          <input type="text" name="qty" id="qty" class="form-control" value="" style="text-align: center;">
+                        </div>
+                  </div>
                     <div class="row" style="padding-top: 20px;">
                       <div class="col-md-1">
                       </div>
@@ -288,15 +296,29 @@ select:invalid {
 
 $(document).ready(function(){
 
+  $("#product").change(function () {
+      var product = this.value;
+       $.ajax({
+            type: 'POST',
+            url: "<?php echo ADMIN_BASE_URL?>purchase_invoice/get_product",
+            data: {'product': product },
+            async: false,
+            success: function(result) {
+            $("#price").val(result);
+          }
+        });
+  });
+
 $(document).on("click", ".add_product", function(event){
 event.preventDefault();
 var product = $(this).parent().find('select[name=product]').val();
 var qty = $('input[name=qty]').val();
+var price = $('input[name=price]').val();
 var total_pay = $('input[name=total_pay]').val();
     $.ajax({
                 type: 'POST',
                 url: "<?php echo ADMIN_BASE_URL?>purchase_invoice/add_product",
-                data: {'product': product ,'total_pay' :total_pay , 'qty':qty},
+                data: {'product': product ,'total_pay' :total_pay , 'qty':qty, 'price':price},
                 dataType: 'json',
                 async: false,
                 success: function(result) {

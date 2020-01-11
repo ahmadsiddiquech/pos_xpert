@@ -7,7 +7,7 @@
     <div class="content-wrapper">
         <!-- BEGIN PAGE TITLE & BREADCRUMB-->
       <h3>
-        Bank Recieved/Journal Voucher
+        Bank Recieved
    <a href="<?php echo ADMIN_BASE_URL . 'account/transaction_list'; ?>"><button type="button" class="btn btn-lg btn-primary pull-right"><i class="fa fa-chevron-left"></i>&nbsp;&nbsp;&nbsp;<b>Back</b></button></a></h3>
             
     </div>

@@ -207,9 +207,21 @@ class sale_invoice extends MX_Controller
 
     //=============AJAX FUNCTIONS==============
 
+    function get_product(){
+        $product = $this->input->post('product');
+        if(isset($product) && !empty($product)){
+            $productData = explode(",",$product);
+            $product_id = $productData[0];
+            $sale_price = $productData[2];
+        }
+        print_r($sale_price);
+
+    }
+
     function add_product(){
         $product = $this->input->post('product');
         $qty = $this->input->post('qty');
+        $price = $this->input->post('price');
         $totalIn = $this->input->post('total_pay');
         if(isset($product) && !empty($product)){
             $productData = explode(",",$product);
@@ -225,13 +237,13 @@ class sale_invoice extends MX_Controller
                 foreach ($arr_product as $key => $value) {
                     $html.='<tr>';
                     $html.='<td><input style="text-align: center;" class="form-control" readonly type="text" name="sale_product[]" value="'.$value['id'].','.$value['name'].' - '.$value['p_c_name'].'"></td>';
-                    $html.='<td><input style="text-align: center;" class="form-control" readonly type="text" name="sale_price[]" value='.$value['sale_price'].'></td>';
+                    $html.='<td><input style="text-align: center;" class="form-control" readonly type="text" name="sale_price[]" value='.$price.'></td>';
                     $html.='<td><input style="text-align: center;" class="form-control" type="number"  name="sale_qty[]" readonly value='.$qty.'></td>';
-                    $html.='<td><input style="text-align: center;" class="form-control" readonly type="number" name="sale_amount[]" value='.$qty*$value['sale_price'].'></td>';
-                    $html.='<td><a class="btn delete" onclick="delete_row(this)" amount='.$qty*$value['sale_price'].'><i class="fa fa-remove"  title="Delete Item" style="color:red;"></i></a></td>';
+                    $html.='<td><input style="text-align: center;" class="form-control" readonly type="number" name="sale_amount[]" value='.$qty*$price.'></td>';
+                    $html.='<td><a class="btn delete" onclick="delete_row(this)" amount='.$qty*$price.'><i class="fa fa-remove"  title="Delete Item" style="color:red;"></i></a></td>';
                     $html.='</tr>';
                 }
-                $total = $totalIn + ($qty*$sale_price);
+                $total = $totalIn + ($qty*$price);
             }
             else{
                 $total = $totalIn;

@@ -60,24 +60,24 @@
       <?php $x++; }  ?>
       <tr><td colspan="100%"><hr></td></tr>
         <tr>
-          <td colspan="4" align="right"><b>Total Amount: </b></td>
-          <td colspan="1" align="right"><b>Rs.<?php echo $invoice[0]['total_payable']; ?></b></td>
+          <td colspan="4" align="center"><b>Total Amount: </b></td>
+          <td colspan="1" align="left"><b>Rs.<?php echo $invoice[0]['total_payable']; ?></b></td>
         </tr>
         <tr>
-          <td colspan="4" align="right"><b>Discount: </b></td>
-          <td colspan="1" align="right"><b>Rs.<?php echo $invoice[0]['discount']; ?></b></td>
+          <td colspan="4" align="center"><b>Discount: </b></td>
+          <td colspan="1" align="left"><b>Rs.<?php echo $invoice[0]['discount']; ?></b></td>
         </tr>
         <tr>
-          <td colspan="4" align="right"><b>Grand Total: </b></td>
-          <td colspan="1" align="right"><b>Rs.<?php echo $invoice[0]['grand_total']; ?></b></td>
+          <td colspan="4" align="center"><b>Grand Total: </b></td>
+          <td colspan="1" align="left"><b>Rs.<?php echo $invoice[0]['grand_total']; ?></b></td>
         </tr>
         <tr>
-          <td colspan="4" align="right"><b>Cash Recieved: </b></td>
-          <td colspan="1" align="right"><b>Rs.<?php echo $invoice[0]['cash_received']; ?></b></td>
+          <td colspan="4" align="center"><b>Cash Recieved: </b></td>
+          <td colspan="1" align="left"><b>Rs.<?php echo $invoice[0]['cash_received']; ?></b></td>
         </tr>
         <tr>
-          <td colspan="4" align="right"><b>Change: </b></td>
-          <td colspan="1" align="right"><b>Rs.<?php echo $invoice[0]['change']; ?></b></td>
+          <td colspan="4" align="center"><b>Change: </b></td>
+          <td colspan="1" align="left"><b>Rs.<?php echo $invoice[0]['change']; ?></b></td>
         </tr>
         <tr>
           <th class="border_bottom" colspan="100%"></th>
@@ -89,7 +89,9 @@
 </tr>
 </table>
 <div>
-<b> Powered by XpertSpot +92-300-2660908</b>
+  <p style="text-align: center;"><b >Thank you for visiting us!</b></p>
+  <hr>
+<p> Powered by XpertSpot +92-300-2660908</p>
 <p style="page-break-after: always"> </p>
 </div>
 </body>

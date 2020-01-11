@@ -55,6 +55,14 @@ class Account extends MX_Controller
         $this->template->admin($data);
     }
 
+    function  bank_recieved() {
+        $account = $this->_get('id desc')->result_array();
+        $data['account'] = $account;
+        $data['view_file'] = 'bank_recieved';
+        $this->load->module('template');
+        $this->template->admin($data);
+    }
+
     function transaction_list() {
         $data['news'] = $this->_get_transaction_list();
         $data['view_file'] = 'transaction_list';
