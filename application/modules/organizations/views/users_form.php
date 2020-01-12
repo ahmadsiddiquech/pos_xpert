@@ -96,7 +96,7 @@
                                                         'name' => 'org_phone',
                                                         'id' => 'org_phone',
                                                         'class' => 'form-control',
-                                                        'type' => 'number',
+                                                        'type' => 'text',
                                                         'tabindex' => '2',
                                                         'required' => 'required',
                                                         'value' => $users['org_phone']
@@ -135,7 +135,7 @@
                                                         'name' => 'owner_phone',
                                                         'id' => 'owner_phone',
                                                         'class' => 'form-control',
-                                                        'type' => 'number',
+                                                        'type' => 'text',
                                                         'tabindex' => '4',
                                                         'data-parsley-maxlength'=>TEXT_BOX_RANGE,
                                                        'value' => $users['owner_phone'],
@@ -231,15 +231,16 @@
                       </div>
                       <?php } ?>
                      <div class="col-sm-5">
-                                    <div class="form-group">
-                                    <?php
+                          <div class="form-group">
+                          <?php
 
-                                    $options = array('' => 'Select')+$roles_title ;
-                                    $attribute = array('class' => 'control-label col-md-4');
-                                    echo form_label('Assign Role <span style="color:red">*</span>', 'role_id', $attribute);?>
-                                    <div class="col-md-8"><?php echo form_dropdown('role_id', $options, $users['role_id'],  'required="required" class="form-control select2me required" id="role_id" tabindex ="12"'); ?></div>                            </div>
+                          $options = array('' => 'Select')+$roles_title ;
+                          $attribute = array('class' => 'control-label col-md-4');
+                          echo form_label('Assign Role <span style="color:red">*</span>', 'role_id', $attribute);?>
+                          <div class="col-md-8"><?php echo form_dropdown('role_id', $options, $users['role_id'],  'required="required" class="form-control select2me required" id="role_id" tabindex ="12"'); ?>
+                          </div>
+                        </div>
                     </div>
-                     
                     </div>
                   </div>
                 </div>

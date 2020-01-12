@@ -69,18 +69,86 @@ function create(){
     function submit() {
         $update_id = $this->uri->segment(4);
         $data = $this->_get_data_from_post();
+        $user_data = $this->session->userdata('user_data');
 
         if ($update_id && $update_id != 0){
             $where['id'] = $update_id;
             $this->_update($where, $data);
+            $this->upload_image($update_id,$user_data['user_id']);
         }
         else{
             $id = $this->_insert($data);
+            $this->upload_image($id,$user_data['user_id']);
         }
 
         $this->session->set_flashdata('message', 'organizations'.' '.DATA_SAVED);
         $this->session->set_flashdata('status', 'success');
         redirect(ADMIN_BASE_URL . 'organizations');
+    }
+
+    function upload_image($nId, $org_id) {
+        $upload_image_file = $this->input->post('news_file');
+        if(isset($upload_image_file) && !empty($upload_image_file)){
+            $upload_image_file = str_replace(' ', '_', $upload_image_file);
+            $file_name = 'organization_' . $nId.'_'.$org_id . '_' . $upload_image_file;
+        }
+        else{
+            $file_name = '';
+        }
+        $config['upload_path'] = './uploads/organization/actual_images';
+        $config['allowed_types'] = '*';
+        $config['max_size'] = '20000';
+        $config['max_width'] = '0';
+        $config['max_height'] = '0';
+        $config['file_name'] = $file_name;
+        $this->load->library('upload');
+        $this->upload->initialize($config);
+        if (isset($_FILES['news_file'])) {
+            $this->upload->do_upload('news_file');
+        }
+        $upload_data = $this->upload->data();
+
+        /////////////// Large  Image ////////////////
+        $config['source_image'] = $upload_data['full_path'];
+        $config['image_library'] = 'gd2';
+        $config['maintain_ratio'] = true;
+        $config['width'] = 500;
+        $config['height'] = 400;
+        $config['new_image'] = './uploads/organization/large_images';
+        $this->load->library('image_lib');
+        $this->image_lib->initialize($config);
+        $this->image_lib->resize();
+        $this->image_lib->clear();
+
+        /////////////  Medium Size /////////////////// 
+        $config['source_image'] = $upload_data['full_path'];
+        $config['image_library'] = 'gd2';
+        $config['maintain_ratio'] = true;
+        $config['width'] = 300;
+        $config['height'] = 200;
+        $config['new_image'] = './uploads/organization/medium_images';
+        $this->image_lib->initialize($config);
+        $this->image_lib->resize();
+        $this->image_lib->clear();
+
+        ////////////////////// Small Size ////////////////
+        $config['source_image'] = $upload_data['full_path'];
+        $config['image_library'] = 'gd2';
+        $config['create_thumb'] = TRUE;
+        $config['maintain_ratio'] = TRUE;
+        $config['width'] = 100;
+        $config['height'] = 100;
+        $config['new_image'] = './uploads/organization/small_images';
+        $this->image_lib->initialize($config);
+        $this->image_lib->resize();
+        $this->image_lib->clear();
+        $data = array('image' => $file_name);
+        $where['id'] = $nId;
+        $rsItem = $this->_update($where, $data);
+        if ($rsItem)
+            return true;
+        else
+            return false;
     }
 
     function _get_data_from_db($update_id) {
