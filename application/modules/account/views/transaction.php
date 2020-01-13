@@ -66,6 +66,7 @@
                                 <option value=""></option>
                               <?php if(isset($account) && !empty($account))
                               foreach ($account as $key => $value):?>
+                                
                                 <option value="<?php echo $value['id'].','.$value['name'].','.$value['type'] ?>"><?php echo $value['name'].' - '.$value['type'];?></option>
                               <?php endforeach; ?>
                             </select>

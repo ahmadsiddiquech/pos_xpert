@@ -64,9 +64,9 @@
                             <div class="col-md-8">
                               <select name="account_from" id="account_from" class="chosen form-control" required="required" tabindex="2" required="required">
                                 <option value=""></option>
-                              <?php if(isset($customer) && !empty($customer))
-                              foreach ($customer as $key => $value):?>
-                                <option value="<?php echo $value['id'].','.$value['name']?>"><?php echo $value['name'];?></option>
+                              <?php if(isset($account) && !empty($account))
+                              foreach ($account as $key => $value):?>
+                                <option value="<?php echo $value['id'].','.$value['name'].','.$value['type'] ?>"><?php echo $value['name'].' - '.$value['type'];?></option>
                               <?php endforeach; ?>
                             </select>
                             </div>

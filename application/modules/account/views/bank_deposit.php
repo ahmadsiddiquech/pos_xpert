@@ -7,7 +7,7 @@
     <div class="content-wrapper">
         <!-- BEGIN PAGE TITLE & BREADCRUMB-->
       <h3>
-        Bank Recieved
+        Bank Deposit
    <a href="<?php echo ADMIN_BASE_URL . 'account/transaction_list'; ?>"><button type="button" class="btn btn-lg btn-primary pull-right"><i class="fa fa-chevron-left"></i>&nbsp;&nbsp;&nbsp;<b>Back</b></button></a></h3>
             
     </div>
@@ -31,9 +31,9 @@
                             $hidden = array('hdnId' => $update_id, 'hdnActive' => $news['status']); ////edit case
                         }
                         if (isset($hidden) && !empty($hidden))
-                            echo form_open_multipart(ADMIN_BASE_URL . 'account/submit_bank_recieved/' . $update_id, $attributes, $hidden);
+                            echo form_open_multipart(ADMIN_BASE_URL . 'account/submit_bank_deposit/' . $update_id, $attributes, $hidden);
                         else
-                            echo form_open_multipart(ADMIN_BASE_URL . 'account/submit_bank_recieved/' . $update_id, $attributes);
+                            echo form_open_multipart(ADMIN_BASE_URL . 'account/submit_bank_deposit/' . $update_id, $attributes);
                         ?>
                   <div class="form-body">
                     

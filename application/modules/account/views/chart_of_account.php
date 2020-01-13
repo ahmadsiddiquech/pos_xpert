@@ -40,8 +40,8 @@
                                         <td><?php echo $new->opening_balance ?></td>
                                     <?php } 
                                         elseif ($new->type == 'Salary' || $new->type == 'Invester' || $new->type == 'Loan') { ?>
+                                            <td><?php echo $new->remaining ?></td>
                                             <td><?php echo $new->paid ?></td>
-                                            <td>0</td>
                                     <?php } ?>
                                 </tr>
                                 <?php } ?>    
