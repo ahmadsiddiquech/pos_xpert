@@ -45,13 +45,14 @@
   <div class="row">&nbsp;</div>
   <div class="row">
     <div class="col-md-6">
-      <h4 style="float: left;">
+      <h4>
         From Date : <?=$from?>
       </h4>
-      
     </div>
+  </div>
+  <div class="row">
     <div class="col-md-6">
-      <h4 style="float: right;">
+      <h4>
         To Date : <?=$to?>
       </h4>
     </div>

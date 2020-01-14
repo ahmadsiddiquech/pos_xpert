@@ -49,28 +49,22 @@ class Mdl_report extends CI_Model {
     }
 
     function _get_report($data) {
-        if ($data['return_type'] == 'Customer') {
-             $this->db->select('users.*,sale_invoice.*,customer.*,sale_invoice.status pay_status,sale_invoice.remaining cash_remaining,sale_invoice.id invoice_id');
+        if ($data['type'] == 'customer') {
             $this->db->from('sale_invoice');
-            $this->db->order_by('sale_invoice.id', 'DESC');
-            $this->db->join("customer", "customer.id = sale_invoice.customer_id", "full");
-            $this->db->join("users", "users.id = sale_invoice.org_id", "full");
-            $this->db->where('sale_invoice.customer_id', $data['return_id']);
+            $this->db->join("sale_invoice_product", "sale_invoice_product.sale_invoice_id = sale_invoice.id", "full");
+            $this->db->where('sale_invoice.customer_id', $data['account_id']);
             $this->db->where('sale_invoice.org_id', $data['org_id']);
-            $this->db->where('sale_invoice.date >=',$data['from']);
-            $this->db->where('sale_invoice.date <=',$data['to']);
+            $this->db->where('sale_invoice.date >=',$data['from_date']);
+            $this->db->where('sale_invoice.date <=',$data['to_date']);
         }
 
-        elseif ($data['return_type'] == 'Supplier') {
-            $this->db->select('users.*,purchase_invoice.*,supplier.*,purchase_invoice.status pay_status,purchase_invoice.remaining cash_remaining,purchase_invoice.id invoice_id');
+        elseif ($data['type'] == 'supplier') {
             $this->db->from('purchase_invoice');
-            $this->db->order_by('purchase_invoice.id', 'DESC');
-            $this->db->join("supplier", "supplier.id = purchase_invoice.supplier_id", "full");
-            $this->db->join("users", "users.id = purchase_invoice.org_id", "full");
-            $this->db->where('purchase_invoice.supplier_id', $data['return_id']);
+            $this->db->join("purchase_invoice_product", "purchase_invoice_product.purchase_invoice_id = purchase_invoice.id", "full");
+            $this->db->where('purchase_invoice.supplier_id', $data['account_id']);
             $this->db->where('purchase_invoice.org_id', $data['org_id']);
-            $this->db->where('purchase_invoice.date >=',$data['from']);
-            $this->db->where('purchase_invoice.date <=',$data['to']);
+            $this->db->where('purchase_invoice.date >=',$data['from_date']);
+            $this->db->where('purchase_invoice.date <=',$data['to_date']);
         }
         return $this->db->get();
     }

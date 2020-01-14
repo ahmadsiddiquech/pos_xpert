@@ -33,6 +33,42 @@ class Report extends MX_Controller
         $this->template->admin($data);
     }
 
+    function general_ledger(){
+        $account = Modules::run('account/_get','id desc')->result_array();
+        $customer = Modules::run('customer/_get','id desc')->result_array();
+        $supplier = Modules::run('supplier/_get','id desc')->result_array();
+        $all = array_merge($account,$customer,$supplier);
+        $data['account'] = $all;
+        $data['view_file'] = 'general_ledger';
+        $this->load->module('template');
+        $this->template->admin($data);
+    }
+
+    function submit_general_ledger() {
+        $user_data = $this->session->userdata('user_data');
+        $data['org_id'] = $user_data['user_id'];
+        $account = $this->input->post('account');
+        if (isset($account) && !empty($account)) {
+            $account2=explode(',', $account);
+            $data['account_id'] = $account2[0];
+            $data['account_name'] = $account2[1];
+            $data['type'] = $account2[2];
+        }
+        $data['from_date'] = $this->input->post('from_date');
+        $data['to_date'] = $this->input->post('to_date');
+        $where_org['id'] = $data['org_id'];
+        $org = Modules::run('organizations/_get_by_arr_id',$where_org)->result_array();
+        if ($data['type'] == 'customer') {
+            $where['id'] = $data['account_id'];
+            $account = Modules::run('customer/_get_by_arr_id',$where)->result_array();
+            $report = $this->_get_report($data)->result_array();
+        }
+        $data['invoice'] = array_merge($org,$account,$report);
+        $data['report'] = $report;
+        // $data['invoice'] = $this->_get_general_ledger_report($data)->result_array();
+        $this->load->view('general_ledger_print',$data);
+    }
+
     function full_report() {
         $update_id = $this->uri->segment(4);
         $user_data = $this->session->userdata('user_data');
