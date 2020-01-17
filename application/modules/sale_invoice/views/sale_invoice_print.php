@@ -115,14 +115,6 @@
           <td colspan="1" align="right"><b>Rs.<?php echo $invoice[0]['cash_received']; ?></b></td>
         </tr>
         <tr>
-          <td colspan="4" align="right"><b>Change: </b></td>
-          <td colspan="1" align="right"><b>Rs.<?php echo $invoice[0]['change']; ?></b></td>
-        </tr>
-        <tr>
-          <td colspan="4" align="right"><b><h3>Remaining: </h3></b></td>
-          <td colspan="1" align="right"><b><h3>Rs.<?php echo $invoice[0]['cash_remaining']; ?></h3></b></td>
-        </tr>
-        <tr>
           <th class="border_bottom" colspan="100%"></th>
         </tr>
         <tr>

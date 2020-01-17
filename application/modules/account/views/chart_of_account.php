@@ -11,7 +11,7 @@
                 <div class="panel panel-default">
                     <div class="panel-body">
                         <!-- <a target="_blank" href="<?php echo ADMIN_BASE_URL . 'supplier/invoice_list_print/'.$supplier_id; ?>"><button type="button" class="btn btn-primary"><i class="fa fa-print"></i>&nbsp;&nbsp;&nbsp;Print All</button></a> -->
-                    <table id="" class="table table-striped table-hover table-body">
+                    <table id="datatable1" class="table table-striped table-hover table-body">
                         <thead class="bg-th">
                         <tr class="bg-col">
                         <th class="sr">ID</th>

@@ -225,13 +225,13 @@ select:invalid {
                         </div>
                         <div class="row">
                           <div class="col-md-6">
-                            <h4 style="text-align: right;">Cash Received<span style="color: red">*</span></h4>
+                            <h4 style="text-align: right;">Cash Paid</h4>
                           </div>
                           <div class="col-md-6">
-                            <input type="number" name="paid_amount" id="paid_amount" class="form-control" value="" style="text-align: center;" tabindex="14" required="required">
+                            <input type="number" name="paid_amount" id="paid_amount" class="form-control" value="" style="text-align: center;" tabindex="14">
                           </div>
                         </div>
-                        <div class="row">
+                        <div class="row" hidden="hidden">
                           <div class="col-md-6">
                             <h4 style="text-align: right;">Remaining</h4>
                           </div>
@@ -239,12 +239,12 @@ select:invalid {
                             <input type="number" readonly name="remaining" id="remaining" class="form-control" value="0" style="text-align: center;">
                           </div>
                         </div>
-                        <div class="row">
+                        <div class="row" hidden="hidden">
                           <div class="col-md-6">
                             <h4 style="text-align: right;">Change</h4>
                           </div>
                           <div class="col-md-6">
-                            <input type="number" readonly name="change" value="0" class="form-control" style="text-align: center;">
+                            <input type="number" hidden="hidden" readonly name="change" value="0" class="form-control" style="text-align: center;">
                           </div>
                         </div>
                       </div>

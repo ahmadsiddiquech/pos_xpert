@@ -21,7 +21,7 @@
 <body class="container pt-5">
     <div class="row">
     <div class="col-md-3">
-      <img src="<?php echo STATIC_ADMIN_IMAGE.$invoice[0]['image']?>" height="100px;">
+      <img src="<?php echo STATIC_ADMIN_IMAGE.'logo.png'?>" height="100px;">
     </div>
     <div class="col-md-9">
       <h1 style="text-align: center;">
@@ -52,8 +52,11 @@
   <div class="row">
     <div class="col-md-9">
       <h4>
-        <?php if($type == 'customer' || $type == 'supplier'){?>
-          Address : <?=$invoice[1]['address'];?>
+        <?php if($type == 'customer' ){?>
+          <b>Address : </b><?php echo $invoice[1]['address']?>
+        <?php } 
+        elseif($type == 'supplier') {?>
+          <b>Address : </b><?php echo $invoice[1]['city']?>
         <?php } ?>
       </h4>
     </div>
@@ -90,7 +93,7 @@ $total = $total + $value['remaining'];
   <div class="row">
     <div class="col-md-2"><?=$value['date']?></div>
     <div class="col-md-1">SLI - <?=$value['id']?></div>
-    <div class="col-md-5">Sale Invoice - G.W <?=$value['gross']?> - Bardana - <?=$value['bardana']?> - N.W - <?=$value['qty']?></div>
+    <div class="col-md-5"><b>Sale Invoice</b> -<?=$value['product_name']?></div>
     <div class="col-md-1"><?php if($type == 'customer') echo $value['remaining'] ?></div>
     <div class="col-md-1"><?php if($type == 'supplier') echo $value['remaining'] ?></div>
     <div class="col-md-2"><?=$total ?></div>

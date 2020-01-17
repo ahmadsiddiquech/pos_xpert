@@ -14,6 +14,15 @@ class Mdl_account extends CI_Model {
         return $table;
     }
 
+    function _delete($arr_col, $org_id) {       
+        $table = $this->get_table();
+        $user_data = $this->session->userdata('user_data');
+        $role_id = $user_data['role_id'];
+        $this->db->where('id', $arr_col);
+        $this->db->where('org_id',$org_id);
+        $this->db->delete($table);
+    }
+
     function _get_by_arr_id($arr_col) {
         $table = $this->get_table();
         $user_data = $this->session->userdata('user_data');

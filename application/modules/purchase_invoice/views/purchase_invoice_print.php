@@ -52,9 +52,10 @@
       Invoice From
       </h2>
       <h5 class="display-5 text-break" style="text-align: left;">
-        <?php echo $invoice[0]['org_name']; ?><br>
-        <?php echo $invoice[0]['org_address']; ?><br>
-        <?php echo $invoice[0]['org_phone']; ?><br>
+        <?php echo $invoice[0]['name']; ?><br>
+        <?php echo $invoice[0]['company_name']; ?><br>
+        <?php echo $invoice[0]['city']; ?><br>
+        <?php echo $invoice[0]['phone']; ?><br>
       </h5>
     </div>
     <div class="col-md-2"></div>
@@ -63,9 +64,9 @@
       Invoice To
       </h2>
       <h5 class="display-5 text-break" style="text-align: left;">
-        <?php echo $invoice[0]['name']; ?><br>
-        <?php echo $invoice[0]['city']; ?><br>
-        <?php echo $invoice[0]['phone']; ?><br>
+        <?php echo $invoice[0]['org_name']; ?><br>
+        <?php echo $invoice[0]['org_address']; ?><br>
+        <?php echo $invoice[0]['org_phone']; ?><br>
       </h5>
     </div>
   </div>
@@ -105,14 +106,6 @@
         <tr>
           <td colspan="4" align="right"><b>Cash Recieved: </b></td>
           <td colspan="1" align="right"><b>Rs.<?php echo $invoice[0]['cash_received']; ?></b></td>
-        </tr>
-        <tr>
-          <td colspan="4" align="right"><b>Change: </b></td>
-          <td colspan="1" align="right"><b>Rs.<?php echo $invoice[0]['change']; ?></b></td>
-        </tr>
-        <tr>
-          <td colspan="4" align="right"><b><h3>Remaining: </h3></b></td>
-          <td colspan="1" align="right"><b><h3>Rs.<?php echo $invoice[0]['cash_remaining']; ?></h3></b></td>
         </tr>
         <tr>
           <th class="border_bottom" colspan="100%"></th>

@@ -306,7 +306,7 @@ class Account extends MX_Controller
             $type_to = $account_to2[2];
         }
         $data['amount'] = $this->input->post('amount');
-        $data['transaction_type'] ='JV';
+        $data['transaction_type'] ='CP';
         $data['comment'] = $this->input->post('comment');
         $data['ref_no'] = $this->input->post('ref_no');
         $data['date'] = date('Y-m-d');
@@ -382,7 +382,7 @@ class Account extends MX_Controller
             $type_to = $account_to2[2];
         }
         $data['amount'] = $this->input->post('amount');
-        $data['transaction_type'] ='JV';
+        $data['transaction_type'] ='CR';
         $data['comment'] = $this->input->post('comment');
         $data['ref_no'] = $this->input->post('ref_no');
         $data['date'] = date('Y-m-d');
@@ -498,11 +498,26 @@ class Account extends MX_Controller
         echo '0';
     }
     }
+
+    function delete() {
+        $delete_id = $this->input->post('id');
+        $user_data = $this->session->userdata('user_data');
+        $org_id = $user_data['user_id'];
+        $this->_delete($delete_id, $org_id);
+    }
     
 
 ///////////////////////////     HELPER FUNCTIONS    ////////////////////
 
-    
+    function _delete($arr_col, $org_id) {       
+        $this->load->model('mdl_account');
+        $this->mdl_account->_delete($arr_col, $org_id);
+    }
+
+    function _update($arr_col, $org_id, $data) {
+        $this->load->model('mdl_account');
+        $this->mdl_account->_update($arr_col, $org_id, $data);
+    }
 
     function _get($order_by) {
         $this->load->model('mdl_account');

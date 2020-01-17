@@ -88,7 +88,9 @@
                               <?php if(isset($account) && !empty($account))
                               foreach ($account as $key => $value):?>
                                 
-                                <option value="<?php echo $value['id'].','.$value['name'].','.$value['type'] ?>"><?php echo $value['name'].' - '.$value['type'];?></option>
+                                <option value="<?php echo $value['id'].','.$value['name'].','.$value['type'] ?>"><?php echo $value['name']?> <?php if ($value['type'] == 'supplier') {
+                                  echo ' - '.$value['company_name'];
+                                } ?> <?php echo ' - '.$value['type'];?></option>
                               <?php endforeach; ?>
                             </select>
                             </div>
@@ -125,7 +127,9 @@
                                 <option value=""></option>
                               <?php if(isset($account) && !empty($account))
                               foreach ($account as $key => $value):?>
-                                <option value="<?php echo $value['id'].','.$value['name'].','.$value['type'] ?>"><?php echo $value['name'].' - '.$value['type'];?></option>
+                                <option value="<?php echo $value['id'].','.$value['name'].','.$value['type'] ?>"><?php echo $value['name']?> <?php if ($value['type'] == 'supplier') {
+                                  echo ' - '.$value['company_name'];
+                                } ?> <?php echo ' - '.$value['type'];?></option>
                               <?php endforeach; ?>
                             </select>
                             </div>

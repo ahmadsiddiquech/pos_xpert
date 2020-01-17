@@ -57,66 +57,53 @@
                         </div>
                       </div>
                       <div class="col-sm-5">
-                          <div class="form-group">
-                            <div class="control-label col-md-4">
-                              <label>Account From</label>
-                            </div>
-                            <div class="col-md-8">
-                              <select name="account_from" id="account_from" class="chosen form-control" required="required" tabindex="2" required="required">
-                                <option value=""></option>
-                              <?php if(isset($account) && !empty($account))
-                              foreach ($account as $key => $value):?>
-                                
-                                <option value="<?php echo $value['id'].','.$value['name'].','.$value['type'] ?>"><?php echo $value['name'].' - '.$value['type'];?></option>
-                              <?php endforeach; ?>
-                            </select>
-                            </div>
-                          </div>
-                      </div>
-                      </div>
-                      <div class="row">
-                        <div class="col-sm-5">
-                          <div class="form-group">
-                            <div class="control-label col-md-4">
-                              <label>Account To</label>
-                            </div>
-                            <div class="col-md-8">
-                              <select name="account_to" id="account_to" class="chosen form-control" required="required" tabindex="2" required="required">
-                                <option value=""></option>
-                              <?php if(isset($account) && !empty($account))
-                              foreach ($account as $key => $value):?>
-                                <option value="<?php echo $value['id'].','.$value['name'].','.$value['type'] ?>"><?php echo $value['name'].' - '.$value['type'];?></option>
-                              <?php endforeach; ?>
-                            </select>
-                            </div>
-                          </div>
-                      </div>
-                       <div class="col-sm-5">
                         <div class="form-group">
                           <?php
                                                         $data = array(
-                                                        'name' => 'amount',
-                                                        'id' => 'amount',
+                                                        'name' => 'date',
+                                                        'id' => 'date',
                                                         'class' => 'form-control',
-                                                        'type' => 'number',
-                                                        'tabindex' => '3',
+                                                        'type' => 'date',
+                                                        'tabindex' => '2',
+                                                        'value' => date('Y-m-d'),
                                                         'data-parsley-maxlength'=>TEXT_BOX_RANGE
                                                         );
                                                         $attribute = array('class' => 'control-label col-md-4');
                                                         ?>
                                                         
-                          <?php echo form_label('Amount', 'amount', $attribute); ?>
+                          <?php echo form_label('Date', 'date', $attribute); ?>
                           <div class="col-md-8"> <?php echo form_input($data); ?> </div>
                         </div>
                       </div>
                       </div>
                       <div class="row">
                         <div class="col-sm-5">
+                          <div class="form-group">
+                            <div class="control-label col-md-4">
+                              <label>Account From</label>
+                            </div>
+                            <div class="col-md-8">
+                              <select name="account_from" id="account_from" class="chosen form-control" required="required" tabindex="3" required="required">
+                                <option value=""></option>
+                              <?php if(isset($account) && !empty($account))
+                              foreach ($account as $key => $value):?>
+                                
+                                <option <?php if ($value['type'] == 'Cash-in-hand') {
+                                  print_r("selected");
+                                } ?> &nbsp; value="<?php echo $value['id'].','.$value['name'].','.$value['type'] ?>"><?php echo $value['name']?> <?php if ($value['type'] == 'supplier') {
+                                  echo ' - '.$value['company_name'];
+                                } ?> <?php echo ' - '.$value['type'];?></option>
+                              <?php endforeach; ?>
+                            </select>
+                            </div>
+                          </div>
+                      </div>
+                      <div class="col-sm-5">
                         <div class="form-group">
                           <?php
                                                         $data = array(
-                                                        'name' => 'comment',
-                                                        'id' => 'comment',
+                                                        'name' => 'from_comment',
+                                                        'id' => 'from_comment',
                                                         'class' => 'form-control',
                                                         'type' => 'text',
                                                         'tabindex' => '4',
@@ -125,8 +112,68 @@
                                                         $attribute = array('class' => 'control-label col-md-4');
                                                         ?>
                                                         
-                          <?php echo form_label('Comment', 'comment', $attribute); ?>
+                          <?php echo form_label('Comment', 'from_comment', $attribute); ?>
                           <div class="col-md-8"> <?php echo form_input($data); ?></div>
+                        </div>
+                      </div>
+                       
+                      </div>
+                      <div class="row">
+                        <div class="col-sm-5">
+                          <div class="form-group">
+                            <div class="control-label col-md-4">
+                              <label>Account To</label>
+                            </div>
+                            <div class="col-md-8">
+                              <select name="account_to" id="account_to" class="chosen form-control" required="required" tabindex="5" required="required">
+                                <option value=""></option>
+                              <?php if(isset($account) && !empty($account))
+                              foreach ($account as $key => $value):?>
+                                <option value="<?php echo $value['id'].','.$value['name'].','.$value['type'] ?>"><?php echo $value['name']?> <?php if ($value['type'] == 'supplier') {
+                                  echo ' - '.$value['company_name'];
+                                } ?> <?php echo ' - '.$value['type'];?></option>
+                              <?php endforeach; ?>
+                            </select>
+                            </div>
+                          </div>
+                      </div>
+                        <div class="col-sm-5">
+                        <div class="form-group">
+                          <?php
+                                                        $data = array(
+                                                        'name' => 'to_comment',
+                                                        'id' => 'to_commentto_comment',
+                                                        'class' => 'form-control',
+                                                        'type' => 'text',
+                                                        'tabindex' => '6',
+                                                        'data-parsley-maxlength'=>TEXT_BOX_RANGE
+                                                        );
+                                                        $attribute = array('class' => 'control-label col-md-4');
+                                                        ?>
+                                                        
+                          <?php echo form_label('Comment', 'to_comment', $attribute); ?>
+                          <div class="col-md-8"> <?php echo form_input($data); ?></div>
+                        </div>
+                      </div>
+                      </div>
+                      <div class="row">
+                        <div class="col-sm-5">
+                        <div class="form-group">
+                          <?php
+                                                        $data = array(
+                                                        'name' => 'amount',
+                                                        'id' => 'amount',
+                                                        'class' => 'form-control',
+                                                        'type' => 'number',
+                                                        'tabindex' => '7',
+                                                        'required' => 'required',
+                                                        'data-parsley-maxlength'=>TEXT_BOX_RANGE
+                                                        );
+                                                        $attribute = array('class' => 'control-label col-md-4');
+                                                        ?>
+                                                        
+                          <?php echo form_label('Amount', 'amount', $attribute); ?>
+                          <div class="col-md-8"> <?php echo form_input($data); ?> </div>
                         </div>
                       </div>
                       </div>

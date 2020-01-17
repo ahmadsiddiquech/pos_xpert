@@ -63,6 +63,11 @@ class Report extends MX_Controller
             $account = Modules::run('customer/_get_by_arr_id',$where)->result_array();
             $report = $this->_get_report($data)->result_array();
         }
+        elseif ($data['type'] == 'supplier') {
+            $where['id'] = $data['account_id'];
+            $account = Modules::run('supplier/_get_by_arr_id',$where)->result_array();
+            $report = $this->_get_report($data)->result_array();
+        }
         $data['invoice'] = array_merge($org,$account,$report);
         $data['report'] = $report;
         // $data['invoice'] = $this->_get_general_ledger_report($data)->result_array();

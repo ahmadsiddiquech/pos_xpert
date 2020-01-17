@@ -1,6 +1,4 @@
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/themes/smoothness/jquery-ui.css">
-<script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/chosen/1.8.7/chosen.jquery.min.js"></script>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/chosen/1.8.7/chosen.min.css">
 <style type="text/css">
@@ -212,13 +210,13 @@ select:invalid {
                         </div>
                         <div class="row">
                           <div class="col-md-6">
-                            <h4 style="text-align: right;">Cash Received<span style="color: red">*</span></h4>
+                            <h4 style="text-align: right;">Cash Received</h4>
                           </div>
                           <div class="col-md-6">
-                            <input type="number" name="paid_amount" id="paid_amount" class="form-control" value="" style="text-align: center;" tabindex="8" required="required">
+                            <input type="number" name="paid_amount" id="paid_amount" class="form-control" value="" style="text-align: center;" tabindex="8">
                           </div>
                         </div>
-                        <div class="row">
+                        <div class="row" hidden="hidden">
                           <div class="col-md-6">
                             <h4 style="text-align: right;">Remaining</h4>
                           </div>
@@ -226,7 +224,7 @@ select:invalid {
                             <input type="number" readonly name="remaining" id="remaining" class="form-control" value="0" style="text-align: center;">
                           </div>
                         </div>
-                        <div class="row">
+                        <div class="row" hidden="hidden">
                           <div class="col-md-6">
                             <h4 style="text-align: right;">Change</h4>
                           </div>

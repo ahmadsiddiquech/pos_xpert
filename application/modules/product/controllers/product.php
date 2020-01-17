@@ -70,7 +70,7 @@ class Product extends MX_Controller
     }
 
     function _get_data_from_post() {
-        $parent_category = $this->input->post('parent_category');
+        $parent_category = $this->input->post('parent_category_chosen');
         if(isset($parent_category) && !empty($parent_category)){
             $p_c_data = explode(",",$parent_category);
             $data['p_c_id'] = $p_c_data[0];

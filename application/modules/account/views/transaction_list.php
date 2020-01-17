@@ -1,8 +1,5 @@
-<!-- Page content-->
 <div class="content-wrapper">
-    <h3>
-    Transaction
-    <a href="<?php echo ADMIN_BASE_URL . 'account/transaction'; ?>"><button type="button" class="btn btn-lg btn-primary pull-right"><i class="fa fa-plus"></i>&nbsp;&nbsp;&nbsp;<b>Make Transaction</b></button></a></h3>
+    <h3>Transaction</h3>
     <div class="container-fluid">
         <!-- START DATATABLE 1 -->
         <div class="row">
@@ -26,12 +23,11 @@
                             <?php
                             $i = 0;
                             if (isset($news)) {
-                                $result = $news->result_array();
                                 foreach ($news->result() as
                                         $new) {
                                     $i++;
                                     ?>
-                                <tr id="Row_<?=$new->id?>" class="odd gradeX " >
+                                    <tr id="Row_<?=$new->id?>" class="odd gradeX " >
                                     <td width='2%'><?php echo $i;?></td>
                                     <td><?php echo wordwrap($new->account_from_name)  ?></td>
                                     <td><?php echo wordwrap($new->from_comment)  ?></td>
@@ -49,6 +45,5 @@
                 </div>
             </div>
         </div>
-    <!-- END DATATABLE 1 -->
     </div>
-</div>    
+</div>

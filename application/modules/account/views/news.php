@@ -15,6 +15,7 @@
                         <th>Opening Balance</th>
                         <th>Paid</th>
                         <th>Remaining</th>
+                        <th>Actions</th>
                         </tr>
                         </thead>
                         <tbody>
@@ -24,6 +25,8 @@
                                 foreach ($news->result() as
                                         $new) {
                                     $i++;
+                                    $edit_url = ADMIN_BASE_URL . 'account/create/' . $new->id ;
+                                    $delete_url = ADMIN_BASE_URL . 'account/delete/' . $new->id;
                                     ?>
                                     <tr id="Row_<?=$new->id?>" class="odd gradeX " >
                                     <td width='2%'><?php echo $i;?></td>
@@ -32,6 +35,14 @@
                                     <td><?php echo $new->opening_balance   ?></td>
                                     <td><?php echo $new->paid   ?></td>
                                     <td><?php echo $new->remaining   ?></td>
+                                    <td class="table_action">
+                                        <?php 
+
+                                    echo anchor($edit_url, '<i class="fa fa-edit"></i>', array('class' => 'action_edit btn blue c-btn','title' => 'Edit Account'));
+
+                                    echo anchor('"javascript:;"', '<i class="fa fa-times"></i>', array('class' => 'delete_record btn red c-btn', 'rel' => $new->id, 'title' => 'Delete Account'));
+                                        ?>
+                                    </td>
                                 </tr>
                                 <?php } ?>    
                             <?php } ?>
@@ -43,3 +54,37 @@
         </div>
     </div>
 </div>
+
+<script type="text/javascript">
+
+$(document).ready(function(){
+
+  $(document).off('click', '.delete_record').on('click', '.delete_record', function(e){
+        var id = $(this).attr('rel');
+        e.preventDefault();
+        swal({
+            title : "Are you sure to delete the selected account?",
+            text : "You will not be able to recover this account!",
+            type : "warning",
+            showCancelButton : true,
+            confirmButtonColor : "#DD6B55",
+            confirmButtonText : "Yes, delete it!",
+            closeOnConfirm : false
+        },
+        function () {
+           $.ajax({
+                type: 'POST',
+                url: "<?php echo ADMIN_BASE_URL?>account/delete",
+                data: {'id': id},
+                async: false,
+                success: function() {
+                location.reload();
+                }
+            });
+            swal("Deleted!", "account has been deleted.", "success");
+        });
+
+    });
+
+});
+</script>
