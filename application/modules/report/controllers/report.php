@@ -61,17 +61,50 @@ class Report extends MX_Controller
         if ($data['type'] == 'customer') {
             $where['id'] = $data['account_id'];
             $account = Modules::run('customer/_get_by_arr_id',$where)->result_array();
-            $report = $this->_get_report($data)->result_array();
+            $sale_invoice = $this->_get_sale_invoice_report($data)->result_array();
+            $transaction = $this->_get_transaction_report($data)->result_array();
+            $report = array_merge($sale_invoice,$transaction);
+
+            function date_compare($element1, $element2) { 
+                $datetime1 = strtotime($element1['date']); 
+                $datetime2 = strtotime($element2['date']); 
+                return $datetime1 - $datetime2; 
+            }  
+            
+            usort($report, 'date_compare');
+            
+            $data['invoice'] = array_merge($org,$account);
+            $data['report'] = $report;
+            $this->load->view('general_ledger_print',$data);
         }
         elseif ($data['type'] == 'supplier') {
             $where['id'] = $data['account_id'];
             $account = Modules::run('supplier/_get_by_arr_id',$where)->result_array();
-            $report = $this->_get_report($data)->result_array();
+            $sale_invoice = $this->_get_sale_invoice_report($data)->result_array();
+            $transaction = $this->_get_transaction_report($data)->result_array();
+
+            $report = array_merge($sale_invoice,$transaction);
+            
+            function date_compare($element1, $element2) { 
+                $datetime1 = strtotime($element1['date']); 
+                $datetime2 = strtotime($element2['date']); 
+                return $datetime1 - $datetime2; 
+            }  
+            
+            usort($report, 'date_compare');
+            
+            $data['invoice'] = array_merge($org,$account);
+            $data['report'] = $report;
+            $this->load->view('general_ledger_print',$data);
         }
-        $data['invoice'] = array_merge($org,$account,$report);
-        $data['report'] = $report;
-        // $data['invoice'] = $this->_get_general_ledger_report($data)->result_array();
-        $this->load->view('general_ledger_print',$data);
+        else {
+            $where['id'] = $data['account_id'];
+            $account = Modules::run('account/_get_by_arr_id',$where)->result_array();
+            $report = $this->_get_transaction_report($data)->result_array();
+            $data['invoice'] = array_merge($org,$account);
+            $data['report'] = $report;
+            $this->load->view('general_ledger_account_print',$data);
+        }
     }
 
     function full_report() {
@@ -149,13 +182,13 @@ class Report extends MX_Controller
         return $data;
     }
 
-    function submit() {
-        $data = $this->_get_data_from_post();
-        $data['invoice'] = $this->_get_report($data)->result_array();
-        $data['from'] = $data['from'];
-        $data['to'] = $data['to'];
-        $this->load->view('invoice_list_print',$data);
-    }
+    // function submit() {
+    //     $data = $this->_get_data_from_post();
+    //     $data['invoice'] = $this->_get_report($data)->result_array();
+    //     $data['from'] = $data['from'];
+    //     $data['to'] = $data['to'];
+    //     $this->load->view('invoice_list_print',$data);
+    // }
 
     function submit_full_report() {
         $user_data = $this->session->userdata('user_data');
@@ -210,9 +243,14 @@ class Report extends MX_Controller
         return $this->mdl_report->_get_report_data($report_id,$org_id);
     }
 
-    function _get_report($data) {
+    function _get_sale_invoice_report($data) {
         $this->load->model('mdl_report');
-        return $this->mdl_report->_get_report($data);
+        return $this->mdl_report->_get_sale_invoice_report($data);
+    }
+
+    function _get_transaction_report($data){
+        $this->load->model('mdl_report');
+        return $this->mdl_report->_get_transaction_report($data);
     }
 
     function _get_org($org_id) {

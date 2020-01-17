@@ -25,9 +25,9 @@ select:invalid {
       <h3>
         <?php 
         if (empty($update_id)) 
-                    $strTitle = 'Add Stock Return invoice';
+                    $strTitle = 'Stock Return invoice';
                 else 
-                    $strTitle = 'Edit Stock Return invoice';
+                    $strTitle = 'Stock Return invoice';
                     echo $strTitle;
                     ?>
                     <a href="<?php echo ADMIN_BASE_URL . 'stock_return/manage'; ?>"><button type="button" class="btn btn-lg btn-primary pull-right"><i class="fa fa-chevron-left"></i>&nbsp;&nbsp;&nbsp;<b>View Stock Return Invoice</b></button></a>
@@ -99,36 +99,20 @@ select:invalid {
                     </div>
                     <div class="row">
                       <div class="col-sm-5">
-                        <div class="form-group">
-                          <?php
-                                        $data = array(
-                                        'name' => 'return_type',
-                                        'id' => 'return_type',
-                                        'class' => 'form-control',
-                                        'type' => 'text',
-                                        'tabindex' => '3',
-                                        'value' => $news['return_type'],
-                                        );
-                                        $attribute = array('class' => 'control-label col-md-4');
-                                        ?>
-                          <?php echo form_label('Returnee <span style="color:red">*</span>', 'return_type', $attribute); ?>
-                          <div class="col-md-8"> 
-                            <select name="return_type" id="return_type" required="required" class="form-control" tabindex="5">
-                              <option>Select</option>
-                              <option value="Customer" <?php if($news['return_type']=='Customer') echo "selected"; ?>>Customer</option>
-                              <option value="Supplier" <?php if($news['return_type']=='Supplier') echo "selected"; ?>>Supplier</option>
-                            </select>
-                      </div>
-                        </div>
-                      </div>
-                      <div class="col-sm-5">
                           <div class="form-group">
                             <div class="control-label col-md-4">
-                              <label>Name</label>
+                              <label>Account From</label>
                             </div>
                             <div class="col-md-8">
-                              <select name="returnee" id="returnee" class="form-control" required="required" tabindex="2" required="required">
-                              <option>Select</option>
+                              <select name="account" id="account" class="chosen form-control" required="required" tabindex="3" required="required">
+                                <option value=""></option>
+                              <?php if(isset($account) && !empty($account))
+                              foreach ($account as $key => $value):?>
+                                
+                                <option value="<?php echo $value['id'].','.$value['name'].','.$value['type'] ?>"><?php echo $value['name']?> <?php if ($value['type'] == 'supplier') {
+                                  echo ' - '.$value['company_name'];
+                                } ?> <?php echo ' - '.$value['type'];?></option>
+                              <?php endforeach; ?>
                             </select>
                             </div>
                           </div>
@@ -285,19 +269,6 @@ select:invalid {
     };
 
 $(document).ready(function(){
-
-$("#return_type").change(function () {
-    var return_type = this.value;
-   $.ajax({
-        type: 'POST',
-        url: "<?php echo ADMIN_BASE_URL?>stock_return/get_returnee",
-        data: {'return_type': return_type },
-        async: false,
-        success: function(result) {
-        $("#returnee").html(result);
-      }
-    });
-});
 
 $(document).on("click", ".add_product", function(event){
 event.preventDefault();

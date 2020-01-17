@@ -64,6 +64,7 @@ class Account extends MX_Controller
             $account_from2=explode(',', $account_from);
             $data['account_from_id'] = $account_from2[0];
             $data['account_from_name'] = $account_from2[1];
+            $data['account_from_type'] = $account_from2[2];
             $type_from = $account_from2[2];
         }
 
@@ -72,6 +73,8 @@ class Account extends MX_Controller
             $account_to2=explode(',', $account_to);
             $data['account_to_id'] = $account_to2[0];
             $data['account_to_name'] = $account_to2[1];
+            $data['account_from_type'] = $account_from2[2];
+            $data['account_to_type'] = $account_to2[2];
             $type_to = $account_to2[2];
         }
         $data['amount'] = $this->input->post('amount');
@@ -98,7 +101,7 @@ class Account extends MX_Controller
             Modules::run('sale_invoice/_update_customer_amount',$data['account_from_id'],$data2,$data['org_id']);
         }
 
-        if ($type_to == 'Cash-in-hand' || $type_to == 'Bank') {
+        if ($type_to == 'Cash-in-hand' || $type_to == 'Bank' || $type_to == 'Expense' || $type_to == 'Commission') {
             $account = $this->_get_account($data['account_to_id'],$type_to)->result_array();
             $cash['opening_balance'] = $account[0]['opening_balance'] + $data['amount'];
             $this->_update_account_balance($account[0]['id'],$type_to,$cash);
@@ -141,6 +144,7 @@ class Account extends MX_Controller
             $account_from2=explode(',', $account_from);
             $data['account_from_id'] = $account_from2[0];
             $data['account_from_name'] = $account_from2[1];
+            $data['account_from_type'] = $account_from2[2];
             $type_from = $account_from2[2];
         }
 
@@ -149,6 +153,7 @@ class Account extends MX_Controller
             $account_to2=explode(',', $account_to);
             $data['account_to_id'] = $account_to2[0];
             $data['account_to_name'] = $account_to2[1];
+            $data['account_to_type'] = $account_to2[2];
             $type_to = $account_to2[2];
         }
         $data['amount'] = $this->input->post('amount');
@@ -175,7 +180,7 @@ class Account extends MX_Controller
             Modules::run('sale_invoice/_update_customer_amount',$data['account_from_id'],$data2,$data['org_id']);
         }
 
-        if ($type_to == 'Cash-in-hand' || $type_to == 'Bank') {
+        if ($type_to == 'Cash-in-hand' || $type_to == 'Bank' || $type_to == 'Expense' || $type_to == 'Commission') {
             $account = $this->_get_account($data['account_to_id'],$type_to)->result_array();
             $cash['opening_balance'] = $account[0]['opening_balance'] + $data['amount'];
             $this->_update_account_balance($account[0]['id'],$type_to,$cash);
@@ -218,6 +223,7 @@ class Account extends MX_Controller
             $account_from2=explode(',', $account_from);
             $data['account_from_id'] = $account_from2[0];
             $data['account_from_name'] = $account_from2[1];
+            $data['account_from_type'] = $account_from2[2];
             $type_from = $account_from2[2];
         }
 
@@ -226,6 +232,7 @@ class Account extends MX_Controller
             $account_to2=explode(',', $account_to);
             $data['account_to_id'] = $account_to2[0];
             $data['account_to_name'] = $account_to2[1];
+            $data['account_to_type'] = $account_to2[2];
             $type_to = $account_to2[2];
         }
         $data['amount'] = $this->input->post('amount');
@@ -252,7 +259,7 @@ class Account extends MX_Controller
             Modules::run('sale_invoice/_update_customer_amount',$data['account_from_id'],$data2,$data['org_id']);
         }
 
-        if ($type_to == 'Cash-in-hand' || $type_to == 'Bank') {
+        if ($type_to == 'Cash-in-hand' || $type_to == 'Bank' || $type_to == 'Expense' || $type_to == 'Commission') {
             $account = $this->_get_account($data['account_to_id'],$type_to)->result_array();
             $cash['opening_balance'] = $account[0]['opening_balance'] + $data['amount'];
             $this->_update_account_balance($account[0]['id'],$type_to,$cash);
@@ -295,6 +302,7 @@ class Account extends MX_Controller
             $account_from2=explode(',', $account_from);
             $data['account_from_id'] = $account_from2[0];
             $data['account_from_name'] = $account_from2[1];
+            $data['account_from_type'] = $account_from2[2];
             $type_from = $account_from2[2];
         }
 
@@ -303,13 +311,14 @@ class Account extends MX_Controller
             $account_to2=explode(',', $account_to);
             $data['account_to_id'] = $account_to2[0];
             $data['account_to_name'] = $account_to2[1];
+            $data['account_to_type'] = $account_to2[2];
             $type_to = $account_to2[2];
         }
         $data['amount'] = $this->input->post('amount');
         $data['transaction_type'] ='CP';
         $data['comment'] = $this->input->post('comment');
         $data['ref_no'] = $this->input->post('ref_no');
-        $data['date'] = date('Y-m-d');
+        $data['date'] = $this->input->post('date');
         $user_data = $this->session->userdata('user_data');
         $data['org_id'] = $user_data['user_id'];
         $this->_insert_transaction($data);
@@ -328,16 +337,16 @@ class Account extends MX_Controller
             Modules::run('sale_invoice/_update_customer_amount',$data['account_from_id'],$data2,$data['org_id']);
         }
 
-        if ($type_to == 'Cash-in-hand' || $type_to == 'Bank') {
+        if ($type_to == 'Cash-in-hand' || $type_to == 'Bank' || $type_to == 'Expense' || $type_to == 'Commission') {
             $account = $this->_get_account($data['account_to_id'],$type_to)->result_array();
             $cash['opening_balance'] = $account[0]['opening_balance'] + $data['amount'];
             $this->_update_account_balance($account[0]['id'],$type_to,$cash);
         }
         elseif ($type_to == 'Salary' || $type_to == 'Loan' || $type_to == 'Asset') {
             $account = $this->_get_account($data['account_to_id'],$type_to)->result_array();
-            $cash['paid'] = $account[0]['paid'] + $data['amount'];
-            $cash['remaining'] = $account[0]['remaining'] - $data['amount'];
-            $this->_update_account_balance($account[0]['id'],$type_to,$cash);
+            $cash1['paid'] = $account[0]['paid'] + $data['amount'];
+            $cash1['remaining'] = $account[0]['remaining'] - $data['amount'];
+            $this->_update_account_balance($account[0]['id'],$type_to,$cash1);
         }
         elseif ($type_to == 'supplier') {
             $where['id'] = $data['account_to_id'];
@@ -371,6 +380,7 @@ class Account extends MX_Controller
             $account_from2=explode(',', $account_from);
             $data['account_from_id'] = $account_from2[0];
             $data['account_from_name'] = $account_from2[1];
+            $data['account_from_type'] = $account_from2[2];
             $type_from = $account_from2[2];
         }
 
@@ -379,13 +389,14 @@ class Account extends MX_Controller
             $account_to2=explode(',', $account_to);
             $data['account_to_id'] = $account_to2[0];
             $data['account_to_name'] = $account_to2[1];
+            $data['account_to_type'] = $account_to2[2];
             $type_to = $account_to2[2];
         }
         $data['amount'] = $this->input->post('amount');
         $data['transaction_type'] ='CR';
         $data['comment'] = $this->input->post('comment');
         $data['ref_no'] = $this->input->post('ref_no');
-        $data['date'] = date('Y-m-d');
+        $data['date'] = $this->input->post('date');
         $user_data = $this->session->userdata('user_data');
         $data['org_id'] = $user_data['user_id'];
         $this->_insert_transaction($data);
@@ -404,7 +415,7 @@ class Account extends MX_Controller
             Modules::run('sale_invoice/_update_customer_amount',$data['account_from_id'],$data2,$data['org_id']);
         }
 
-        if ($type_to == 'Cash-in-hand' || $type_to == 'Bank') {
+        if ($type_to == 'Cash-in-hand' || $type_to == 'Bank' || $type_to == 'Expense' || $type_to == 'Commission') {
             $account = $this->_get_account($data['account_to_id'],$type_to)->result_array();
             $cash['opening_balance'] = $account[0]['opening_balance'] + $data['amount'];
             $this->_update_account_balance($account[0]['id'],$type_to,$cash);

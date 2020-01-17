@@ -49,30 +49,14 @@
       </h5>
     </div>
   </div>
-  <div class="row">
-    <div class="col-md-9">
-      <h4>
-        <?php if($type == 'customer' ){?>
-          <b>Address : </b><?php echo $invoice[1]['address']?>
-        <?php } 
-        elseif($type == 'supplier') {?>
-          <b>Address : </b><?php echo $invoice[1]['city']?>
-        <?php } ?>
-      </h4>
-    </div>
-  </div>
+  
   <div class="row">
     <div class="col-md-8">
       &nbsp;
     </div>
     <div class="col-md-4">
       <h4>
-        <?php if($type == 'customer' || $type == 'supplier'){?>
-          <b>Opening Balance : </b><?php echo $invoice[1]['remaining']?>
-        <?php } 
-        else {?>
-          <b>Opening Balance : </b><?php echo $invoice[1]['opening_balance']?>
-        <?php } ?>
+        <b>Opening Balance : </b><?php echo $invoice[1]['opening_balance']?>
       </h4>
     </div>
   </div>
@@ -87,38 +71,55 @@
     <div class="col-md-2"><b>Balance</b></div>
   </div>
   <p class="border_bottom"></p>
+  <?php if($type == 'Cash-in-hand') { ?>
   <?php foreach ($report as $key => $value) {
-if (isset($value['amount'])) {
-  $total = $total - $value['remaining'];
+if ($value['transaction_type'] == 'CR' || $value['transaction_type'] == 'BR') {
+  $total = $total + $value['remaining'];
 }
 else{
-  $total = $total + $value['remaining'];
+  $total = $total - $value['remaining'];
 }
     ?>
   <div class="row">
     <div class="col-md-2"><?=$value['date']?></div>
-    <?php if (isset($value['amount'])) {?>
       <div class="col-md-2"><?=$value['transaction_type'].' - '.$value['id']?></div>
-      <div class="col-md-4"><b><?='From - '.$value['account_from_name'].' - To - '.$value['account_to_name']?></b></div>
-    <?php } elseif($type == 'customer') { ?>
-      <div class="col-md-2">SI - <?=$value['id']?></div>
-      <div class="col-md-4"><b>Sale Invoice</b></div>
-      <?php } elseif($type == 'supplier') { ?>
-        <div class="col-md-2">PI - <?=$value['id']?></div>
-      <div class="col-md-4"><b>Purchase Invoice</b></div>
-      <?php } ?>
-    <?php if($type == 'customer' && empty($value['amount']) || $type=='supplier' && isset($value['account_from_name'])) { ?>
-      <div class="col-md-1"><?php echo $value['remaining'] ?></div>
-      <div class="col-md-1"></div>
-    <?php } elseif($type == 'supplier' || isset($value['amount'])) {?>
-      <div class="col-md-1"></div>
-      <div class="col-md-1"><?php echo $value['remaining'] ?></div>
-    <?php } ?>
-    
+      <div class="col-md-4"><b><?='From - '.$value['account_from_name'].'('.$value['account_from_type'].')'.' - To - '.$value['account_to_name'].'('.$value['account_to_type'].')'?></b></div>
+      <?php if ($value['transaction_type'] == 'CR' || $value['transaction_type'] == 'BR') { ?>
+        <div class="col-md-1"><?=$value['remaining']?></div>
+        <div class="col-md-1"></div>
+      <?php } else{ ?>
+        <div class="col-md-1"></div>
+        <div class="col-md-1"><?=$value['remaining']?></div>
+       <?php } ?>
     <div class="col-md-2"><?=$total ?></div>
   </div>
   <p class="border_bottom"></p>
-  <?php } ?>
+  <?php }
+  } elseif ($type == 'Bank') { ?>
+    <?php foreach ($report as $key => $value) {
+if ($value['transaction_type'] == 'BD') {
+  $total = $total + $value['remaining'];
+}
+else{
+  $total = $total - $value['remaining'];
+}
+    ?>
+  <div class="row">
+    <div class="col-md-2"><?=$value['date']?></div>
+      <div class="col-md-2"><?=$value['transaction_type'].' - '.$value['id']?></div>
+      <div class="col-md-4"><b><?='From - '.$value['account_from_name'].'('.$value['account_from_type'].')'.' - To - '.$value['account_to_name'].'('.$value['account_to_type'].')'?></b></div>
+      <?php if ($value['transaction_type'] == 'BD') { ?>
+        <div class="col-md-1"></div>
+        <div class="col-md-1"><?=$value['remaining']?></div>
+      <?php } else{ ?>
+        <div class="col-md-1"><?=$value['remaining']?></div>
+        <div class="col-md-1"></div>
+       <?php } ?>
+    <div class="col-md-2"><?=$total ?></div>
+  </div>
+  <p class="border_bottom"></p>
+  <?php }
+  } ?>
 
   <div class="row mt-5 pt-5">
     <div class="col-md-9"></div>

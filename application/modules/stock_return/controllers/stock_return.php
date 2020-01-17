@@ -33,8 +33,12 @@ class stock_return extends MX_Controller
             $data['news'] = $this->_get_data_from_post();
         }
         $product = Modules::run('product/_get_by_arr_id_product',$org_id)->result_array();
+        $customer = Modules::run('customer/_get','id desc')->result_array();
+        $supplier = Modules::run('supplier/_get','id desc')->result_array();
+        $account = array_merge($customer,$supplier);
 
         $data['product'] = $product;
+        $data['account'] = $account;
         $data['update_id'] = $update_id;
         $data['view_file'] = 'newsform';
         $this->load->module('template');
@@ -73,11 +77,12 @@ class stock_return extends MX_Controller
     }
 
     function _get_data_from_post() {
-        $returnee = $this->input->post('returnee');
-        if (isset($returnee) && !empty($returnee)) {
-            $returnee2=explode(',', $returnee);
-            $data['return_id'] = $returnee2[0];
-            $data['return_name'] = $returnee2[1];
+        $account = $this->input->post('account');
+        if (isset($account) && !empty($account)) {
+            $account2=explode(',', $account);
+            $data['return_id'] = $account2[0];
+            $data['return_name'] = $account2[1];
+            $data['return_type'] = $account2[2];
         }
         $data['date'] = $this->input->post('date');
         $data['ref_no'] = $this->input->post('ref_no');
@@ -87,8 +92,6 @@ class stock_return extends MX_Controller
         $data['cash_received'] = $this->input->post('paid_amount');
         $data['change'] = $this->input->post('change');
         $data['remaining'] = $this->input->post('remaining');
-        $data['return_type'] = $this->input->post('return_type');
-
 
         $user_data = $this->session->userdata('user_data');
         $data['org_id'] = $user_data['user_id'];
@@ -105,7 +108,7 @@ class stock_return extends MX_Controller
         }
         else {
             $stock_return_id = $this->_insert_stock_return($data);
-            if ($data['return_type'] == 'Supplier') {
+            if ($data['return_type'] == 'supplier') {
                 $where['id'] = $data['return_id'];
                 $supplier = Modules::run('supplier/_get_by_arr_id',$where)->result_array();
 
@@ -122,7 +125,7 @@ class stock_return extends MX_Controller
                 $this->_update_supplier_amount($data['return_id'],$data2,$org_id);
                 $product_invoice = $this->insert_product($stock_return_id,$data['return_type'],$org_id);
             }
-            elseif ($data['return_type'] == 'Customer') {
+            elseif ($data['return_type'] == 'customer') {
                 $where['id'] = $data['return_id'];
                 $customer = Modules::run('customer/_get_by_arr_id',$where)->result_array();
 
@@ -142,7 +145,6 @@ class stock_return extends MX_Controller
         $this->session->set_flashdata('message', 'stock_return'.' '.DATA_SAVED);
         $this->session->set_flashdata('status', 'success');
         redirect(ADMIN_BASE_URL . 'stock_return/manage');
-        // redirect(ADMIN_BASE_URL . 'stock_return/print_stock_return/'.$stock_return_id);
     }
 
     function insert_product($stock_return_id,$return_type,$org_id){
@@ -173,11 +175,11 @@ class stock_return extends MX_Controller
                     $data['amount'] = $sale_amount[$counter];
                     $data['org_id'] = $org_id;
 
-                    if ($return_type == 'Supplier') {
+                    if ($return_type == 'supplier') {
                         $data2['stock'] = $value1['stock'] - $sale_qty[$counter];
                         $rows = $this->_update_product_stock($data2,$org_id,$value1['id']);   
                     }
-                    elseif ($return_type == 'Customer') {
+                    elseif ($return_type == 'customer') {
                         $data2['stock'] = $value1['stock'] + $sale_qty[$counter];
                         $rows = $this->_update_product_stock($data2,$org_id,$value1['id']);
                     }
@@ -219,24 +221,6 @@ class stock_return extends MX_Controller
         }
         $result_array = [$html,$total];
         echo json_encode($result_array);
-    }
-
-    function get_returnee(){
-        $return_type = $this->input->post('return_type');
-        $user_data = $this->session->userdata('user_data');
-        $org_id = $user_data['user_id'];
-        if ($return_type == 'Supplier') {
-            $returnee = Modules::run('supplier/_get_by_arr_id_supplier',$org_id)->result_array();
-        }
-        elseif ($return_type == 'Customer') {
-            $returnee = Modules::run('customer/_get_by_arr_id_customer',$org_id)->result_array();
-        }
-
-        $html='';
-        foreach ($returnee as $key => $value) {
-            $html.='<option value="'.$value['id'].','.$value['name'].'">'.$value['name'].'</option>';
-        }
-        echo $html;
     }
 
     //==============AJAX FUNCTIONS END==================

@@ -88,9 +88,9 @@
     <th colspan="1" class="border1">Qty</th>
     <th colspan="1" class="border1" style="border-right: 1px solid black">Amount</th>
   </thead>
-  <tbody>
+  <tbody >
   <?php foreach ($invoice as $key => $value) { ?>
-    <tr style="text-align: center;">
+    <tr style="text-align: center;height: 50px;font-size: 25px">
       <td colspan="1" class="border1"> <?php echo 'PR -'.$value['product_id'];?></td>
       <td colspan="1" class="border1"> <?php echo $value['product_name'].' - '.$value['p_c_name'];?></td>
       <td colspan="1" class="border1"> <?php echo $value['sale_price'];?></td>
@@ -98,6 +98,10 @@
       <td colspan="1" class="border1" style="border-right: 1px solid black"> <?php echo $value['amount'];?></td>
     </tr>
   <?php  }  ?>
+  <tr>
+    <th class="border_bottom" colspan="100%"></th>
+  </tr>
+  
   <tr>
           <td colspan="4" align="right"><b>Total Amount: </b></td>
           <td colspan="1" align="right"><b>Rs.<?php echo $invoice[0]['total_payable']; ?></b></td>

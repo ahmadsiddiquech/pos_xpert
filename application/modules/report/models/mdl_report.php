@@ -48,24 +48,35 @@ class Mdl_report extends CI_Model {
         return $this->db->get($table);
     }
 
-    function _get_report($data) {
+    function _get_sale_invoice_report($data) {
         if ($data['type'] == 'customer') {
             $this->db->from('sale_invoice');
-            $this->db->join("sale_invoice_product", "sale_invoice_product.sale_invoice_id = sale_invoice.id", "full");
-            $this->db->where('sale_invoice.customer_id', $data['account_id']);
-            $this->db->where('sale_invoice.org_id', $data['org_id']);
-            $this->db->where('sale_invoice.date >=',$data['from_date']);
-            $this->db->where('sale_invoice.date <=',$data['to_date']);
+            // $this->db->join("sale_invoice_product", "sale_invoice_product.sale_invoice_id = sale_invoice.id", "full");
+            $this->db->where('customer_id', $data['account_id']);
+            $this->db->where('org_id', $data['org_id']);
+            $this->db->where('date >=',$data['from_date']);
+            $this->db->where('date <=',$data['to_date']);
         }
 
         elseif ($data['type'] == 'supplier') {
             $this->db->from('purchase_invoice');
-            $this->db->join("purchase_invoice_product", "purchase_invoice_product.purchase_invoice_id = purchase_invoice.id", "full");
-            $this->db->where('purchase_invoice.supplier_id', $data['account_id']);
-            $this->db->where('purchase_invoice.org_id', $data['org_id']);
-            $this->db->where('purchase_invoice.date >=',$data['from_date']);
-            $this->db->where('purchase_invoice.date <=',$data['to_date']);
+            // $this->db->join("purchase_invoice_product", "purchase_invoice_product.purchase_invoice_id = purchase_invoice.id", "full");
+            $this->db->where('supplier_id', $data['account_id']);
+            $this->db->where('org_id', $data['org_id']);
+            $this->db->where('date >=',$data['from_date']);
+            $this->db->where('date <=',$data['to_date']);
         }
         return $this->db->get();
+    }
+
+    function _get_transaction_report($data){
+        $table = 'account_transaction';
+        $this->db->select('*,amount remaining');
+        $this->db->where('date >=',$data['from_date']);
+        $this->db->where('date <=',$data['to_date']);
+        $this->db->where('org_id',$data['org_id']);
+        $this->db->where('account_from_id',$data['account_id']);
+        $this->db->or_where('account_to_id',$data['account_id']);
+        return $this->db->get($table);
     }
 }

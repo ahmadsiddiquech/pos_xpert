@@ -68,7 +68,6 @@
                               'id' => 'description',
                               'class' => 'form-control',
                               'type' => 'text',
-                              'required' => 'required',
                               'tabindex' => '2',
                               'value' => $news['description'],
                               'data-parsley-maxlength'=>TEXT_BOX_RANGE

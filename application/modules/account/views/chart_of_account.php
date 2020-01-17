@@ -35,11 +35,11 @@
                                     <td><?php echo $new->type ?></td>
                                     <td><?php echo $new->name ?></td>
                                     <td><?php echo $new->date ?></td>
-                                    <? if ($new->type == 'Cash-in-hand' || $new->type == 'Bank' || $new->type == 'Asset') { ?>
+                                    <? if ($new->type == 'Cash-in-hand' || $new->type == 'Bank' || $new->type == 'Asset' ) { ?>
                                         <td>0</td>
                                         <td><?php echo $new->opening_balance ?></td>
                                     <?php } 
-                                        elseif ($new->type == 'Salary' || $new->type == 'Invester' || $new->type == 'Loan') { ?>
+                                        elseif ($new->type == 'Salary' || $new->type == 'Invester' || $new->type == 'Loan' || $new->type == 'Commission' || $new->type == 'Expense') { ?>
                                             <td><?php echo $new->remaining ?></td>
                                             <td><?php echo $new->paid ?></td>
                                     <?php } ?>
