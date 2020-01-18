@@ -126,6 +126,7 @@ class Supplier extends MX_Controller
             $data['company_name'] = $row->company_name;
             $data['phone'] = $row->phone;
             $data['total'] = $row->total;
+            $data['balance'] = $row->balance;
             $data['paid'] = $row->paid;
             $data['remaining'] = $row->remaining;
             $data['status'] = $row->status;
@@ -141,6 +142,7 @@ class Supplier extends MX_Controller
         $data['phone'] = $this->input->post('phone');
         $data['company_name'] = $this->input->post('company_name');
         $data['total'] = $this->input->post('total');
+        $data['balance'] = $this->input->post('total');
         $data['paid'] = $this->input->post('paid');
         $data['remaining'] = $data['total'] - $data['paid'];
         $data['comments'] = $this->input->post('comments');

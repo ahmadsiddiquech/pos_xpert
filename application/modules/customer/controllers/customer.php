@@ -124,6 +124,7 @@ class Customer extends MX_Controller
             $data['address'] = $row->address;
             $data['phone'] = $row->phone;
             $data['total'] = $row->total;
+            $data['balance'] = $row->balance;
             $data['paid'] = $row->paid;
             $data['remaining'] = $row->remaining;
             $data['status'] = $row->status;
@@ -138,6 +139,7 @@ class Customer extends MX_Controller
         $data['address'] = $this->input->post('address');
         $data['phone'] = $this->input->post('phone');
         $data['total'] = $this->input->post('total');
+        $data['balance'] = $this->input->post('total');
         $data['paid'] = $this->input->post('paid');
         $data['remaining'] = $data['total'] - $data['paid'];
         $user_data = $this->session->userdata('user_data');

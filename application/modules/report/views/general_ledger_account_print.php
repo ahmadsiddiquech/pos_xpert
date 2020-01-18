@@ -56,7 +56,8 @@
     </div>
     <div class="col-md-4">
       <h4>
-        <b>Opening Balance : </b><?php echo $invoice[1]['opening_balance']?>
+        <b>Opening Balance : </b><?php echo $invoice[1]['opening_balance'];
+        $total = $invoice[1]['opening_balance']?>
       </h4>
     </div>
   </div>
@@ -73,12 +74,12 @@
   <p class="border_bottom"></p>
   <?php if($type == 'Cash-in-hand') { ?>
   <?php foreach ($report as $key => $value) {
-if ($value['transaction_type'] == 'CR' || $value['transaction_type'] == 'BR') {
-  $total = $total + $value['remaining'];
-}
-else{
-  $total = $total - $value['remaining'];
-}
+    if ($value['transaction_type'] == 'CR' || $value['transaction_type'] == 'BR') {
+      $total = $total + $value['remaining'];
+    }
+    else{
+      $total = $total - $value['remaining'];
+    }
     ?>
   <div class="row">
     <div class="col-md-2"><?=$value['date']?></div>
@@ -97,12 +98,36 @@ else{
   <?php }
   } elseif ($type == 'Bank') { ?>
     <?php foreach ($report as $key => $value) {
-if ($value['transaction_type'] == 'BD') {
-  $total = $total + $value['remaining'];
-}
-else{
-  $total = $total - $value['remaining'];
-}
+    if ($value['transaction_type'] == 'BD') {
+      $total = $total + $value['remaining'];
+    }
+    else{
+      $total = $total - $value['remaining'];
+    }
+    ?>
+  <div class="row">
+    <div class="col-md-2"><?=$value['date']?></div>
+      <div class="col-md-2"><?=$value['transaction_type'].' - '.$value['id']?></div>
+      <div class="col-md-4"><b><?='From - '.$value['account_from_name'].'('.$value['account_from_type'].')'.' - To - '.$value['account_to_name'].'('.$value['account_to_type'].')'?></b></div>
+      <?php if ($value['transaction_type'] == 'BD') { ?>
+        <div class="col-md-1"></div>
+        <div class="col-md-1"><?=$value['remaining']?></div>
+      <?php } else{ ?>
+        <div class="col-md-1"><?=$value['remaining']?></div>
+        <div class="col-md-1"></div>
+       <?php } ?>
+    <div class="col-md-2"><?=$total ?></div>
+  </div>
+  <p class="border_bottom"></p>
+  <?php }
+  } elseif ($type == 'Salary' || $type == 'Expense' || $type == 'Loan' || $type == 'Asset') {?>
+    <?php foreach ($report as $key => $value) {
+    if ($value['transaction_type'] == 'JV' || $value['transaction_type'] == 'CP' || $value['transaction_type'] == 'BD') {
+      $total = $total - $value['remaining'];
+    }
+    else{
+      $total = $total + $value['remaining'];
+    }
     ?>
   <div class="row">
     <div class="col-md-2"><?=$value['date']?></div>

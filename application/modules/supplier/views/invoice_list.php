@@ -79,7 +79,7 @@
                     <div class="pull-right" style="padding-right: 60px">
                         <h4 style="color:red;">Grand Total: <?php echo $total ?> PKR</h4>
                         <h4 style="color:red;">Total Paid: <?php echo $total-$remaining ?> PKR</h4>
-                        <h4 style="color:red;">Total Collectable: <?php echo $remaining ?> PKR</h4>
+                        <h4 style="color:red;">Total Payable: <?php echo $remaining ?> PKR</h4>
                     </div>
                     </div>
                 </div>

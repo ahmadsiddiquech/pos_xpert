@@ -98,6 +98,13 @@
       <td colspan="1" class="border1" style="border-right: 1px solid black"> <?php echo $value['amount'];?></td>
     </tr>
   <?php  }  ?>
+  <tr style="text-align: center;height: 50px;font-size: 25px">
+      <td colspan="1" class="border1" height="440px;"></td>
+      <td colspan="1" class="border1"></td>
+      <td colspan="1" class="border1"></td>
+      <td colspan="1" class="border1"></td>
+      <td colspan="1" class="border1" style="border-right: 1px solid black"></td>
+    </tr>
   <tr>
     <th class="border_bottom" colspan="100%"></th>
   </tr>

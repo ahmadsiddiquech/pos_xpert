@@ -90,6 +90,7 @@ class Account extends MX_Controller
         if ($type_from == 'Cash-in-hand' || $type_from == 'Loan' || $type_from == 'Asset' || $type_from == 'Bank') {
             $account = $this->_get_account($data['account_from_id'],$type_from)->result_array();
             $cash['opening_balance'] = $account[0]['opening_balance'] - $data['amount'];
+            $cash['remaining'] = $account[0]['remaining'] - $data['amount'];
             $this->_update_account_balance($account[0]['id'],$type_from,$cash);
         }
         elseif ($type_from == 'customer') {
@@ -103,14 +104,15 @@ class Account extends MX_Controller
 
         if ($type_to == 'Cash-in-hand' || $type_to == 'Bank' || $type_to == 'Expense' || $type_to == 'Commission') {
             $account = $this->_get_account($data['account_to_id'],$type_to)->result_array();
-            $cash['opening_balance'] = $account[0]['opening_balance'] + $data['amount'];
-            $this->_update_account_balance($account[0]['id'],$type_to,$cash);
+            $cash2['opening_balance'] = $account[0]['opening_balance'] + $data['amount'];
+            $cash2['remaining'] = $account[0]['remaining'] + $data['amount'];
+            $this->_update_account_balance($account[0]['id'],$type_to,$cash2);
         }
         elseif ($type_to == 'Salary' || $type_to == 'Loan' || $type_to == 'Asset') {
             $account = $this->_get_account($data['account_to_id'],$type_to)->result_array();
-            $cash['paid'] = $account[0]['paid'] + $data['amount'];
-            $cash['remaining'] = $account[0]['remaining'] - $data['amount'];
-            $this->_update_account_balance($account[0]['id'],$type_to,$cash);
+            $cash2['paid'] = $account[0]['paid'] + $data['amount'];
+            $cash2['remaining'] = $account[0]['remaining'] - $data['amount'];
+            $this->_update_account_balance($account[0]['id'],$type_to,$cash2);
         }
         elseif ($type_to == 'supplier') {
             $where['id'] = $data['account_to_id'];
@@ -169,6 +171,7 @@ class Account extends MX_Controller
         if ($type_from == 'Cash-in-hand' || $type_from == 'Loan' || $type_from == 'Asset' || $type_from == 'Bank') {
             $account = $this->_get_account($data['account_from_id'],$type_from)->result_array();
             $cash['opening_balance'] = $account[0]['opening_balance'] - $data['amount'];
+            $cash['remaining'] = $account[0]['remaining'] - $data['amount'];
             $this->_update_account_balance($account[0]['id'],$type_from,$cash);
         }
         elseif ($type_from == 'customer') {
@@ -182,14 +185,15 @@ class Account extends MX_Controller
 
         if ($type_to == 'Cash-in-hand' || $type_to == 'Bank' || $type_to == 'Expense' || $type_to == 'Commission') {
             $account = $this->_get_account($data['account_to_id'],$type_to)->result_array();
-            $cash['opening_balance'] = $account[0]['opening_balance'] + $data['amount'];
-            $this->_update_account_balance($account[0]['id'],$type_to,$cash);
+            $cash2['opening_balance'] = $account[0]['opening_balance'] + $data['amount'];
+            $cash2['remaining'] = $account[0]['remaining'] + $data['amount'];
+            $this->_update_account_balance($account[0]['id'],$type_to,$cash2);
         }
         elseif ($type_to == 'Salary' || $type_to == 'Loan' || $type_to == 'Asset') {
             $account = $this->_get_account($data['account_to_id'],$type_to)->result_array();
-            $cash['paid'] = $account[0]['paid'] + $data['amount'];
-            $cash['remaining'] = $account[0]['remaining'] - $data['amount'];
-            $this->_update_account_balance($account[0]['id'],$type_to,$cash);
+            $cash2['paid'] = $account[0]['paid'] + $data['amount'];
+            $cash2['remaining'] = $account[0]['remaining'] - $data['amount'];
+            $this->_update_account_balance($account[0]['id'],$type_to,$cash2);
         }
         elseif ($type_to == 'supplier') {
             $where['id'] = $data['account_to_id'];
@@ -248,6 +252,7 @@ class Account extends MX_Controller
         if ($type_from == 'Cash-in-hand' || $type_from == 'Loan' || $type_from == 'Asset' || $type_from == 'Bank') {
             $account = $this->_get_account($data['account_from_id'],$type_from)->result_array();
             $cash['opening_balance'] = $account[0]['opening_balance'] - $data['amount'];
+            $cash['remaining'] = $account[0]['remaining'] - $data['amount'];
             $this->_update_account_balance($account[0]['id'],$type_from,$cash);
         }
         elseif ($type_from == 'customer') {
@@ -261,14 +266,15 @@ class Account extends MX_Controller
 
         if ($type_to == 'Cash-in-hand' || $type_to == 'Bank' || $type_to == 'Expense' || $type_to == 'Commission') {
             $account = $this->_get_account($data['account_to_id'],$type_to)->result_array();
-            $cash['opening_balance'] = $account[0]['opening_balance'] + $data['amount'];
-            $this->_update_account_balance($account[0]['id'],$type_to,$cash);
+            $cash2['opening_balance'] = $account[0]['opening_balance'] + $data['amount'];
+            $cash2['remaining'] = $account[0]['remaining'] + $data['amount'];
+            $this->_update_account_balance($account[0]['id'],$type_to,$cash2);
         }
         elseif ($type_to == 'Salary' || $type_to == 'Loan' || $type_to == 'Asset') {
             $account = $this->_get_account($data['account_to_id'],$type_to)->result_array();
-            $cash['paid'] = $account[0]['paid'] + $data['amount'];
-            $cash['remaining'] = $account[0]['remaining'] - $data['amount'];
-            $this->_update_account_balance($account[0]['id'],$type_to,$cash);
+            $cash2['paid'] = $account[0]['paid'] + $data['amount'];
+            $cash2['remaining'] = $account[0]['remaining'] - $data['amount'];
+            $this->_update_account_balance($account[0]['id'],$type_to,$cash2);
         }
         elseif ($type_to == 'supplier') {
             $where['id'] = $data['account_to_id'];
@@ -326,6 +332,7 @@ class Account extends MX_Controller
         if ($type_from == 'Cash-in-hand' || $type_from == 'Loan' || $type_from == 'Asset' || $type_from == 'Bank') {
             $account = $this->_get_account($data['account_from_id'],$type_from)->result_array();
             $cash['opening_balance'] = $account[0]['opening_balance'] - $data['amount'];
+            $cash['remaining'] = $account[0]['remaining'] - $data['amount'];
             $this->_update_account_balance($account[0]['id'],$type_from,$cash);
         }
         elseif ($type_from == 'customer') {
@@ -339,14 +346,15 @@ class Account extends MX_Controller
 
         if ($type_to == 'Cash-in-hand' || $type_to == 'Bank' || $type_to == 'Expense' || $type_to == 'Commission') {
             $account = $this->_get_account($data['account_to_id'],$type_to)->result_array();
-            $cash['opening_balance'] = $account[0]['opening_balance'] + $data['amount'];
-            $this->_update_account_balance($account[0]['id'],$type_to,$cash);
+            $cash2['opening_balance'] = $account[0]['opening_balance'] + $data['amount'];
+            $cash2['remaining'] = $account[0]['remaining'] + $data['amount'];
+            $this->_update_account_balance($account[0]['id'],$type_to,$cash2);
         }
         elseif ($type_to == 'Salary' || $type_to == 'Loan' || $type_to == 'Asset') {
             $account = $this->_get_account($data['account_to_id'],$type_to)->result_array();
-            $cash1['paid'] = $account[0]['paid'] + $data['amount'];
-            $cash1['remaining'] = $account[0]['remaining'] - $data['amount'];
-            $this->_update_account_balance($account[0]['id'],$type_to,$cash1);
+            $cash2['paid'] = $account[0]['paid'] + $data['amount'];
+            $cash2['remaining'] = $account[0]['remaining'] - $data['amount'];
+            $this->_update_account_balance($account[0]['id'],$type_to,$cash2);
         }
         elseif ($type_to == 'supplier') {
             $where['id'] = $data['account_to_id'];
@@ -404,6 +412,7 @@ class Account extends MX_Controller
         if ($type_from == 'Cash-in-hand' || $type_from == 'Loan' || $type_from == 'Asset' || $type_from == 'Bank') {
             $account = $this->_get_account($data['account_from_id'],$type_from)->result_array();
             $cash['opening_balance'] = $account[0]['opening_balance'] - $data['amount'];
+            $cash['remaining'] = $account[0]['remaining'] - $data['amount'];
             $this->_update_account_balance($account[0]['id'],$type_from,$cash);
         }
         elseif ($type_from == 'customer') {
@@ -417,14 +426,15 @@ class Account extends MX_Controller
 
         if ($type_to == 'Cash-in-hand' || $type_to == 'Bank' || $type_to == 'Expense' || $type_to == 'Commission') {
             $account = $this->_get_account($data['account_to_id'],$type_to)->result_array();
-            $cash['opening_balance'] = $account[0]['opening_balance'] + $data['amount'];
-            $this->_update_account_balance($account[0]['id'],$type_to,$cash);
+            $cash2['opening_balance'] = $account[0]['opening_balance'] + $data['amount'];
+            $cash2['remaining'] = $account[0]['remaining'] + $data['amount'];
+            $this->_update_account_balance($account[0]['id'],$type_to,$cash2);
         }
         elseif ($type_to == 'Salary' || $type_to == 'Loan' || $type_to == 'Asset') {
             $account = $this->_get_account($data['account_to_id'],$type_to)->result_array();
-            $cash['paid'] = $account[0]['paid'] + $data['amount'];
-            $cash['remaining'] = $account[0]['remaining'] - $data['amount'];
-            $this->_update_account_balance($account[0]['id'],$type_to,$cash);
+            $cash2['paid'] = $account[0]['paid'] + $data['amount'];
+            $cash2['remaining'] = $account[0]['remaining'] - $data['amount'];
+            $this->_update_account_balance($account[0]['id'],$type_to,$cash2);
         }
         elseif ($type_to == 'supplier') {
             $where['id'] = $data['account_to_id'];

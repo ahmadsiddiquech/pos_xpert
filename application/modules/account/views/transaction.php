@@ -34,6 +34,7 @@
                             echo form_open_multipart(ADMIN_BASE_URL . 'account/submit_transaction/' . $update_id, $attributes, $hidden);
                         else
                             echo form_open_multipart(ADMIN_BASE_URL . 'account/submit_transaction/' . $update_id, $attributes);
+                          date_default_timezone_set("Asia/Karachi");
                         ?>
                   <div class="form-body">
                     

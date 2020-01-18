@@ -68,10 +68,12 @@
     <div class="col-md-4">
       <h4>
         <?php if($type == 'customer' || $type == 'supplier'){?>
-          <b>Opening Balance : </b><?php echo $invoice[1]['remaining']?>
+          <b>Opening Balance : </b><?php echo $invoice[1]['remaining'];
+          $total = $invoice[1]['total']?>
         <?php } 
         else {?>
-          <b>Opening Balance : </b><?php echo $invoice[1]['opening_balance']?>
+          <b>Opening Balance : </b><?php echo $invoice[1]['opening_balance'];
+          $total = $invoice[1]['opening_balance']?>
         <?php } ?>
       </h4>
     </div>

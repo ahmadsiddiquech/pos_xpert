@@ -34,6 +34,7 @@
                             echo form_open_multipart(ADMIN_BASE_URL . 'account/submit_bank_deposit/' . $update_id, $attributes, $hidden);
                         else
                             echo form_open_multipart(ADMIN_BASE_URL . 'account/submit_bank_deposit/' . $update_id, $attributes);
+                          date_default_timezone_set("Asia/Karachi");
                         ?>
                   <div class="form-body">
                     
@@ -63,9 +64,8 @@
                                                         'name' => 'date',
                                                         'id' => 'date',
                                                         'class' => 'form-control',
-                                                        'type' => 'date',
+                                                        'type' => 'datetime-local',
                                                         'tabindex' => '2',
-                                                        'value' => date('Y-m-d'),
                                                         'data-parsley-maxlength'=>TEXT_BOX_RANGE
                                                         );
                                                         $attribute = array('class' => 'control-label col-md-4');
@@ -204,6 +204,7 @@
 
 <script>
   $(document).ready(function() {
+      document.getElementById("date").defaultValue = "<?php echo date('Y-m-d').'T'.date('H:i:s')?>";
       $(".chosen").chosen();
   });
 </script>
