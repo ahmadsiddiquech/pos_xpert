@@ -143,6 +143,27 @@
                     <span>Stock Return Report</span>
                   </a>
                 </li>
+                <li class="<?php if($curr_url == 'report/product_report'){echo 'active';}    ?>">
+                  <a href="<?php $controller='report/product_report';
+                    echo ADMIN_BASE_URL . $controller ?>">
+                    <em class="fa fa-file-text-o"></em>
+                    <span>Product Report</span>
+                  </a>
+                </li>
+                <li class="<?php if($curr_url == 'report/overall_report'){echo 'active';}    ?>">
+                  <a href="<?php $controller='report/overall_report';
+                    echo ADMIN_BASE_URL . $controller ?>">
+                    <em class="fa fa-file-text-o"></em>
+                    <span>Overall Report</span>
+                  </a>
+                </li>
+                <li class="<?php if($curr_url == 'report/date_to_date'){echo 'active';}    ?>">
+                  <a href="<?php $controller='report/date_to_date';
+                    echo ADMIN_BASE_URL . $controller ?>">
+                    <em class="fa fa-file-text-o"></em>
+                    <span>Date Wise Report</span>
+                  </a>
+                </li>
                 <li class="<?php if($curr_url == 'account/transaction_list'){echo 'active';}    ?>">
                   <a href="<?php $controller='account/transaction_list';
                     echo ADMIN_BASE_URL . $controller ?>">

@@ -33,6 +33,73 @@ class Report extends MX_Controller
         $this->template->admin($data);
     }
 
+    function product_report(){
+        $data['product'] = Modules::run('product/_get','id desc')->result_array();
+        $data['view_file'] = 'product_report';
+        $this->load->module('template');
+        $this->template->admin($data);
+    }
+
+    function submit_product_report() {
+        $user_data = $this->session->userdata('user_data');
+        $data['org_id'] = $user_data['user_id'];
+
+        $product = $this->input->post('product');
+        if (isset($product) && !empty($product)) {
+            $product2=explode(',', $product);
+            $data['product_id'] = $product[0];
+            $data['product_name'] = $product2[1];
+        }
+        $data['from_date'] = $this->input->post('from_date');
+        $data['to_date'] = $this->input->post('to_date');
+
+        $report = $this->_get_product_report($data)->result_array();
+        function date_compare($element1, $element2) { 
+            $datetime1 = strtotime($element1['date']); 
+            $datetime2 = strtotime($element2['date']); 
+            return $datetime1 - $datetime2; 
+        }
+        usort($report, 'date_compare');
+
+        $where_org['id'] = $data['org_id'];
+        $data['org'] = Modules::run('organizations/_get_by_arr_id',$where_org)->result_array();
+
+        $where['id'] = $data['product_id'];
+        $data['product'] = Modules::run('product/_get_by_arr_id',$where)->result_array();
+
+        $data['report'] = $report;
+        $this->load->view('product_report_print',$data);
+    }
+
+    function overall_report(){
+        $data['view_file'] = 'overall_report';
+        $this->load->module('template');
+        $this->template->admin($data);
+    }
+
+    function submit_overall_report() {
+        $user_data = $this->session->userdata('user_data');
+        $data['org_id'] = $user_data['user_id'];
+
+        $data['from_date'] = $this->input->post('from_date');
+        $data['to_date'] = $this->input->post('to_date');
+
+        $report = $this->_get_overall_report($data)->result_array();
+        // print_r($report);exit();
+        function date_compare($element1, $element2) { 
+            $datetime1 = strtotime($element1['date']); 
+            $datetime2 = strtotime($element2['date']); 
+            return $datetime1 - $datetime2; 
+        }
+        usort($report, 'date_compare');
+
+        $where_org['id'] = $data['org_id'];
+        $data['org'] = Modules::run('organizations/_get_by_arr_id',$where_org)->result_array();
+
+        $data['report'] = $report;
+        $this->load->view('overall_report_print',$data);
+    }
+
     function general_ledger(){
         $account = Modules::run('account/_get','id desc')->result_array();
         $customer = Modules::run('customer/_get','id desc')->result_array();
@@ -124,6 +191,42 @@ class Report extends MX_Controller
         $org_id = $user_data['user_id'];
         $data['invoice'] = $this->_get_report_data($report_id,$org_id)->result_array();
         $this->load->view('print_report',$data);
+    }
+
+    function date_to_date(){
+        $customer = Modules::run('customer/_get','id desc')->result_array();
+        $supplier = Modules::run('supplier/_get','id desc')->result_array();
+        $all = array_merge($customer,$supplier);
+        $data['account'] = $all;
+        $data['view_file'] = 'date_to_date';
+        $this->load->module('template');
+        $this->template->admin($data);
+    }
+
+    function submit_date_to_date() {
+        $user_data = $this->session->userdata('user_data');
+        $data['org_id'] = $user_data['user_id'];
+        $account = $this->input->post('account');
+        if (isset($account) && !empty($account)) {
+            $account2=explode(',', $account);
+            $data['account_id'] = $account2[0];
+            $data['account_name'] = $account2[1];
+            $data['type'] = $account2[2];
+        }
+        $data['from_date'] = $this->input->post('from_date');
+        $data['to_date'] = $this->input->post('to_date');
+        $where_org['id'] = $data['org_id'];
+        $data['org'] = Modules::run('organizations/_get_by_arr_id',$where_org)->result_array();
+        $where['id'] = $data['account_id'];
+        if ($data['type'] == 'customer') {
+            $data['account'] = Modules::run('customer/_get_by_arr_id',$where)->result_array();
+        }
+        elseif ($data['type'] == 'supplier') {
+            $data['account'] = Modules::run('supplier/_get_by_arr_id',$where)->result_array();
+        }
+        // print_r($data['type']);exit();
+        $data['invoice'] = $this->_get_sale_invoice_report($data)->result_array();
+        $this->load->view('date_to_date_print',$data);
     }
 
     function income_statement() {
@@ -276,5 +379,15 @@ class Report extends MX_Controller
     function _get_expense($data) {
         $this->load->model('mdl_report');
         return $this->mdl_report->_get_expense($data);
+    }
+
+    function _get_product_report($data){
+        $this->load->model('mdl_report');
+        return $this->mdl_report->_get_product_report($data);
+    }
+
+    function _get_overall_report($data){
+        $this->load->model('mdl_report');
+        return $this->mdl_report->_get_overall_report($data);
     }
 }

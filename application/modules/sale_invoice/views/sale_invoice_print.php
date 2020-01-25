@@ -19,23 +19,27 @@
   }
 </style>
 <body class="container pt-5">
+  <div class="row">
+    <div class="col-md-12">
+      <h1 style="text-align: center;">Invoice</h1>
+    </div>
+  </div>
     <div class="row">
     <div class="col-md-3">
       <img src="<?php echo STATIC_ADMIN_IMAGE.'logo.png'?>" height="100px;">
     </div>
-    <div class="col-md-6 ">
-      <h1 style="text-align: center;">
-      <?php echo $invoice[0]['org_name']; ?>
-      </h1>
-      <h5 class="display-5 text-break" style="text-align: center;">
+  </div>
+  <div class="row">
+    <div class="col-md-6">
+      <h2>
+        <?php echo $invoice[0]['org_name']; ?>
+      </h2>
+      <h5>
         <?php echo $invoice[0]['org_address']; ?><br>
         Ph: <?php echo $invoice[0]['org_phone']; ?>
       </h5>
     </div>
-    <div class="col-md-3">
-      <h2 style="text-align: right;">
-      Invoice
-      </h2>
+    <div class="col-md-6">
       <h5 class="display-5 text-break" style="text-align: right;">
         Invoice #<?php echo $invoice[0]['sale_invoice_id']; ?><br>
         Date <?php echo $invoice[0]['date']; ?><br>
@@ -43,43 +47,25 @@
       </h5>
     </div>
   </div>
-  <div class="row">&nbsp;</div>
-  <div class="row">&nbsp;</div>
-  <p class="border_bottom"></p>
-  <div class="row pl-3 pr-3">
-    <div class="col-md-5" style="border: 1px solid black;">
-      <h2 style="text-align: left;">
-      Invoice From
-      </h2>
-      <h5 class="display-5 text-break" style="text-align: left;">
-        <?php echo $invoice[0]['org_name']; ?><br>
-        <?php echo $invoice[0]['org_address']; ?><br>
-        <?php echo $invoice[0]['org_phone']; ?><br>
-      </h5>
-    </div>
-    <div class="col-md-2"></div>
-    <div class="col-md-5" style="border: 1px solid black;">
-      <h2 style="text-align: left;">
-      Invoice To
-      </h2>
-      <h5 class="display-5 text-break" style="text-align: left;">
-        <?php if (isset($invoice[0]['name'])) {
+  <div class="row">
+    <div class="col-md-6">
+      <h5 class="text-break" style="text-align: left;">
+        <b>Name: </b><?php if (isset($invoice[0]['name'])) {
           echo $invoice[0]['name'];
         } else{
           echo "Walk-In Customer";
         } ?><br>
-        <?php if (isset($invoice[0]['address'])) {
-          echo $invoice[0]['address'];
-        } ?><br>
-        <?php if (isset($invoice[0]['phone'])) {
-          echo $invoice[0]['phone'];
-        } ?><br>
+        <b>Address: </b><?php if (isset($invoice[0]['address'])) {
+          echo $invoice[0]['address']; }?>
+      </h5>
+    </div>
+    <div class="col-md-6">
+      <h5>
+        <b>Phone: </b><?php if (isset($invoice[0]['phone'])) {
+          echo $invoice[0]['phone']; } ?>
       </h5>
     </div>
   </div>
-  <div class="row">&nbsp;</div>
-  <div class="row">&nbsp;</div>
-  <div class="row">&nbsp;</div>
 <table width="100%">
   <thead align="center">
     <th colspan="1" class="border1">Item Code</th>
@@ -90,12 +76,12 @@
   </thead>
   <tbody >
   <?php foreach ($invoice as $key => $value) { ?>
-    <tr style="text-align: center;height: 50px;font-size: 25px">
-      <td colspan="1" class="border1"> <?php echo 'PR -'.$value['product_id'];?></td>
+    <tr>
+      <td colspan="1" class="border1" style="text-align: center;"> <?php echo 'PR -'.$value['product_id'];?></td>
       <td colspan="1" class="border1"> <?php echo $value['product_name'].' - '.$value['p_c_name'];?></td>
-      <td colspan="1" class="border1"> <?php echo $value['sale_price'];?></td>
-      <td colspan="1" class="border1"> <?php echo $value['qty'];?></td>
-      <td colspan="1" class="border1" style="border-right: 1px solid black"> <?php echo $value['amount'];?></td>
+      <td colspan="1" class="border1" style="text-align: center;"> <?php echo $value['sale_price'];?></td>
+      <td colspan="1" class="border1" style="text-align: center;"> <?php echo $value['qty'];?></td>
+      <td colspan="1" class="border1" style="border-right: 1px solid black;text-align: center"> <?php echo $value['amount'];?></td>
     </tr>
   <?php  }  ?>
   <tr style="text-align: center;height: 50px;font-size: 25px">
@@ -110,28 +96,41 @@
   </tr>
   
   <tr>
-          <td colspan="4" align="right"><b>Total Amount: </b></td>
-          <td colspan="1" align="right"><b>Rs.<?php echo $invoice[0]['total_payable']; ?></b></td>
-        </tr>
-        <tr>
-          <td colspan="4" align="right"><b>Discount: </b></td>
-          <td colspan="1" align="right"><b>Rs.<?php echo $invoice[0]['discount']; ?></b></td>
-        </tr>
-        <tr>
-          <td colspan="4" align="right"><b><h3>Grand Total: </h3></b></td>
-          <td colspan="1" align="right"><b><h3>Rs.<?php echo $invoice[0]['grand_total']; ?></h3></b></td>
-        </tr>
-        <tr>
-          <td colspan="4" align="right"><b>Cash Recieved: </b></td>
-          <td colspan="1" align="right"><b>Rs.<?php echo $invoice[0]['cash_received']; ?></b></td>
-        </tr>
-        <tr>
-          <th class="border_bottom" colspan="100%"></th>
-        </tr>
-        <tr>
-          <td colspan="4" align="right"><b><h3>Total Due Balance: </h3></b></td>
-          <td colspan="1" align="right"><b><h3>Rs.<?php echo $invoice[0]['remaining']; ?></h3></b></td>
-        </tr>
+    <td colspan="2">&nbsp;</td>
+    <td colspan="2" align="left" style="border: 1px solid black"><b>Sub Total: </b></td>
+    <td colspan="1" align="right" style="border: 1px solid black">Rs.<?php echo $invoice[0]['total_payable']; ?></td>
+  </tr>
+  <tr>
+    <td colspan="2">&nbsp;</td>
+    <td colspan="2" align="left" style="border: 1px solid black"><b>Discount: </b></td>
+    <td colspan="1" align="right" style="border: 1px solid black">Rs.<?php echo $invoice[0]['discount']; ?></td>
+  </tr>
+  <tr>
+    <td colspan="2">&nbsp;</td>
+    <td colspan="2" align="left" style="border: 1px solid black"><b>Total Amount: </b></td>
+    <td colspan="1" align="right" style="border: 1px solid black">Rs.<?php echo $invoice[0]['grand_total']; ?></td>
+  </tr>
+  <tr>
+    <td colspan="2">&nbsp;</td>
+    <td colspan="2" align="left" style="border: 1px solid black"><b>Previous Amount: </b></td>
+    <td colspan="1" align="right" style="border: 1px solid black">Rs.<?php if (isset($invoice[0]['cust_remaining'])) {
+          $cust_remaining = $invoice[0]['cust_remaining'];
+          echo $cust_remaining;
+        } else{
+           $cust_remaining = 0;
+          echo $cust_remaining;
+        } ?></td>
+  </tr>
+  <tr>
+    <td colspan="2">&nbsp;</td>
+    <td colspan="2" align="left" style="border: 1px solid black"><b>Total Paid: </b></td>
+    <td colspan="1" align="right" style="border: 1px solid black">Rs.<?php echo $invoice[0]['cash_received']; ?></td>
+  </tr>
+  <tr>
+    <td colspan="2">&nbsp;</td>
+    <td colspan="2" align="left" style="border: 1px solid black"><b>Still Outstanding: </b></td>
+    <td colspan="1" align="right" style="border: 1px solid black">Rs.<?php echo $invoice[0]['cash_remaining']+$cust_remaining; ?></td>
+  </tr>
   </tbody>
 </table>
   <div class="row mt-5 pt-5">

@@ -24,6 +24,9 @@
                         <tbody>
                                 <?php
                                 $i = 0;
+                                $received = 0;
+                                $total = 0;
+                                $remaining = 0;
                                 if (isset($news)) {
                                     foreach ($news->result() as
                                             $new) {
@@ -31,6 +34,10 @@
                                         $print_url = ADMIN_BASE_URL . 'sale_invoice/print_sale_invoice/' . $new->id ;
                                         $delete_url = ADMIN_BASE_URL . 'sale_invoice/delete/' . $new->id;
                                         $product_url = ADMIN_BASE_URL . 'sale_invoice/product_list/' . $new->id.'/'.$new->customer_name;
+                                        $total = $total + $new->grand_total;
+                                        $remaining = $remaining + $new->remaining;
+                                        $received = $received + $new->cash_received;
+
                                         ?>
                                         <tr id="Row_<?=$new->id?>" class="odd gradeX " >
                                         <td width='2%'><?php echo $i;?></td>
@@ -58,6 +65,11 @@
                                 <?php } ?>
                             </tbody>
                     </table>
+                    <div class="pull-right" style="padding-right: 60px">
+                        <h4 style="color:red;">Grand Total: <?php echo $total ?> PKR</h4>
+                        <h4 style="color:red;">Cash Received: <?php echo $received ?> PKR</h4>
+                        <h4 style="color:red;">Cash Remaining: <?php echo $remaining ?> PKR</h4>
+                    </div>
                     </div>
                 </div>
             </div>

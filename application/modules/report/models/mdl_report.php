@@ -79,4 +79,21 @@ class Mdl_report extends CI_Model {
         $this->db->or_where('account_to_id',$data['account_id']);
         return $this->db->get($table);
     }
+
+    function _get_product_report($data){
+        $this->db->from('sale_invoice');
+        $this->db->join("sale_invoice_product", "sale_invoice_product.sale_invoice_id = sale_invoice.id AND sale_invoice_product.product_id = ".$data['product_id'] , "full");
+        $this->db->where('sale_invoice.org_id', $data['org_id']);
+        $this->db->where('sale_invoice.date >=',$data['from_date']);
+        $this->db->where('sale_invoice.date <=',$data['to_date']);
+        return $this->db->get();
+    }
+
+    function _get_overall_report($data){
+        $table = 'sale_invoice';
+        $this->db->where('org_id', $data['org_id']);
+        $this->db->where('date >=',$data['from_date']);
+        $this->db->where('date <=',$data['to_date']);
+        return $this->db->get($table);
+    }
 }
